@@ -1,0 +1,50 @@
+<nav class="navbar">
+  <div class="container">
+    <a href="/" class="logo-container">
+      <div class="logo-image">
+        @if (!logoError) {
+          <img src="assets/images/logo_inova.png" alt="Logo Joinville Inova Conectada" (error)="logoError = true">
+        } @else {
+          <div class="logo-placeholder">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="50" r="45" fill="#6d887d"/>
+              <text x="50" y="55" text-anchor="middle" fill="white" font-size="40" font-weight="bold">J</text>
+            </svg>
+          </div>
+        }
+      </div>
+      <div class="logo-text">
+        <div class="logo-main">JOINVILLE</div>
+        <div class="logo-sub">INOVA CONECTADA</div>
+      </div>
+    </a>
+
+    <!-- Hamburger Icon (visible only on mobile) -->
+    <div class="hamburger-menu" (click)="toggleMobileMenu()">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+
+    <div class="right-section mobile-menu" [class.active]="mobileMenuOpen">
+      @if (isLoggedIn) {
+        <button class="nav-button" routerLink="/criar-evento">Criar Evento</button>
+        <button class="nav-button" routerLink="/meus-eventos">Meus Eventos</button>
+        <div class="user-avatar">
+          @if (hasAvatar) {
+            <img src="assets/images/user-avatar.png" alt="Usuário" (click)="goToProfile()" style="cursor:pointer;">
+          } @else {
+            <div class="avatar-placeholder" (click)="goToProfile()" style="cursor:pointer;">
+              {{ userInitials }}
+            </div>
+          }
+          <span class="user-name" (click)="goToProfile()" style="cursor:pointer;">{{ userName }}</span>
+        </div>
+        <button class="logout-button" (click)="logout()" title="Sair">Sair</button>
+      } @else {
+        <div class="register-text">Cadastre-se para criar seu próprio evento</div>
+        <button class="login-button" (click)="toggleLogin()">Login/Cadastre-se</button>
+      }
+    </div>
+  </div>
+</nav>
