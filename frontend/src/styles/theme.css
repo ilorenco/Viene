@@ -1,0 +1,8 @@
+@theme {
+    --color-background: #f6f6f6;
+    --color-primary: #f48634;
+    --color-secondary: #282828;
+
+    --font-inter: 'Inter Variable', system-ui, sans-serif;
+    --font-montserrat: 'Montserrat Variable', system-ui, sans-serif;
+}
