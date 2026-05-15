@@ -2,6 +2,8 @@
     --color-background: #f6f6f6;
     --color-primary: #f48634;
     --color-secondary: #282828;
+    --color-danger: #c34d4d;
+    --color-foreground: #000000;
 
     --font-inter: 'Inter Variable', system-ui, sans-serif;
     --font-montserrat: 'Montserrat Variable', system-ui, sans-serif;
