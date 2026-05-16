@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
 
-import { Button } from '../../components/ui/Button'
-import { Input } from '../../components/ui/Input'
-import { PasswordInput } from '../../components/ui/PasswordInput'
+import { Button } from '@/components/ui/Button'
+import { Input } from '@/components/ui/Input'
+import { PasswordInput } from '@/components/ui/PasswordInput'
 
 export function Login() {
     function handleSubmit(event) {

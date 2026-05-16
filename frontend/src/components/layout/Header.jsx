@@ -1,6 +1,6 @@
 import { Menu, Search, UserRound } from 'lucide-react'
 
-import blackLogo from '../assets/branding/logo-black.png'
+import blackLogo from '@/assets/branding/logo-black.png'
 
 export function Header() {
     return (

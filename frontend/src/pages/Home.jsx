@@ -1,7 +1,7 @@
 import { ChevronDown, MapPin } from 'lucide-react'
 
-import { EventCarousel } from '../components/events/EventCarousel'
-import { mockEvents } from '../mocks/events'
+import { EventCarousel } from '@/components/events/EventCarousel'
+import { mockEvents } from '@/mocks/events'
 
 export function Home() {
     return (

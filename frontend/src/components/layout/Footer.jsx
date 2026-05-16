@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import whiteLogo from '../assets/branding/logo-white.png'
+import whiteLogo from '@/assets/branding/logo-white.png'
 
 const siteLinks = [
     { to: '/', label: 'Principal' },

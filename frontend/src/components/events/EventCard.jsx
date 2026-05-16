@@ -1,6 +1,6 @@
 import { Heart } from 'lucide-react'
 
-import { Card } from '../ui/Card'
+import { Card } from '@/components/ui/Card'
 
 export function EventCard({ title }) {
     return (

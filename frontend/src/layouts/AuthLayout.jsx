@@ -1,6 +1,6 @@
 import { Outlet, useMatches } from 'react-router-dom'
 
-import background from '../assets/auth/background.png'
+import background from '@/assets/auth/background.png'
 
 export function AuthLayout() {
     const title = useMatches().at(-1)?.handle?.title

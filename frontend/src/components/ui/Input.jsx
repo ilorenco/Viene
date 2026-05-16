@@ -1,4 +1,4 @@
-import { cn } from '../../lib/utils'
+import { cn } from '@/lib/utils'
 
 export function Input({ type = 'text', className, ...props }) {
     return (
