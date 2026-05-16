@@ -6,7 +6,7 @@ export function AuthLayout() {
     const title = useMatches().at(-1)?.handle?.title
 
     return (
-        <div className="flex min-h-screen flex-col">
+        <>
             <header className="bg-primary relative flex h-48 items-end justify-center overflow-hidden px-6 pb-10">
                 <img
                     src={background}
@@ -21,6 +21,6 @@ export function AuthLayout() {
             <main className="bg-background relative -mt-6 flex flex-1 flex-col gap-4 rounded-t-4xl p-7">
                 <Outlet />
             </main>
-        </div>
+        </>
     )
 }
