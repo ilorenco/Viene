@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import logo from '../assets/branding/logo.png'
+import whiteLogo from '../assets/branding/logo-white.png'
 
 const siteLinks = [
     { to: '/', label: 'Principal' },
@@ -12,7 +12,7 @@ export function Footer() {
     return (
         <footer className="bg-secondary text-background flex items-center justify-between gap-6 px-6 py-5">
             <div>
-                <img src={logo} />
+                <img src={whiteLogo} />
                 <p className="mt-2 text-xs font-light">Uma plataforma de mapeamento</p>
             </div>
             <nav>

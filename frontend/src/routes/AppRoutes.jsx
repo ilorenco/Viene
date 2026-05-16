@@ -1,28 +1,33 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { AuthLayout } from '../layouts/AuthLayout'
-import { RootLayout } from '../layouts/RootLayout'
+import { MainLayout } from '../layouts/MainLayout'
 import { Login } from '../pages/auth/Login'
 import { Register } from '../pages/auth/Register'
+import { Home } from '../pages/Home'
 
 const router = createBrowserRouter([
     {
-        element: <RootLayout />,
+        element: <MainLayout />,
         children: [
             {
-                element: <AuthLayout />,
-                children: [
-                    {
-                        path: '/login',
-                        element: <Login />,
-                        handle: { title: 'Login' },
-                    },
-                    {
-                        path: '/register',
-                        element: <Register />,
-                        handle: { title: 'Cadastro' },
-                    },
-                ],
+                index: true,
+                element: <Home />,
+            },
+        ],
+    },
+    {
+        element: <AuthLayout />,
+        children: [
+            {
+                path: '/login',
+                element: <Login />,
+                handle: { title: 'Login' },
+            },
+            {
+                path: '/register',
+                element: <Register />,
+                handle: { title: 'Cadastro' },
             },
         ],
     },
