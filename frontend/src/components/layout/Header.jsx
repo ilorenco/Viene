@@ -4,7 +4,7 @@ import blackLogo from '@/assets/branding/logo-black.png'
 
 export function Header() {
     return (
-        <header className="flex flex-col gap-3 p-3">
+        <header className="flex flex-col gap-3 p-4">
             <div className="flex items-center justify-between">
                 <img src={blackLogo} />
 

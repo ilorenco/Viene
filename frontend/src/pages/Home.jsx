@@ -5,7 +5,7 @@ import { mockEvents } from '@/mocks/events'
 
 export function Home() {
     return (
-        <div className="flex flex-col gap-5 p-3">
+        <>
             <header className="flex items-center justify-between">
                 {/* Esboço inicial apenas para design da tela, transformar isso aqui em um select depois */}
                 <button type="button" className="flex items-center gap-1 leading-none">
@@ -26,6 +26,6 @@ export function Home() {
             <EventCarousel title="Propagandas" events={mockEvents} />
             <EventCarousel title="Novos eventos" events={mockEvents} />
             <EventCarousel title="Principais agentes de inovação" events={mockEvents} />
-        </div>
+        </>
     )
 }
