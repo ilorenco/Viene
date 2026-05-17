@@ -5,6 +5,7 @@ import { MainLayout } from '@/layouts/MainLayout'
 import { Login } from '@/pages/auth/Login'
 import { Register } from '@/pages/auth/Register'
 import { Home } from '@/pages/Home'
+import { MyFavorites } from '@/pages/MyFavorites'
 
 const router = createBrowserRouter([
     {
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
             {
                 index: true,
                 element: <Home />,
+            },
+            {
+                path: '/my-favorites',
+                element: <MyFavorites />,
             },
         ],
     },
