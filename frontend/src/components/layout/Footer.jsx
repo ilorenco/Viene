@@ -5,7 +5,7 @@ import whiteLogo from '@/assets/branding/logo-white.png'
 const siteLinks = [
     { to: '/', label: 'Principal' },
     { to: '/mapa', label: 'Mapa' },
-    { to: '/ingressos', label: 'Meus ingressos' },
+    { to: '/tickets', label: 'Meus ingressos' },
 ]
 
 export function Footer() {

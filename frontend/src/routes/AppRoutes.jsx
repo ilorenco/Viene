@@ -6,6 +6,7 @@ import { Login } from '@/pages/auth/Login'
 import { Register } from '@/pages/auth/Register'
 import { Home } from '@/pages/Home'
 import { MyFavorites } from '@/pages/MyFavorites'
+import { Tickets } from '@/pages/Tickets'
 
 const router = createBrowserRouter([
     {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
             {
                 path: '/my-favorites',
                 element: <MyFavorites />,
+            },
+            {
+                path: '/tickets',
+                element: <Tickets />,
             },
         ],
     },
