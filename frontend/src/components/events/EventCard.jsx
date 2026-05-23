@@ -1,10 +1,8 @@
 import { Heart } from 'lucide-react'
 
-import { Card } from '@/components/ui/Card'
-
 export function EventCard({ title }) {
     return (
-        <Card as="article" className="w-72 shrink-0 gap-2">
+        <article className="flex w-72 shrink-0 flex-col gap-2">
             <div className="bg-primary h-32 rounded-md" />
 
             <div className="flex items-center justify-between pl-2">
@@ -15,6 +13,6 @@ export function EventCard({ title }) {
                     <Heart size={38} strokeWidth={1.5} className="text-secondary" />
                 </button>
             </div>
-        </Card>
+        </article>
     )
 }
