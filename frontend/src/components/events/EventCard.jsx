@@ -10,7 +10,7 @@ export function EventCard({ title }) {
                     {title}
                 </h3>
                 <button type="button" aria-label="Favoritar">
-                    <Heart size={38} strokeWidth={1.5} className="text-secondary" />
+                    <Heart strokeWidth={1.5} className="text-secondary size-10" />
                 </button>
             </div>
         </article>

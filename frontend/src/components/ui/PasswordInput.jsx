@@ -21,7 +21,7 @@ export function PasswordInput({ className, ...props }) {
                 onClick={() => setShowPassword((prev) => !prev)}
                 className="absolute top-1/2 right-5 -translate-y-1/2 cursor-pointer focus:outline-none"
             >
-                <Icon size={26} strokeWidth={1.75} className="text-secondary" />
+                <Icon strokeWidth={1.75} className="text-secondary size-6" />
             </button>
         </div>
     )

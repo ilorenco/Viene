@@ -12,8 +12,8 @@ export function Header() {
                 </Link>
 
                 <div className="flex items-center gap-2">
-                    <UserRound size={35} />
-                    <Menu size={35} />
+                    <UserRound className="size-8" />
+                    <Menu className="size-8" />
                 </div>
             </div>
 
@@ -21,7 +21,7 @@ export function Header() {
                 {/* Barra de pesquisa desse jeito por enquanto apenas para esboço, analisar depois se o ideal vai ser criar um componente a parte ou deixar imbutido no header */}
                 <input type="search" className="flex-1 rounded-full border-2 outline-none" />
 
-                <Search size={35} className="text-primary" />
+                <Search className="text-primary size-8" />
             </div>
         </header>
     )

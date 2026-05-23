@@ -25,7 +25,12 @@ export function EventDetailCard({ title, address, datetime, onGenerateTicket }) 
                 <EventMeta address={address} datetime={datetime} className="text-sm" />
 
                 <button type="button" aria-label="Favoritar" className="shrink-0">
-                    <Heart size={40} strokeWidth={1.5} fill="currentColor" aria-hidden="true" />
+                    <Heart
+                        strokeWidth={1.5}
+                        fill="currentColor"
+                        aria-hidden="true"
+                        className="size-10"
+                    />
                 </button>
             </div>
         </article>

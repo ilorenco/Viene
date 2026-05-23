@@ -15,15 +15,15 @@ export function EventDetails() {
             <FullBleed className="bg-primary h-56">
                 <div className="flex items-center justify-between p-4">
                     <button type="button" aria-label="Voltar">
-                        <ArrowLeft size={30} />
+                        <ArrowLeft className="size-8" />
                     </button>
 
                     <div className="flex items-center gap-2">
                         <button type="button" aria-label="Compartilhar">
-                            <Share2 size={30} />
+                            <Share2 className="size-8" />
                         </button>
                         <button type="button" aria-label="Favoritar">
-                            <Heart size={30} fill="currentColor" />
+                            <Heart fill="currentColor" className="size-8" />
                         </button>
                     </div>
                 </div>
@@ -35,7 +35,7 @@ export function EventDetails() {
                 <EventMeta
                     address={event.address}
                     datetime={event.datetime}
-                    iconSize={28}
+                    iconClassName="size-7"
                     className="text-xs"
                 />
 
