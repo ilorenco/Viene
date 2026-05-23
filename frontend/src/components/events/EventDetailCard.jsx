@@ -1,5 +1,6 @@
-import { Clock, Heart, MapPin } from 'lucide-react'
+import { Heart } from 'lucide-react'
 
+import { EventMeta } from '@/components/events/EventMeta'
 import { Card } from '@/components/ui/Card'
 
 export function EventDetailCard({ title, address, datetime, onGenerateTicket }) {
@@ -22,16 +23,7 @@ export function EventDetailCard({ title, address, datetime, onGenerateTicket }) 
             </div>
 
             <div className="text-secondary flex items-end justify-between gap-3">
-                <div className="flex flex-col gap-2 text-sm">
-                    <div className="flex items-start gap-2">
-                        <MapPin size={25} aria-hidden="true" className="text-foreground shrink-0" />
-                        <span>{address}</span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                        <Clock size={25} aria-hidden="true" className="text-foreground shrink-0" />
-                        <span>{datetime}</span>
-                    </div>
-                </div>
+                <EventMeta address={address} datetime={datetime} className="text-sm" />
 
                 <button type="button" aria-label="Favoritar" className="shrink-0">
                     <Heart size={40} strokeWidth={1.5} fill="currentColor" aria-hidden="true" />

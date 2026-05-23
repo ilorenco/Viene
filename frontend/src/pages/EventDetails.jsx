@@ -1,6 +1,7 @@
-import { ArrowLeft, Clock, Heart, MapPin, Share2 } from 'lucide-react'
+import { ArrowLeft, Heart, Share2 } from 'lucide-react'
 import { useParams } from 'react-router-dom'
 
+import { EventMeta } from '@/components/events/EventMeta'
 import { FullBleed } from '@/components/layout/FullBleed'
 import { mockEvents } from '@/mocks/events'
 
@@ -31,16 +32,12 @@ export function EventDetails() {
             <header className="flex flex-col gap-4">
                 <h1 className="text-2xl font-extrabold">{event.title}</h1>
 
-                <div className="flex flex-col gap-2 text-xs">
-                    <div className="flex items-start gap-2">
-                        <MapPin size={28} aria-hidden="true" className="text-foreground shrink-0" />
-                        <span>{event.address}</span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                        <Clock size={28} aria-hidden="true" className="text-foreground shrink-0" />
-                        <span>{event.datetime}</span>
-                    </div>
-                </div>
+                <EventMeta
+                    address={event.address}
+                    datetime={event.datetime}
+                    iconSize={28}
+                    className="text-xs"
+                />
 
                 <hr className="border-primary rounded-full border-t-4" />
             </header>
