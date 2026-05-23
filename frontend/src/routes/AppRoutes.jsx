@@ -9,6 +9,7 @@ import { EventDetails } from '@/pages/EventDetails'
 import { Events } from '@/pages/Events'
 import { Home } from '@/pages/Home'
 import { MyFavorites } from '@/pages/MyFavorites'
+import { NotFound } from '@/pages/NotFound'
 import { Tickets } from '@/pages/Tickets'
 
 const router = createBrowserRouter([
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
             {
                 path: '/events/:id',
                 element: <EventDetails />,
+            },
+            {
+                path: '*',
+                element: <NotFound />,
             },
         ],
     },
