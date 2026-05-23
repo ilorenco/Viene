@@ -5,6 +5,11 @@ import { PageHeader } from '@/components/layout/PageHeader'
 import { Tabs } from '@/components/ui/Tabs'
 import { mockEvents } from '@/mocks/events'
 
+const tabs = [
+    { value: 'eventos', label: 'EVENTOS' },
+    { value: 'atores', label: 'ATORES' },
+]
+
 export function MyFavorites() {
     const [tab, setTab] = useState('eventos')
 
@@ -12,7 +17,7 @@ export function MyFavorites() {
         <>
             <PageHeader top="MEUS" main="FAVORITOS" className="text-secondary" />
 
-            <Tabs value={tab} onChange={setTab} />
+            <Tabs value={tab} onChange={setTab} options={tabs} />
 
             {tab === 'eventos' && (
                 <ul className="flex flex-col gap-3">
