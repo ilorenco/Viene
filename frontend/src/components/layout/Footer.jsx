@@ -12,7 +12,7 @@ export function Footer() {
     return (
         <footer className="bg-secondary text-background flex items-center justify-between gap-6 px-6 py-5">
             <div>
-                <img src={whiteLogo} />
+                <img src={whiteLogo} alt="Viene" />
                 <p className="mt-2 text-xs font-light">Uma plataforma de mapeamento</p>
             </div>
             <nav>

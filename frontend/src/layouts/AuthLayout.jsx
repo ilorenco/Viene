@@ -10,6 +10,7 @@ export function AuthLayout() {
             <header className="bg-primary relative flex h-48 items-end justify-center overflow-hidden px-6 pb-10">
                 <img
                     src={background}
+                    alt=""
                     className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-60"
                 />
                 {title && (

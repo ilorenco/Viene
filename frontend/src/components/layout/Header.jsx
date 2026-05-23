@@ -8,7 +8,7 @@ export function Header() {
         <header className="flex flex-col gap-3 p-4">
             <div className="flex items-center justify-between">
                 <Link to="/">
-                    <img src={blackLogo} />
+                    <img src={blackLogo} alt="Viene" />
                 </Link>
 
                 <div className="flex items-center gap-2">
