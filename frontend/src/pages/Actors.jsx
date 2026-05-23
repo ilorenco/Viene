@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { ActorCard } from '@/components/actors/ActorCard'
 import { CategoryFilter } from '@/components/CategoryFilter'
-import { FullBleed } from '@/components/layout/FullBleed'
+import { PageBanner } from '@/components/layout/PageBanner'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { mockActors } from '@/mocks/actors'
 
@@ -24,10 +24,10 @@ export function Actors() {
 
     return (
         <>
-            <FullBleed className="bg-secondary text-primary -mt-4 flex flex-col gap-5 px-4 py-8">
+            <PageBanner>
                 <PageHeader main="Encontre Atores" />
                 <CategoryFilter value={category} onChange={setCategory} options={categories} />
-            </FullBleed>
+            </PageBanner>
 
             <ul className="flex flex-col gap-3">
                 {mockActors.map((actor) => (
