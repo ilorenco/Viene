@@ -1,9 +1,9 @@
 import { cn } from '@/lib/utils'
 
-export function PageHeader({ top, main }) {
+export function PageHeader({ top, main, className }) {
     return (
-        <header className="flex flex-col gap-2">
-            <h1 className="text-secondary flex flex-col">
+        <header className={cn('flex flex-col gap-2', className)}>
+            <h1 className="flex flex-col">
                 {top && <span className="text-2xl">{top}</span>}
                 <span className={cn('text-3xl font-extrabold', top && '-mt-1')}>{main}</span>
             </h1>

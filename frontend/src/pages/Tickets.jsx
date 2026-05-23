@@ -12,7 +12,7 @@ export function Tickets() {
 
     return (
         <>
-            <PageHeader main="INGRESSOS" />
+            <PageHeader main="INGRESSOS" className="text-secondary" />
 
             <FullBleed className="bg-secondary text-background flex flex-col gap-5 p-6">
                 <h2 className="text-3xl font-semibold">Hoje</h2>

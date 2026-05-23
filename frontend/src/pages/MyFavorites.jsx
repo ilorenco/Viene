@@ -10,7 +10,7 @@ export function MyFavorites() {
 
     return (
         <>
-            <PageHeader top="MEUS" main="FAVORITOS" />
+            <PageHeader top="MEUS" main="FAVORITOS" className="text-secondary" />
 
             <Tabs value={tab} onChange={setTab} />
 
