@@ -7,7 +7,7 @@ export function MainLayout() {
     return (
         <div className="flex min-h-screen flex-col">
             <Header />
-            <main className="flex flex-1 flex-col gap-5 p-4">
+            <main className="flex flex-1 flex-col gap-5 px-4 pb-4">
                 <Outlet />
             </main>
             <Footer />

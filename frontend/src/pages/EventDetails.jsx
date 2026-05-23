@@ -12,7 +12,7 @@ export function EventDetails() {
 
     return (
         <>
-            <FullBleed className="bg-primary -mt-4 h-56">
+            <FullBleed className="bg-primary h-56">
                 <div className="flex items-center justify-between p-4">
                     <button type="button" aria-label="Voltar">
                         <ArrowLeft size={30} />
