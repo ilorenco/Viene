@@ -1,10 +1,10 @@
 import { useState } from 'react'
 
-import { DatePicker } from '@/components/DatePicker'
 import { EventDetailCard } from '@/components/events/EventDetailCard'
 import { FullBleed } from '@/components/layout/FullBleed'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { Button } from '@/components/ui/Button'
+import { DatePicker } from '@/components/ui/DatePicker'
 import { mockEvents } from '@/mocks/events'
 
 export function Tickets() {

@@ -1,9 +1,9 @@
 import { useState } from 'react'
 
 import { ActorCard } from '@/components/actors/ActorCard'
-import { CategoryFilter } from '@/components/CategoryFilter'
 import { PageBanner } from '@/components/layout/PageBanner'
 import { PageHeader } from '@/components/layout/PageHeader'
+import { CategoryFilter } from '@/components/ui/CategoryFilter'
 import { mockActors } from '@/mocks/actors'
 
 const categories = [

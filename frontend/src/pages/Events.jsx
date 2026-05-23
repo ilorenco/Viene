@@ -1,9 +1,9 @@
 import { useState } from 'react'
 
-import { CategoryFilter } from '@/components/CategoryFilter'
 import { EventDetailCard } from '@/components/events/EventDetailCard'
 import { PageBanner } from '@/components/layout/PageBanner'
 import { PageHeader } from '@/components/layout/PageHeader'
+import { CategoryFilter } from '@/components/ui/CategoryFilter'
 import { mockEvents } from '@/mocks/events'
 
 const categories = [

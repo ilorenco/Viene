@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { EventDetailCard } from '@/components/events/EventDetailCard'
 import { PageHeader } from '@/components/layout/PageHeader'
-import { Tabs } from '@/components/Tabs'
+import { Tabs } from '@/components/ui/Tabs'
 import { mockEvents } from '@/mocks/events'
 
 export function MyFavorites() {
