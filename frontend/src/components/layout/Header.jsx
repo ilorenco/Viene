@@ -1,4 +1,5 @@
 import { Menu, Search, UserRound } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 import blackLogo from '@/assets/branding/logo-black.png'
 
@@ -6,7 +7,9 @@ export function Header() {
     return (
         <header className="flex flex-col gap-3 p-4">
             <div className="flex items-center justify-between">
-                <img src={blackLogo} />
+                <Link to="/">
+                    <img src={blackLogo} />
+                </Link>
 
                 <div className="flex items-center gap-2">
                     <UserRound size={35} />
