@@ -20,7 +20,7 @@ const router = createBrowserRouter([
                 element: <Home />,
             },
             {
-                path: '/my-favorites',
+                path: '/favorites',
                 element: <MyFavorites />,
             },
             {
