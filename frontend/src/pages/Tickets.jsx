@@ -12,7 +12,7 @@ export function Tickets() {
 
     return (
         <>
-            <PageHeader main="INGRESSOS" className="text-secondary" />
+            <PageHeader title="INGRESSOS" className="text-secondary" />
 
             <FullBleed className="bg-secondary text-background flex flex-col gap-5 p-6">
                 <h2 className="text-3xl font-semibold">Hoje</h2>
@@ -32,7 +32,9 @@ export function Tickets() {
                 ))}
             </ul>
 
-            <Button className="self-center text-base">VER MAIS EVENTOS</Button>
+            <Button size="sm" className="self-center">
+                VER MAIS EVENTOS
+            </Button>
         </>
     )
 }
