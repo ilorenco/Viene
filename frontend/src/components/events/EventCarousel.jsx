@@ -1,9 +1,9 @@
-import useEmblaCarousel from 'embla-carousel-react'
+import { useDraggableCarousel } from '@/hooks/useDraggableCarousel'
 
 import { EventCard } from './EventCard'
 
 export function EventCarousel({ title, events }) {
-    const [emblaRef] = useEmblaCarousel({ align: 'start', dragFree: true })
+    const [emblaRef] = useDraggableCarousel()
 
     return (
         <section className="flex flex-col gap-2">

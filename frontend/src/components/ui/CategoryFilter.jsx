@@ -1,9 +1,8 @@
-import useEmblaCarousel from 'embla-carousel-react'
-
+import { useDraggableCarousel } from '@/hooks/useDraggableCarousel'
 import { cn } from '@/lib/utils'
 
 export function CategoryFilter({ value, onChange, options }) {
-    const [emblaRef] = useEmblaCarousel({ align: 'start', dragFree: true })
+    const [emblaRef] = useDraggableCarousel()
 
     return (
         <div className="overflow-hidden" ref={emblaRef}>
