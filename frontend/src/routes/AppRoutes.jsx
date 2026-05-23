@@ -5,6 +5,7 @@ import { MainLayout } from '@/layouts/MainLayout'
 import { Actors } from '@/pages/Actors'
 import { Login } from '@/pages/auth/Login'
 import { Register } from '@/pages/auth/Register'
+import { EventDetails } from '@/pages/EventDetails'
 import { Events } from '@/pages/Events'
 import { Home } from '@/pages/Home'
 import { MyFavorites } from '@/pages/MyFavorites'
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
             {
                 path: '/events',
                 element: <Events />,
+            },
+            {
+                path: '/events/:id',
+                element: <EventDetails />,
             },
         ],
     },
