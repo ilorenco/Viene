@@ -25,7 +25,7 @@ export function Actors() {
     return (
         <>
             <PageBanner>
-                <PageHeader main="Encontre Atores" />
+                <PageHeader title="Encontre Atores" />
                 <CategoryFilter value={category} onChange={setCategory} options={categories} />
             </PageBanner>
 

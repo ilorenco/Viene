@@ -23,7 +23,7 @@ export function Events() {
     return (
         <>
             <PageBanner>
-                <PageHeader main="Encontre Eventos" />
+                <PageHeader title="Encontre Eventos" />
                 <CategoryFilter value={category} onChange={setCategory} options={categories} />
             </PageBanner>
 

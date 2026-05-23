@@ -15,7 +15,7 @@ export function MyFavorites() {
 
     return (
         <>
-            <PageHeader top="MEUS" main="FAVORITOS" className="text-secondary" />
+            <PageHeader overline="MEUS" title="FAVORITOS" className="text-secondary" />
 
             <Tabs value={tab} onChange={setTab} options={tabs} />
 

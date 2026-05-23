@@ -1,11 +1,11 @@
 import { cn } from '@/lib/utils'
 
-export function PageHeader({ top, main, className }) {
+export function PageHeader({ overline, title, className }) {
     return (
         <header className={cn('flex flex-col gap-2', className)}>
             <h1 className="flex flex-col">
-                {top && <span className="text-2xl">{top}</span>}
-                <span className={cn('text-3xl font-extrabold', top && '-mt-1')}>{main}</span>
+                {overline && <span className="text-2xl">{overline}</span>}
+                <span className={cn('text-3xl font-extrabold', overline && '-mt-1')}>{title}</span>
             </h1>
 
             <div aria-hidden="true" className="-mt-2 flex items-center gap-1">
