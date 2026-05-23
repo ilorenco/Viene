@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { AuthLayout } from '@/layouts/AuthLayout'
 import { MainLayout } from '@/layouts/MainLayout'
+import { Actors } from '@/pages/Actors'
 import { Login } from '@/pages/auth/Login'
 import { Register } from '@/pages/auth/Register'
 import { Home } from '@/pages/Home'
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
             {
                 path: '/tickets',
                 element: <Tickets />,
+            },
+            {
+                path: '/actors',
+                element: <Actors />,
             },
         ],
     },
