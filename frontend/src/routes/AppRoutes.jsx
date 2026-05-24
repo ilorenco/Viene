@@ -8,7 +8,7 @@ import { Register } from '@/pages/auth/Register'
 import { EventDetails } from '@/pages/EventDetails'
 import { Events } from '@/pages/Events'
 import { Home } from '@/pages/Home'
-import { MyFavorites } from '@/pages/MyFavorites'
+import { Favorites } from '@/pages/Favorites'
 import { NotFound } from '@/pages/NotFound'
 import { Tickets } from '@/pages/Tickets'
 
@@ -22,7 +22,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/favorites',
-                element: <MyFavorites />,
+                element: <Favorites />,
             },
             {
                 path: '/tickets',

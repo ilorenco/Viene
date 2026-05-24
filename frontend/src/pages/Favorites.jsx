@@ -1,8 +1,10 @@
 import { useState } from 'react'
 
+import { ActorCard } from '@/components/actors/ActorCard'
 import { EventDetailCard } from '@/components/events/EventDetailCard'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { Tabs } from '@/components/ui/Tabs'
+import { mockActors } from '@/mocks/actors'
 import { mockEvents } from '@/mocks/events'
 
 const tabs = [
@@ -10,7 +12,7 @@ const tabs = [
     { value: 'atores', label: 'ATORES' },
 ]
 
-export function MyFavorites() {
+export function Favorites() {
     const [tab, setTab] = useState('eventos')
 
     return (
@@ -28,6 +30,16 @@ export function MyFavorites() {
                                 address={event.address}
                                 datetime={event.datetime}
                             />
+                        </li>
+                    ))}
+                </ul>
+            )}
+
+            {tab === 'atores' && (
+                <ul className="flex flex-col gap-3">
+                    {mockActors.map((actor) => (
+                        <li key={actor.id}>
+                            <ActorCard name={actor.name} description={actor.description} />
                         </li>
                     ))}
                 </ul>
