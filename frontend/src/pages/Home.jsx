@@ -1,26 +1,50 @@
-import { ChevronDown, MapPin } from 'lucide-react'
+import { MapPin } from 'lucide-react'
+import { useState } from 'react'
 
 import { EventCarousel } from '@/components/events/EventCarousel'
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/Select'
 import { mockEvents } from '@/mocks/events'
+import { mockFilterOptions, mockPlaceOptions } from '@/mocks/homeFilters'
 
 export function Home() {
+    const [place, setPlace] = useState('all')
+    const [filter, setFilter] = useState('recent')
+
     return (
         <>
             <header className="flex items-center justify-between">
-                {/* Esboço inicial apenas para design da tela, transformar isso aqui em um select depois */}
-                <button type="button" className="flex items-center gap-1 leading-none">
-                    <MapPin strokeWidth={2.25} className="size-6" />
-                    <span>Todos os lugares</span>
-                    <ChevronDown strokeWidth={2.25} className="size-6" />
-                </button>
+                <Select value={place} onValueChange={setPlace}>
+                    <SelectTrigger>
+                        <MapPin strokeWidth={2.25} className="size-6" />
+                        <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {mockPlaceOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
 
-                <button
-                    type="button"
-                    className="bg-primary flex items-center gap-1 rounded-full px-3 py-2 leading-none"
-                >
-                    <span>Filtrar por</span>
-                    <ChevronDown className="size-5" />
-                </button>
+                <Select value={filter} onValueChange={setFilter}>
+                    <SelectTrigger className="bg-primary rounded-full px-3 py-2">
+                        <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {mockFilterOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
             </header>
 
             <EventCarousel title="Propagandas" events={mockEvents} />
