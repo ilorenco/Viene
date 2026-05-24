@@ -2,6 +2,8 @@ import { Menu, Search, UserRound } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 import blackLogo from '@/assets/branding/logo-black.png'
+import { MainMenu } from '@/components/layout/MainMenu'
+import { Sheet, SheetTrigger } from '@/components/ui/Sheet'
 
 export function Header() {
     return (
@@ -13,7 +15,13 @@ export function Header() {
 
                 <div className="flex items-center gap-2">
                     <UserRound className="size-8" />
-                    <Menu className="size-8" />
+
+                    <Sheet>
+                        <SheetTrigger aria-label="Abrir menu" className="cursor-pointer">
+                            <Menu className="size-8" />
+                        </SheetTrigger>
+                        <MainMenu />
+                    </Sheet>
                 </div>
             </div>
 
