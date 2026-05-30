@@ -12,6 +12,7 @@
     --animate-fade-out: fade-out 200ms ease-in;
     --animate-slide-in-right: slide-in-right 250ms ease-out;
     --animate-slide-out-right: slide-out-right 250ms ease-in;
+    --animate-like-pop: like-pop 300ms ease-out;
 
     @keyframes fade-in {
         from {
@@ -43,6 +44,18 @@
         }
         to {
             transform: translateX(100%);
+        }
+    }
+    @keyframes like-pop {
+        0%,
+        100% {
+            transform: scale(1);
+        }
+        40% {
+            transform: scale(1.3);
+        }
+        70% {
+            transform: scale(0.85);
         }
     }
 }

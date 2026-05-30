@@ -1,6 +1,5 @@
-import { Heart } from 'lucide-react'
-
 import { EventMeta } from '@/components/events/EventMeta'
+import { LikeButton } from '@/components/ui/LikeButton'
 
 export function EventDetailCard({ title, address, datetime, onGenerateTicket }) {
     return (
@@ -24,14 +23,7 @@ export function EventDetailCard({ title, address, datetime, onGenerateTicket }) 
             <div className="text-secondary flex items-end justify-between gap-3">
                 <EventMeta address={address} datetime={datetime} className="text-sm" />
 
-                <button type="button" aria-label="Favoritar" className="shrink-0">
-                    <Heart
-                        strokeWidth={1.5}
-                        fill="currentColor"
-                        aria-hidden="true"
-                        className="size-10"
-                    />
-                </button>
+                <LikeButton />
             </div>
         </article>
     )

@@ -1,4 +1,4 @@
-import { Heart } from 'lucide-react'
+import { LikeButton } from '@/components/ui/LikeButton'
 
 export function EventCard({ title }) {
     return (
@@ -9,9 +9,7 @@ export function EventCard({ title }) {
                 <h3 className="font-montserrat text-secondary line-clamp-2 w-2/3 text-sm font-extrabold">
                     {title}
                 </h3>
-                <button type="button" aria-label="Favoritar">
-                    <Heart strokeWidth={1.5} className="text-secondary size-10" />
-                </button>
+                <LikeButton />
             </div>
         </article>
     )
