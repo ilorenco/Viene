@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { ActorCard } from '@/components/actors/ActorCard'
+import { ActorList } from '@/components/actors/ActorList'
 import { PageBanner } from '@/components/layout/PageBanner'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { CategoryFilter } from '@/components/ui/CategoryFilter'
@@ -21,13 +21,7 @@ export function Actors() {
                 />
             </PageBanner>
 
-            <ul className="flex flex-col gap-3">
-                {mockActors.map((actor) => (
-                    <li key={actor.id}>
-                        <ActorCard name={actor.name} description={actor.description} />
-                    </li>
-                ))}
-            </ul>
+            <ActorList actors={mockActors} />
         </>
     )
 }

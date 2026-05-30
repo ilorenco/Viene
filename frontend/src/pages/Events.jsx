@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { EventDetailCard } from '@/components/events/EventDetailCard'
+import { EventList } from '@/components/events/EventList'
 import { PageBanner } from '@/components/layout/PageBanner'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { CategoryFilter } from '@/components/ui/CategoryFilter'
@@ -21,17 +21,7 @@ export function Events() {
                 />
             </PageBanner>
 
-            <ul className="flex flex-col gap-3">
-                {mockEvents.map((event) => (
-                    <li key={event.id}>
-                        <EventDetailCard
-                            title={event.title}
-                            address={event.address}
-                            datetime={event.datetime}
-                        />
-                    </li>
-                ))}
-            </ul>
+            <EventList events={mockEvents} />
         </>
     )
 }

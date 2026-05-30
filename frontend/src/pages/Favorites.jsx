@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
-import { ActorCard } from '@/components/actors/ActorCard'
-import { EventDetailCard } from '@/components/events/EventDetailCard'
+import { ActorList } from '@/components/actors/ActorList'
+import { EventList } from '@/components/events/EventList'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { Tabs } from '@/components/ui/Tabs'
 import { mockActors } from '@/mocks/actors'
@@ -21,29 +21,8 @@ export function Favorites() {
 
             <Tabs value={tab} onChange={setTab} options={tabs} />
 
-            {tab === 'eventos' && (
-                <ul className="flex flex-col gap-3">
-                    {mockEvents.map((event) => (
-                        <li key={event.id}>
-                            <EventDetailCard
-                                title={event.title}
-                                address={event.address}
-                                datetime={event.datetime}
-                            />
-                        </li>
-                    ))}
-                </ul>
-            )}
-
-            {tab === 'atores' && (
-                <ul className="flex flex-col gap-3">
-                    {mockActors.map((actor) => (
-                        <li key={actor.id}>
-                            <ActorCard name={actor.name} description={actor.description} />
-                        </li>
-                    ))}
-                </ul>
-            )}
+            {tab === 'eventos' && <EventList events={mockEvents} />}
+            {tab === 'atores' && <ActorList actors={mockActors} />}
         </>
     )
 }
