@@ -6,6 +6,7 @@ export function EventList({ events, onGenerateTicket }) {
             {events.map((event) => (
                 <li key={event.id}>
                     <EventDetailCard
+                        id={event.id}
                         title={event.title}
                         address={event.address}
                         datetime={event.datetime}

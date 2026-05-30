@@ -9,7 +9,7 @@ export function EventCarousel({ title, events }) {
 
             <DraggableTrack className="gap-4">
                 {events.map((event) => (
-                    <EventCard key={event.id} title={event.title} />
+                    <EventCard key={event.id} id={event.id} title={event.title} />
                 ))}
             </DraggableTrack>
         </section>

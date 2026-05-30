@@ -1,5 +1,5 @@
 import { ArrowLeft, Heart, Share2 } from 'lucide-react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { EventMeta } from '@/components/events/EventMeta'
 import { FullBleed } from '@/components/layout/FullBleed'
@@ -7,6 +7,7 @@ import { mockEvents } from '@/mocks/events'
 
 export function EventDetails() {
     const { id } = useParams()
+    const navigate = useNavigate()
     const eventId = Number(id)
     const event = mockEvents.find((e) => e.id === eventId) ?? mockEvents[0]
 
@@ -14,7 +15,12 @@ export function EventDetails() {
         <>
             <FullBleed className="bg-primary h-56">
                 <div className="flex items-center justify-between p-4">
-                    <button type="button" aria-label="Voltar">
+                    <button
+                        type="button"
+                        aria-label="Voltar"
+                        onClick={() => navigate(-1)}
+                        className="cursor-pointer"
+                    >
                         <ArrowLeft className="size-8" />
                     </button>
 
