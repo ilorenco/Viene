@@ -1,17 +1,9 @@
 import { cn } from '@/lib/utils'
 
-const mockDays = [
-    { weekday: 'SEG', date: 14 },
-    { weekday: 'TER', date: 15 },
-    { weekday: 'QUA', date: 16 },
-    { weekday: 'QUI', date: 17 },
-    { weekday: 'SEX', date: 18 },
-]
-
-export function DatePicker({ value, onChange }) {
+export function DatePicker({ days, value, onChange }) {
     return (
         <div className="flex items-center gap-2">
-            {mockDays.map((day) => {
+            {days.map((day) => {
                 const isSelected = value === day.date
                 return (
                     <button
