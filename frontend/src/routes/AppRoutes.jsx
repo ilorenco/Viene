@@ -7,9 +7,10 @@ import { Login } from '@/pages/auth/Login'
 import { Register } from '@/pages/auth/Register'
 import { EventDetails } from '@/pages/EventDetails'
 import { Events } from '@/pages/Events'
-import { Home } from '@/pages/Home'
 import { Favorites } from '@/pages/Favorites'
+import { Home } from '@/pages/Home'
 import { NotFound } from '@/pages/NotFound'
+import { Profile } from '@/pages/Profile'
 import { Tickets } from '@/pages/Tickets'
 
 const router = createBrowserRouter([
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
             {
                 path: '/events/:id',
                 element: <EventDetails />,
+            },
+            {
+                path: '/profile',
+                element: <Profile />,
             },
             {
                 path: '*',

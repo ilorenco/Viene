@@ -14,7 +14,9 @@ export function Header() {
                 </Link>
 
                 <div className="flex items-center gap-2">
-                    <UserRound className="size-8" />
+                    <Link to="/profile" aria-label="Perfil">
+                        <UserRound className="size-8" />
+                    </Link>
 
                     <Sheet>
                         <SheetTrigger aria-label="Abrir menu" className="cursor-pointer">
