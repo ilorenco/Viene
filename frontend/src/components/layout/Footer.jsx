@@ -4,7 +4,7 @@ import whiteLogo from '@/assets/branding/logo-white.png'
 
 const siteLinks = [
     { to: '/', label: 'Principal' },
-    { to: '/mapa', label: 'Mapa' },
+    { to: '/map', label: 'Mapa' },
     { to: '/tickets', label: 'Meus ingressos' },
 ]
 
