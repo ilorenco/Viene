@@ -1,8 +1,9 @@
-import { Menu, Search, UserRound } from 'lucide-react'
+import { Menu, Search } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 import blackLogo from '@/assets/branding/logo-black.png'
 import { MainMenu } from '@/components/layout/MainMenu'
+import { Avatar } from '@/components/ui/Avatar'
 import { Sheet, SheetTrigger } from '@/components/ui/Sheet'
 
 export function Header() {
@@ -15,7 +16,7 @@ export function Header() {
 
                 <div className="flex items-center gap-2">
                     <Link to="/profile" aria-label="Perfil">
-                        <UserRound className="size-8" />
+                        <Avatar size="sm" />
                     </Link>
 
                     <Sheet>

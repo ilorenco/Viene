@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
+import { Avatar } from '@/components/ui/Avatar'
 import { Button } from '@/components/ui/Button'
 import { cn } from '@/lib/utils'
 
@@ -91,7 +92,7 @@ function ProfileSection({
             </header>
             <ul
                 className={cn(
-                    'divide-foreground/10 bg-white rounded-lg text-sm shadow-sm',
+                    'divide-foreground/10 rounded-lg bg-white text-sm shadow-sm',
                     containerClassName,
                 )}
             >
@@ -125,7 +126,7 @@ export function Profile() {
             <header className="bg-secondary rounded-lg p-5">
                 <div className="flex items-center gap-4">
                     <div className="relative shrink-0">
-                        <div className="bg-primary size-20 rounded-full" />
+                        <Avatar size="lg" />
                         <button
                             type="button"
                             aria-label="Editar foto de perfil"
