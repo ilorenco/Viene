@@ -9,6 +9,7 @@ import { EventDetails } from '@/pages/EventDetails'
 import { Events } from '@/pages/Events'
 import { Favorites } from '@/pages/Favorites'
 import { Home } from '@/pages/Home'
+import { Map } from '@/pages/Map'
 import { NotFound } from '@/pages/NotFound'
 import { Profile } from '@/pages/Profile'
 import { Tickets } from '@/pages/Tickets'
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
             {
                 path: '/profile',
                 element: <Profile />,
+            },
+            {
+                path: '/map',
+                element: <Map />,
             },
             {
                 path: '*',
