@@ -1,0 +1,11 @@
+# CODEOWNERS — define quem revisa cada parte do projeto.
+# Sintaxe: <padrão de caminho>  <@responsável>
+# Docs: https://docs.github.com/articles/about-code-owners
+#
+# Observações:
+# - Só tem efeito a partir da branch padrão (main).
+# - A exigência de aprovação depende do ruleset "Require review from Code Owners".
+# - O responsável precisa ter ao menos acesso de escrita ao repo.
+
+# Todo o frontend exige revisão do Igor (@ilorenco)
+/frontend/  @ilorenco
