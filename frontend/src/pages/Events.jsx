@@ -1,11 +1,16 @@
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 
 import { PageBanner } from '@/components/layout/PageBanner'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { CategoryFilter } from '@/components/ui/CategoryFilter'
-import { EventList } from '@/features/events/components/EventList'
+import { EventList, EventListSkeleton } from '@/features/events/components/EventList'
+import { useEvents } from '@/features/events/hooks/useEvents'
 import { mockEventCategories } from '@/features/events/mocks/eventCategories'
-import { mockEvents } from '@/features/events/mocks/events'
+
+function EventsResults({ category }) {
+    const { data: events } = useEvents(category)
+    return <EventList events={events} />
+}
 
 export function Events() {
     const [category, setCategory] = useState('workshops')
@@ -21,7 +26,9 @@ export function Events() {
                 />
             </PageBanner>
 
-            <EventList events={mockEvents} />
+            <Suspense fallback={<EventListSkeleton />}>
+                <EventsResults category={category} />
+            </Suspense>
         </>
     )
 }
