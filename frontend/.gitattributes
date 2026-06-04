@@ -1,0 +1,4 @@
+# Normaliza quebras de linha: o Git armazena sempre LF e faz checkout em LF
+# em qualquer sistema (inclusive Windows). Evita o ruído de CRLF que faz o
+# Prettier (endOfLine: lf) acusar arquivos como "fora do padrão" no Windows.
+* text=auto eol=lf
