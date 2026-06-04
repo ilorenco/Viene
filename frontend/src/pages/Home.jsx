@@ -1,5 +1,5 @@
 import { MapPin } from 'lucide-react'
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 
 import {
     Select,
@@ -8,9 +8,20 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/Select'
-import { EventCarousel } from '@/features/events/components/EventCarousel'
-import { mockEvents } from '@/features/events/mocks/events'
+import { EventCarousel, EventCarouselSkeleton } from '@/features/events/components/EventCarousel'
+import { useEvents } from '@/features/events/hooks/useEvents'
 import { mockFilterOptions, mockPlaceOptions } from '@/features/home/mocks/homeFilters'
+
+const sections = ['Propagandas', 'Novos eventos', 'Principais agentes de inovação']
+
+function HomeCarousels() {
+    const { data: events } = useEvents()
+    return sections.map((title) => <EventCarousel key={title} title={title} events={events} />)
+}
+
+function HomeCarouselsSkeleton() {
+    return sections.map((title) => <EventCarouselSkeleton key={title} title={title} />)
+}
 
 export function Home() {
     const [place, setPlace] = useState('all')
@@ -47,9 +58,9 @@ export function Home() {
                 </Select>
             </header>
 
-            <EventCarousel title="Propagandas" events={mockEvents} />
-            <EventCarousel title="Novos eventos" events={mockEvents} />
-            <EventCarousel title="Principais agentes de inovação" events={mockEvents} />
+            <Suspense fallback={<HomeCarouselsSkeleton />}>
+                <HomeCarousels />
+            </Suspense>
         </>
     )
 }
