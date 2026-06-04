@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 
 import { LikeButton } from '@/components/ui/LikeButton'
+import { Skeleton } from '@/components/ui/Skeleton'
 
 export function EventCard({ id, title }) {
     return (
@@ -14,6 +15,19 @@ export function EventCard({ id, title }) {
                     {title}
                 </h3>
                 <LikeButton className="relative z-20" />
+            </div>
+        </article>
+    )
+}
+
+export function EventCardSkeleton() {
+    return (
+        <article aria-hidden="true" className="flex w-72 shrink-0 flex-col gap-2">
+            <Skeleton className="h-32 w-full" />
+
+            <div className="flex items-center justify-between pl-2">
+                <Skeleton className="h-4 w-2/3" />
+                <Skeleton className="size-10 shrink-0 rounded-full" />
             </div>
         </article>
     )
