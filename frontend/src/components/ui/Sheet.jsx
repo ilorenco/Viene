@@ -42,7 +42,7 @@ export function SheetDescription(props) {
 export function SheetContent({ side = 'right', className, children, ...props }) {
     return (
         <DialogPrimitive.Portal>
-            <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/40 data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out" />
+            <DialogPrimitive.Overlay className="data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out fixed inset-0 z-50 bg-black/40" />
             <DialogPrimitive.Content className={cn(sheetVariants({ side }), className)} {...props}>
                 {children}
                 <DialogPrimitive.Close

@@ -2,7 +2,10 @@ import { cn } from '@/lib/utils'
 
 export function Tabs({ value, onChange, options }) {
     return (
-        <div role="tablist" className="bg-secondary text-background flex overflow-hidden rounded-lg">
+        <div
+            role="tablist"
+            className="bg-secondary text-background flex overflow-hidden rounded-lg"
+        >
             {options.map((option) => {
                 const isActive = value === option.value
                 return (
