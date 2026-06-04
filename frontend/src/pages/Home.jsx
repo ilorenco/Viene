@@ -1,7 +1,6 @@
 import { MapPin } from 'lucide-react'
 import { useState } from 'react'
 
-import { EventCarousel } from '@/components/events/EventCarousel'
 import {
     Select,
     SelectContent,
@@ -9,8 +8,9 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/Select'
-import { mockEvents } from '@/mocks/events'
-import { mockFilterOptions, mockPlaceOptions } from '@/mocks/homeFilters'
+import { EventCarousel } from '@/features/events/components/EventCarousel'
+import { mockEvents } from '@/features/events/mocks/events'
+import { mockFilterOptions, mockPlaceOptions } from '@/features/home/mocks/homeFilters'
 
 export function Home() {
     const [place, setPlace] = useState('all')

@@ -1,9 +1,9 @@
 import { ArrowLeft, Heart, Share2 } from 'lucide-react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { EventMeta } from '@/components/events/EventMeta'
 import { FullBleed } from '@/components/layout/FullBleed'
-import { mockEvents } from '@/mocks/events'
+import { EventMeta } from '@/features/events/components/EventMeta'
+import { mockEvents } from '@/features/events/mocks/events'
 import { NotFound } from '@/pages/NotFound'
 
 export function EventDetails() {
