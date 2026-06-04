@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { AuthLayout } from '@/layouts/AuthLayout'
@@ -9,10 +10,12 @@ import { EventDetails } from '@/pages/EventDetails'
 import { Events } from '@/pages/Events'
 import { Favorites } from '@/pages/Favorites'
 import { Home } from '@/pages/Home'
-import { Map } from '@/pages/Map'
 import { NotFound } from '@/pages/NotFound'
 import { Profile } from '@/pages/Profile'
 import { Tickets } from '@/pages/Tickets'
+
+// Carrega o mapa (Leaflet) sob demanda, fora do bundle inicial.
+const Map = lazy(() => import('@/pages/Map').then((m) => ({ default: m.Map })))
 
 const router = createBrowserRouter([
     {
@@ -48,7 +51,11 @@ const router = createBrowserRouter([
             },
             {
                 path: '/map',
-                element: <Map />,
+                element: (
+                    <Suspense fallback={<div className="flex flex-1" />}>
+                        <Map />
+                    </Suspense>
+                ),
             },
             {
                 path: '*',

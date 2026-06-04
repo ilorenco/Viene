@@ -11,6 +11,10 @@ import { mockTicketDays } from '@/mocks/ticketDays'
 export function Tickets() {
     const [selectedDate, setSelectedDate] = useState(14)
 
+    function handleGenerateTicket() {
+        // TODO: integrar com a geração de ticket quando o backend estiver pronto
+    }
+
     return (
         <>
             <PageHeader title="INGRESSOS" className="text-secondary" />
@@ -20,10 +24,7 @@ export function Tickets() {
                 <DatePicker days={mockTicketDays} value={selectedDate} onChange={setSelectedDate} />
             </FullBleed>
 
-            <EventList
-                events={mockEvents}
-                onGenerateTicket={(id) => console.log('gerar ticket', id)}
-            />
+            <EventList events={mockEvents} onGenerateTicket={handleGenerateTicket} />
 
             <Button size="sm" className="self-center">
                 VER MAIS EVENTOS

@@ -4,12 +4,17 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { EventMeta } from '@/components/events/EventMeta'
 import { FullBleed } from '@/components/layout/FullBleed'
 import { mockEvents } from '@/mocks/events'
+import { NotFound } from '@/pages/NotFound'
 
 export function EventDetails() {
     const { id } = useParams()
     const navigate = useNavigate()
     const eventId = Number(id)
-    const event = mockEvents.find((e) => e.id === eventId) ?? mockEvents[0]
+    const event = mockEvents.find((e) => e.id === eventId)
+
+    if (!event) {
+        return <NotFound />
+    }
 
     return (
         <>
