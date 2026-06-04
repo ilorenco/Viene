@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 
 import { EventMeta } from '@/components/events/EventMeta'
+import { Button } from '@/components/ui/Button'
 import { LikeButton } from '@/components/ui/LikeButton'
 
 export function EventDetailCard({ id, title, address, datetime, onGenerateTicket }) {
@@ -14,13 +15,15 @@ export function EventDetailCard({ id, title, address, datetime, onGenerateTicket
                 </h3>
 
                 {onGenerateTicket && (
-                    <button
+                    <Button
                         type="button"
+                        variant="secondary"
+                        size="xs"
                         onClick={onGenerateTicket}
-                        className="bg-secondary text-primary absolute top-3 right-3 z-20 cursor-pointer rounded-full px-3 py-1 text-sm font-medium"
+                        className="absolute top-3 right-3 z-20 font-medium"
                     >
                         Gerar Ticket
-                    </button>
+                    </Button>
                 )}
             </div>
 

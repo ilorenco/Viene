@@ -3,7 +3,11 @@ import { Funnel } from 'lucide-react'
 export function UnitSheet({ unit }) {
     return (
         <section className="relative z-1000 -mt-6 rounded-t-3xl bg-white px-6 pt-4 pb-8">
-            <button className="bg-primary absolute -top-20 right-7 rounded-full p-3">
+            <button
+                type="button"
+                aria-label="Filtros"
+                className="bg-primary absolute -top-20 right-7 cursor-pointer rounded-full p-3"
+            >
                 <Funnel className="size-8" strokeWidth={2} />
             </button>
 
