@@ -1,16 +1,17 @@
 import { ArrowLeft, Heart, Share2 } from 'lucide-react'
+import { Suspense } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { FullBleed } from '@/components/layout/FullBleed'
+import { Skeleton } from '@/components/ui/Skeleton'
 import { EventMeta } from '@/features/events/components/EventMeta'
-import { mockEvents } from '@/features/events/mocks/events'
+import { useEvent } from '@/features/events/hooks/useEvent'
 import { NotFound } from '@/pages/NotFound'
 
-export function EventDetails() {
+function EventDetailsContent() {
     const { id } = useParams()
     const navigate = useNavigate()
-    const eventId = Number(id)
-    const event = mockEvents.find((e) => e.id === eventId)
+    const { data: event } = useEvent(Number(id))
 
     if (!event) {
         return <NotFound />
@@ -68,5 +69,53 @@ export function EventDetails() {
                 <p className="text-xs">{event.policies}</p>
             </section>
         </>
+    )
+}
+
+function EventDetailsSkeleton() {
+    return (
+        <>
+            <FullBleed className="h-56">
+                <Skeleton className="h-full w-full rounded-none" />
+            </FullBleed>
+
+            <header className="flex flex-col gap-4">
+                <Skeleton className="h-8 w-3/4" />
+
+                <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-2">
+                        <Skeleton className="size-7 shrink-0" />
+                        <Skeleton className="h-3 flex-1" />
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <Skeleton className="size-7 shrink-0" />
+                        <Skeleton className="h-3 w-2/3" />
+                    </div>
+                </div>
+
+                <Skeleton className="h-1 w-full rounded-full" />
+            </header>
+
+            <section className="flex flex-col gap-2">
+                <Skeleton className="h-5 w-1/2" />
+                <Skeleton className="h-3 w-full" />
+                <Skeleton className="h-3 w-full" />
+                <Skeleton className="h-3 w-4/5" />
+            </section>
+
+            <section className="flex flex-col gap-2">
+                <Skeleton className="h-5 w-1/2" />
+                <Skeleton className="h-3 w-full" />
+                <Skeleton className="h-3 w-3/4" />
+            </section>
+        </>
+    )
+}
+
+export function EventDetails() {
+    return (
+        <Suspense fallback={<EventDetailsSkeleton />}>
+            <EventDetailsContent />
+        </Suspense>
     )
 }
