@@ -1,11 +1,11 @@
 import { Suspense, useState } from 'react'
 
-import { ActorList, ActorListSkeleton } from '@/components/actors/ActorList'
 import { PageBanner } from '@/components/layout/PageBanner'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { CategoryFilter } from '@/components/ui/CategoryFilter'
-import { useActors } from '@/hooks/queries/useActors'
-import { mockActorCategories } from '@/mocks/actorCategories'
+import { ActorList, ActorListSkeleton } from '@/features/actors/components/ActorList'
+import { useActors } from '@/features/actors/hooks/useActors'
+import { mockActorCategories } from '@/features/actors/mocks/actorCategories'
 
 function ActorsResults({ category }) {
     const { data: actors } = useActors(category)

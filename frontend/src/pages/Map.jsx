@@ -1,9 +1,9 @@
 import { useState } from 'react'
 
-import { InnovationMap } from '@/components/map/InnovationMap'
-import { MapActions } from '@/components/map/MapActions'
-import { UnitSheet } from '@/components/map/UnitSheet'
-import { mockInnovationUnits } from '@/mocks/innovationUnits'
+import { InnovationMap } from '@/features/map/components/InnovationMap'
+import { MapActions } from '@/features/map/components/MapActions'
+import { UnitSheet } from '@/features/map/components/UnitSheet'
+import { mockInnovationUnits } from '@/features/map/mocks/innovationUnits'
 
 export function Map() {
     const [selectedId, setSelectedId] = useState(null)

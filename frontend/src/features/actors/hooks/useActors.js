@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from '@tanstack/react-query'
 
-import { getActors } from '@/services/actors'
+import { getActors } from '@/features/actors/services/actors'
 
 export function useActors(category) {
     return useSuspenseQuery({

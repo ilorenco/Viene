@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom'
 
-import { EventMeta } from '@/components/events/EventMeta'
 import { Button } from '@/components/ui/Button'
 import { LikeButton } from '@/components/ui/LikeButton'
+
+import { EventMeta } from './EventMeta'
 
 export function EventDetailCard({ id, title, address, datetime, onGenerateTicket }) {
     return (

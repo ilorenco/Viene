@@ -1,11 +1,11 @@
 import { useState } from 'react'
 
-import { ActorList } from '@/components/actors/ActorList'
-import { EventList } from '@/components/events/EventList'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { Tabs } from '@/components/ui/Tabs'
-import { mockActors } from '@/mocks/actors'
-import { mockEvents } from '@/mocks/events'
+import { ActorList } from '@/features/actors/components/ActorList'
+import { mockActors } from '@/features/actors/mocks/actors'
+import { EventList } from '@/features/events/components/EventList'
+import { mockEvents } from '@/features/events/mocks/events'
 
 const tabs = [
     { value: 'eventos', label: 'EVENTOS' },
