@@ -32,7 +32,7 @@ export function SelectContent({ className, children, ...props }) {
                 position="popper"
                 sideOffset={6}
                 className={cn(
-                    'bg-background z-50 min-w-(--radix-select-trigger-width) overflow-hidden rounded-lg p-1 shadow-lg data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out',
+                    'bg-background data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out z-50 min-w-(--radix-select-trigger-width) overflow-hidden rounded-lg p-1 shadow-lg',
                     className,
                 )}
                 {...props}
