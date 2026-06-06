@@ -1,7 +1,7 @@
 import { Suspense, useState } from 'react'
 
 import { PageHeader } from '@/components/layout/PageHeader'
-import { Tabs } from '@/components/ui/Tabs'
+import { Tabs, TabsContent, TabsList } from '@/components/ui/Tabs'
 import { ActorList, ActorListSkeleton } from '@/features/actors/components/ActorList'
 import { useActors } from '@/features/actors/hooks/useActors'
 import { EventList, EventListSkeleton } from '@/features/events/components/EventList'
@@ -26,20 +26,22 @@ export function Favorites() {
     const [tab, setTab] = useState('eventos')
 
     return (
-        <>
+        <Tabs value={tab} onValueChange={setTab} className="flex flex-col gap-5">
             <PageHeader overline="MEUS" title="FAVORITOS" className="text-secondary" />
 
-            <Tabs value={tab} onChange={setTab} options={tabs} />
+            <TabsList options={tabs} />
 
-            {tab === 'eventos' ? (
+            <TabsContent value="eventos">
                 <Suspense fallback={<EventListSkeleton />}>
                     <FavoriteEvents />
                 </Suspense>
-            ) : (
+            </TabsContent>
+
+            <TabsContent value="atores">
                 <Suspense fallback={<ActorListSkeleton />}>
                     <FavoriteActors />
                 </Suspense>
-            )}
-        </>
+            </TabsContent>
+        </Tabs>
     )
 }
