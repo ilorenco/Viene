@@ -1,7 +1,8 @@
 import { mockActors } from '@/features/actors/mocks/actors'
 import { mockDelay } from '@/mocks/delay'
 
-export async function getActors(_category) {
+export async function getActors(category) {
     await mockDelay()
-    return mockActors
+    if (!category) return mockActors
+    return mockActors.filter((actor) => actor.category === category)
 }

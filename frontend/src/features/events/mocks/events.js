@@ -13,16 +13,16 @@ const defaults = {
 }
 
 export const mockEvents = [
-    { id: 1, title: 'Evento Pitch Inovaparq 2025', ...defaults },
-    { id: 2, title: 'Hackathon Joinville Tech', ...defaults },
-    { id: 3, title: 'Workshop UX Design', ...defaults },
-    { id: 4, title: 'Meetup React Brasil', ...defaults },
-    { id: 5, title: 'Conferência Startup Day', ...defaults },
-    { id: 6, title: 'Bootcamp Cloud Computing', ...defaults },
-    { id: 7, title: 'Festival de Inovação Catarinense', ...defaults },
-    { id: 8, title: 'Demo Day Aceleradoras', ...defaults },
-    { id: 9, title: 'Talk: Liderança em Tech', ...defaults },
-    { id: 10, title: 'Encontro de Mulheres na Tecnologia', ...defaults },
-    { id: 11, title: 'Imersão em Produto Digital', ...defaults },
-    { id: 12, title: 'Open Day Universidades de SC', ...defaults },
+    { id: 1, title: 'Evento Pitch Inovaparq 2025', category: 'demoday', ...defaults },
+    { id: 2, title: 'Hackathon Joinville Tech', category: 'hackathons', ...defaults },
+    { id: 3, title: 'Workshop UX Design', category: 'workshops', ...defaults },
+    { id: 4, title: 'Meetup React Brasil', category: 'meetups', ...defaults },
+    { id: 5, title: 'Conferência Startup Day', category: 'conferencias', ...defaults },
+    { id: 6, title: 'Bootcamp Cloud Computing', category: 'bootcamps', ...defaults },
+    { id: 7, title: 'Festival de Inovação Catarinense', category: 'feiras', ...defaults },
+    { id: 8, title: 'Demo Day Aceleradoras', category: 'demoday', ...defaults },
+    { id: 9, title: 'Talk: Liderança em Tech', category: 'palestras', ...defaults },
+    { id: 10, title: 'Encontro de Mulheres na Tecnologia', category: 'meetups', ...defaults },
+    { id: 11, title: 'Imersão em Produto Digital', category: 'workshops', ...defaults },
+    { id: 12, title: 'Open Day Universidades de SC', category: 'feiras', ...defaults },
 ]

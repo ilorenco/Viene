@@ -1,9 +1,10 @@
 import { mockEvents } from '@/features/events/mocks/events'
 import { mockDelay } from '@/mocks/delay'
 
-export async function getEvents(_category) {
+export async function getEvents(category) {
     await mockDelay()
-    return mockEvents
+    if (!category) return mockEvents
+    return mockEvents.filter((event) => event.category === category)
 }
 
 export async function getEventById(id) {
