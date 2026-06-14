@@ -19,7 +19,8 @@ function EventDetailsContent() {
 
     return (
         <>
-            <FullBleed className="bg-primary h-56">
+            {/* -mt-4 cancela o pt do <main> (hero de topo) — ver MainLayout. */}
+            <FullBleed className="bg-primary -mt-4 h-56">
                 <div className="flex items-center justify-between p-4">
                     <button
                         type="button"
@@ -75,7 +76,8 @@ function EventDetailsContent() {
 function EventDetailsSkeleton() {
     return (
         <>
-            <FullBleed className="h-56">
+            {/* -mt-4: idem hero acima — ver MainLayout. */}
+            <FullBleed className="-mt-4 h-56">
                 <Skeleton className="h-full w-full rounded-none" />
             </FullBleed>
 

@@ -1,6 +1,6 @@
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { cva } from 'class-variance-authority'
-import { X } from 'lucide-react'
+import { Menu } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
@@ -49,7 +49,7 @@ export function SheetContent({ side = 'right', className, children, ...props }) 
                     aria-label="Fechar"
                     className="absolute top-4 right-4 cursor-pointer"
                 >
-                    <X className="size-6" />
+                    <Menu className="size-7" />
                 </DialogPrimitive.Close>
             </DialogPrimitive.Content>
         </DialogPrimitive.Portal>
