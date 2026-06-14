@@ -9,8 +9,9 @@ export function Map() {
     const [selectedId, setSelectedId] = useState(null)
     const selectedUnit = mockInnovationUnits.find((unit) => unit.id === selectedId)
 
+    // -m-4 cancela o p-4 do <main> (mapa full-bleed) — ver MainLayout.
     return (
-        <div className="isolate -mx-4 -mb-4 flex flex-1 flex-col">
+        <div className="isolate -m-4 flex flex-1 flex-col">
             <div className="relative flex-1">
                 <InnovationMap
                     units={mockInnovationUnits}

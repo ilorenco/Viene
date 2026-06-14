@@ -1,4 +1,14 @@
-import { Heart, MapPin, Search, Ticket } from 'lucide-react'
+import {
+    CalendarDays,
+    Heart,
+    HelpCircle,
+    Info,
+    MapPin,
+    Search,
+    Settings,
+    Shield,
+    Ticket,
+} from 'lucide-react'
 import { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -11,6 +21,7 @@ const sections = [
         title: 'EXPLORAR',
         items: [
             { to: '/actors', label: 'Encontre empresas', icon: Search },
+            { to: '/events', label: 'Eventos', icon: CalendarDays },
             { to: '/map', label: 'Mapeamento', icon: MapPin },
         ],
     },
@@ -19,13 +30,25 @@ const sections = [
         items: [
             { to: '/tickets', label: 'Meus ingressos', icon: Ticket },
             { to: '/favorites', label: 'Meus favoritos', icon: Heart },
+            { to: '/configuracoes', label: 'Configurações', icon: Settings },
         ],
+    },
+    {
+        title: 'INSTITUCIONAL',
+        items: [
+            { to: '/sobre', label: 'Sobre a Viene', icon: Info },
+            { to: '/ajuda', label: 'Perguntas frequentes', icon: HelpCircle },
+        ],
+    },
+    {
+        title: 'ADMINISTRAÇÃO',
+        items: [{ to: '/admin', label: 'Painel do administrador', icon: Shield }],
     },
 ]
 
 export function MainMenu() {
     return (
-        <SheetContent className="gap-8">
+        <SheetContent className="gap-8 overflow-y-auto">
             <SheetTitle className="sr-only">Menu</SheetTitle>
 
             <SheetClose asChild>

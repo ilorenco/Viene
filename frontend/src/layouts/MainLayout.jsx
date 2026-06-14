@@ -10,7 +10,11 @@ export function MainLayout() {
     return (
         <div className="flex min-h-screen flex-col">
             <Header />
-            <main className="flex flex-1 flex-col gap-5 px-4 pb-4">
+            {/* p-4 dá respiro ao conteúdo abaixo do header sticky. Porém heros
+                full-bleed de topo (PageBanner, Map, EventDetails) precisam cancelar o
+                padding do topo com -mt-4. TODO: pensar num padrão melhor no futuro
+                (ex.: um componente <TopHero> que já embuta -mx-4 -mt-4). */}
+            <main className="flex flex-1 flex-col gap-5 p-4">
                 <QueryErrorResetBoundary>
                     {({ reset }) => (
                         <ErrorBoundary onReset={reset} FallbackComponent={RouteError}>
