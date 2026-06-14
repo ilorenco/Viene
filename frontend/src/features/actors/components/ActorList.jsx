@@ -15,6 +15,8 @@ export function ActorList({ actors }) {
                         name={actor.name}
                         description={actor.description}
                         image={actor.image}
+                        neighborhood={actor.neighborhood}
+                        city={actor.city}
                     />
                 </li>
             ))}
