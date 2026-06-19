@@ -1,13 +1,15 @@
-import { QueryClientProvider } from '@tanstack/react-query'
-
-import { queryClient } from '@/lib/queryClient'
-
+import { EventFiltersProvider } from './contexts/EventFiltersContext'
+import { AccessibilityProvider } from './features/accessibility/AccessibilityContext'
+import { AccessibilityWidget } from './features/accessibility/components/AccessibilityWidget'
 import { AppRoutes } from './routes/AppRoutes'
 
 export function App() {
     return (
-        <QueryClientProvider client={queryClient}>
-            <AppRoutes />
-        </QueryClientProvider>
+        <AccessibilityProvider>
+            <EventFiltersProvider>
+                <AppRoutes />
+            </EventFiltersProvider>
+            <AccessibilityWidget />
+        </AccessibilityProvider>
     )
 }

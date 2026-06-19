@@ -10,11 +10,11 @@ export function MainLayout() {
     return (
         <div className="flex min-h-screen flex-col">
             <Header />
-            {/* p-4 dá respiro ao conteúdo abaixo do header sticky. Porém heros
-                full-bleed de topo (PageBanner, Map, EventDetails) precisam cancelar o
-                padding do topo com -mt-4. TODO: pensar num padrão melhor no futuro
-                (ex.: um componente <TopHero> que já embuta -mx-4 -mt-4). */}
-            <main className="flex flex-1 flex-col gap-5 p-4">
+            {/* Tratamento de erro CENTRAL (padrão da branch do colega): qualquer
+                página que falhe ao carregar (React Query + Suspense) cai no
+                <ErrorBoundary> e mostra o <RouteError>. Assim cada página migrada
+                só precisa do seu <Suspense> — não repete o boundary. */}
+            <main className="flex flex-1 flex-col gap-5 overflow-x-hidden px-4 pt-4 pb-4 lg:px-[10%]">
                 <QueryErrorResetBoundary>
                     {({ reset }) => (
                         <ErrorBoundary onReset={reset} FallbackComponent={RouteError}>
