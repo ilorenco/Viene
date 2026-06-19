@@ -1,11 +1,11 @@
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { cva } from 'class-variance-authority'
-import { Menu } from 'lucide-react'
+import { X } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
 const sheetVariants = cva(
-    'bg-background fixed z-50 flex flex-col gap-4 p-6 pt-14 shadow-xl data-[state=open]:animate-slide-in-right data-[state=closed]:animate-slide-out-right',
+    'bg-background fixed z-[2000] flex flex-col gap-4 p-6 pt-14 shadow-xl data-[state=open]:animate-slide-in-right data-[state=closed]:animate-slide-out-right',
     {
         variants: {
             side: {
@@ -42,14 +42,14 @@ export function SheetDescription(props) {
 export function SheetContent({ side = 'right', className, children, ...props }) {
     return (
         <DialogPrimitive.Portal>
-            <DialogPrimitive.Overlay className="data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out fixed inset-0 z-50 bg-black/40" />
+            <DialogPrimitive.Overlay className="data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out fixed inset-0 z-[2000] bg-black/40" />
             <DialogPrimitive.Content className={cn(sheetVariants({ side }), className)} {...props}>
                 {children}
                 <DialogPrimitive.Close
                     aria-label="Fechar"
                     className="absolute top-4 right-4 cursor-pointer"
                 >
-                    <Menu className="size-7" />
+                    <X className="size-6" />
                 </DialogPrimitive.Close>
             </DialogPrimitive.Content>
         </DialogPrimitive.Portal>

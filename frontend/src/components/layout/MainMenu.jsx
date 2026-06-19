@@ -55,7 +55,7 @@ export function MainMenu() {
                 <Link to="/profile" className="flex items-center gap-3 text-left">
                     <Avatar size="md" />
                     <div className="flex flex-col">
-                        <p className="text-foreground font-bold">Olá, João! 👋</p>
+                        <p className="text-foreground font-bold">Olá, "Nome Usuário"</p>
                         <p className="text-secondary text-sm">
                             Explore parques e experiências incríveis
                         </p>
