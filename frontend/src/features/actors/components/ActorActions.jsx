@@ -17,16 +17,13 @@ import { createPortal } from 'react-dom'
 import { Button } from '@/components/ui/Button'
 import { Modal, ModalContent, ModalDescription, ModalTitle } from '@/components/ui/Modal'
 import { Textarea } from '@/components/ui/Textarea'
+import { ADMIN_KEYS } from '@/features/admin/hooks/useAdminData'
 import { submitReport } from '@/features/admin/services/reports'
 import { useFeedback } from '@/hooks/useFeedback'
 import { cn } from '@/lib/utils'
 
 const BUTTON_CLASS =
     'border-secondary/15 text-secondary hover:border-primary hover:text-primary flex size-10 shrink-0 items-center justify-center rounded-full border bg-white transition active:scale-90'
-
-// Mesma chave que o futuro useAdminData (ADMIN_KEYS.reports) vai usar — trocar
-// pelo import de lá quando a feature de Admin entrar.
-const ADMIN_REPORTS_KEY = ['admin', 'reports']
 
 // Reutilizável para atores e eventos: `name` é o nome exibido (toast/denúncia) e
 // `entityType` ('ator' | 'evento') marca o tipo na denúncia.
@@ -76,7 +73,7 @@ export function ActorActions({ name, entityType = 'ator' }) {
         try {
             await submitReport({ name, type: entityType, reason })
             // Faz a administração (Plataforma > Denúncias) rebuscar a lista.
-            queryClient.invalidateQueries({ queryKey: ADMIN_REPORTS_KEY })
+            queryClient.invalidateQueries({ queryKey: ADMIN_KEYS.reports })
             setReportOpen(false)
             setReportReason('')
             setFeedback('Denúncia enviada. Nossa equipe vai analisar. Obrigado!')

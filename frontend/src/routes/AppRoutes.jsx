@@ -7,6 +7,7 @@ import { AuthLayout } from '@/layouts/AuthLayout'
 import { MainLayout } from '@/layouts/MainLayout'
 import { ActorProfile } from '@/pages/ActorProfile'
 import { Actors } from '@/pages/Actors'
+import { Admin } from '@/pages/Admin'
 import { Login } from '@/pages/auth/Login'
 import { Register } from '@/pages/auth/Register'
 import { EventDetails } from '@/pages/EventDetails'
@@ -82,6 +83,10 @@ const router = createBrowserRouter([
                     {
                         path: '/sobre',
                         element: <Sobre />,
+                    },
+                    {
+                        path: '/admin',
+                        element: <Admin />,
                     },
                     {
                         path: '*',
