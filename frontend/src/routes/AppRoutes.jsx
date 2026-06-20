@@ -5,6 +5,7 @@ import { ScrollToTop } from '@/components/layout/ScrollToTop'
 import { StopReadingOnNavigate } from '@/features/accessibility/components/StopReadingOnNavigate'
 import { AuthLayout } from '@/layouts/AuthLayout'
 import { MainLayout } from '@/layouts/MainLayout'
+import { ActorProfile } from '@/pages/ActorProfile'
 import { Actors } from '@/pages/Actors'
 import { Login } from '@/pages/auth/Login'
 import { Register } from '@/pages/auth/Register'
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
                     {
                         path: '/actors',
                         element: <Actors />,
+                    },
+                    {
+                        path: '/actors/:id',
+                        element: <ActorProfile />,
                     },
                     {
                         path: '/events',
