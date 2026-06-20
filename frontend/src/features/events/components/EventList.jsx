@@ -1,14 +1,8 @@
-import { EmptyState } from '@/components/feedback/EmptyState'
-
-import { EventDetailCard, EventDetailCardSkeleton } from './EventDetailCard'
+import { EventDetailCard } from './EventDetailCard'
 
 export function EventList({ events, onGenerateTicket }) {
-    if (events.length === 0) {
-        return <EmptyState message="Nenhum evento encontrado." />
-    }
-
     return (
-        <ul className="flex flex-col gap-3">
+        <ul className="grid grid-cols-1 gap-y-3 sm:grid-cols-2 sm:gap-x-[3%] lg:grid-cols-3 2xl:grid-cols-4">
             {events.map((event) => (
                 <li key={event.id}>
                     <EventDetailCard
@@ -18,18 +12,6 @@ export function EventList({ events, onGenerateTicket }) {
                         datetime={event.datetime}
                         onGenerateTicket={onGenerateTicket && (() => onGenerateTicket(event.id))}
                     />
-                </li>
-            ))}
-        </ul>
-    )
-}
-
-export function EventListSkeleton({ count = 4 }) {
-    return (
-        <ul className="flex flex-col gap-3">
-            {Array.from({ length: count }).map((_, index) => (
-                <li key={index}>
-                    <EventDetailCardSkeleton />
                 </li>
             ))}
         </ul>
