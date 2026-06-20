@@ -14,17 +14,22 @@ function displayDate(date) {
 
 // `date` (ISO) é usado pelo calendário para destacar os dias com eventos;
 // `category` é usado pelo filtro de tipos de evento;
-// `datetime` é o texto exibido nos cards.
+// `datetime` é o texto exibido nos cards;
+// `start`/`end` são os horários (usados na página de especificações do evento);
+// `ticketUrl` é o link do ingresso (mock; ver nota sobre a API do Sympla).
 function makeEvent(id, title, date, start, end, category) {
     return {
         id,
         title,
         date,
         category,
+        start,
+        end,
         datetime: `${start} - ${displayDate(date)} > ${end} - ${displayDate(date)}`,
         address: defaultAddress,
         description: defaultDescription,
         policies: defaultPolicies,
+        ticketUrl: `https://www.sympla.com.br/evento/${id}`,
     }
 }
 

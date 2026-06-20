@@ -1,20 +1,23 @@
+// Tipos de evento em uma única linha rolável (arrastável para o lado), com
+// multi-seleção. A seleção é compartilhada com o Mapa.
+
 import { DraggableTrack } from '@/components/ui/DraggableTrack'
 import { cn } from '@/lib/utils'
 
-export function CategoryFilter({ value, onChange, options }) {
+export function EventTypeChips({ options, selected, onToggle }) {
     return (
         <DraggableTrack className="font-montserrat gap-2 text-xs font-extrabold">
             {options.map((option) => {
-                const isSelected = value === option.value
+                const active = selected.has(option.value)
                 return (
                     <button
                         key={option.value}
                         type="button"
-                        onClick={() => onChange(option.value)}
-                        aria-pressed={isSelected}
+                        onClick={() => onToggle(option.value)}
+                        aria-pressed={active}
                         className={cn(
-                            'text-secondary shrink-0 rounded-md p-1.5',
-                            isSelected ? 'bg-primary' : 'bg-background',
+                            'shrink-0 rounded-md p-1.5',
+                            active ? 'bg-primary text-secondary' : 'bg-background text-secondary',
                         )}
                     >
                         {option.label}

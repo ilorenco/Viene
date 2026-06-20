@@ -1,55 +1,41 @@
-// Estados de carregamento/erro da tela de Eventos (Suspense + Skeleton e
-// ErrorBoundary), no mesmo padrão do catálogo de atores.
-//
-// EventsSkeleton: placeholder da PÁGINA inteira (banner + filtro de data + grade),
-// mostrado pelo <Suspense> enquanto os eventos carregam. Reusa o PageBanner real e
-// o EventListSkeleton para a tela não "pular" quando os dados chegam.
-// EventsError: fallback do <ErrorBoundary> caso a busca falhe, com botão de retry.
-
-import { PageBanner } from '@/components/layout/PageBanner'
-import { EventListSkeleton } from '@/features/events/components/EventList'
+// Estado de carregamento da tela de Eventos: placeholder da PÁGINA inteira (banner
+// + barra de filtros + grade), mostrado pelo <Suspense> enquanto os eventos
+// carregam. Mantém o formato do banner para a tela não "pular" quando os dados
+// chegam. O ERRO não tem fallback por página — é tratado de forma central no
+// MainLayout (componente RouteError), como nas telas do colega.
 
 export function EventsSkeleton() {
     return (
         <>
-            <PageBanner>
-                <div className="flex animate-pulse flex-col gap-5">
-                    {/* Título + busca + pílulas de categoria (mesmo formato do banner real). */}
-                    <div className="h-8 w-52 rounded bg-white/15" />
-                    <div className="h-12 w-full rounded-full bg-white" />
+            {/* Banner (placeholder) — mesmas bordas/medidas do banner real. */}
+            <div className="bg-secondary -mx-4 flex animate-pulse flex-col gap-6 rounded-none p-6 lg:-mx-[5vw] lg:flex-row lg:items-start lg:justify-between lg:rounded-xl lg:p-8">
+                <div className="flex flex-col gap-3 lg:max-w-sm">
+                    <div className="h-7 w-48 rounded bg-white/15" />
+                    <div className="hidden h-4 w-64 rounded bg-white/10 lg:block" />
+                </div>
+                <div className="flex flex-col gap-3 lg:w-[28rem]">
+                    <div className="h-11 w-full rounded-full bg-white" />
                     <div className="flex gap-2">
-                        <div className="h-7 w-16 rounded-md bg-white/15" />
-                        <div className="h-7 w-20 rounded-md bg-white/15" />
-                        <div className="h-7 w-24 rounded-md bg-white/15" />
-                        <div className="h-7 w-20 rounded-md bg-white/15" />
+                        <div className="h-7 w-16 rounded-lg bg-white/15" />
+                        <div className="h-7 w-20 rounded-lg bg-white/15" />
+                        <div className="h-7 w-16 rounded-lg bg-white/15" />
                     </div>
                 </div>
-            </PageBanner>
+            </div>
 
-            {/* Filtro de data (placeholder). */}
-            <div className="bg-secondary/10 h-9 w-36 animate-pulse rounded-full" />
+            {/* Barra de filtros (placeholder). */}
+            <div className="flex animate-pulse gap-2">
+                <div className="bg-secondary/10 h-9 w-32 rounded-full" />
+                <div className="bg-secondary/10 h-9 w-28 rounded-full" />
+                <div className="bg-secondary/10 h-9 w-28 rounded-full" />
+            </div>
 
-            <EventListSkeleton count={6} />
+            {/* Grade de cards (placeholder). */}
+            <ul className="grid animate-pulse grid-cols-1 gap-y-3 sm:grid-cols-2 sm:gap-x-[3%] lg:grid-cols-3 2xl:grid-cols-4">
+                {Array.from({ length: 6 }).map((_, index) => (
+                    <li key={index} className="bg-secondary/10 h-48 rounded-2xl" />
+                ))}
+            </ul>
         </>
-    )
-}
-
-export function EventsError({ resetErrorBoundary }) {
-    return (
-        <div className="flex flex-col items-center gap-4 p-8 text-center">
-            <h2 className="font-montserrat text-secondary text-xl font-extrabold">
-                Não foi possível carregar os eventos
-            </h2>
-            <p className="text-secondary/70 text-sm">
-                Ocorreu um erro ao buscar os dados. Tente novamente.
-            </p>
-            <button
-                type="button"
-                onClick={resetErrorBoundary}
-                className="bg-primary text-secondary rounded-full px-4 py-2 text-sm font-bold transition active:scale-95"
-            >
-                Tentar novamente
-            </button>
-        </div>
     )
 }

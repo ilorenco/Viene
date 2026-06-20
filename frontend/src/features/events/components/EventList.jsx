@@ -1,4 +1,3 @@
-import { EmptyState } from '@/components/feedback/EmptyState'
 import { Skeleton } from '@/components/ui/Skeleton'
 
 import { EventDetailCard } from './EventDetailCard'
@@ -6,10 +5,6 @@ import { EventDetailCard } from './EventDetailCard'
 const GRID = 'grid grid-cols-1 gap-y-3 sm:grid-cols-2 sm:gap-x-[3%] lg:grid-cols-3 2xl:grid-cols-4'
 
 export function EventList({ events, onGenerateTicket }) {
-    if (events.length === 0) {
-        return <EmptyState message="Nenhum evento encontrado." />
-    }
-
     return (
         <ul className={GRID}>
             {events.map((event) => (
@@ -27,7 +22,9 @@ export function EventList({ events, onGenerateTicket }) {
     )
 }
 
-export function EventListSkeleton({ count = 4 }) {
+// Mantido para o Suspense de Favoritos/Ingressos, que ainda não foram portados
+// (a tela de Eventos usa o skeleton da página inteira, em EventsFallbacks).
+export function EventListSkeleton({ count = 6 }) {
     return (
         <ul className={GRID}>
             {Array.from({ length: count }).map((_, index) => (
