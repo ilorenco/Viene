@@ -19,9 +19,10 @@ export function PasswordInput({ className, ...props }) {
             <button
                 type="button"
                 onClick={() => setShowPassword((prev) => !prev)}
+                aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
                 className="absolute top-1/2 right-5 -translate-y-1/2 cursor-pointer focus:outline-none"
             >
-                <Icon strokeWidth={1.75} className="text-secondary size-6" />
+                <Icon strokeWidth={1.75} className="text-secondary size-6" aria-hidden="true" />
             </button>
         </div>
     )
