@@ -1,33 +1,25 @@
+import { CarouselCard } from '@/components/ui/CarouselCard'
 import { DraggableTrack } from '@/components/ui/DraggableTrack'
 
-import { EventCard, EventCardSkeleton } from './EventCard'
-
+// Carrossel de eventos (seção "Explore!" da Home, fundo escuro → título claro).
 export function EventCarousel({ title, events }) {
     return (
         <section className="flex flex-col gap-2">
-            <h2 className="text-foreground text-xl font-extrabold">{title}</h2>
+            <h2 className="text-background text-xl font-extrabold">{title}</h2>
 
-            <DraggableTrack className="gap-4">
-                {events.map((event) => (
-                    <EventCard key={event.id} id={event.id} title={event.title} />
-                ))}
-            </DraggableTrack>
-        </section>
-    )
-}
-
-export function EventCarouselSkeleton({ title, count = 8 }) {
-    return (
-        <section className="flex flex-col gap-2">
-            <h2 className="text-foreground text-xl font-extrabold">{title}</h2>
-
-            <div className="overflow-hidden">
-                <div className="flex gap-4">
-                    {Array.from({ length: count }).map((_, index) => (
-                        <EventCardSkeleton key={index} />
+            {events.length === 0 ? (
+                <p className="text-background/50 text-sm">Nenhum evento por aqui.</p>
+            ) : (
+                <DraggableTrack className="gap-4">
+                    {events.map((event) => (
+                        <CarouselCard
+                            key={event.id}
+                            to={`/events/${event.id}`}
+                            title={event.title}
+                        />
                     ))}
-                </div>
-            </div>
+                </DraggableTrack>
+            )}
         </section>
     )
 }
