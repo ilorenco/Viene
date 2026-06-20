@@ -39,13 +39,7 @@ export function SheetDescription(props) {
     return <DialogPrimitive.Description {...props} />
 }
 
-export function SheetContent({
-    side = 'right',
-    closeIcon: CloseIcon = X,
-    className,
-    children,
-    ...props
-}) {
+export function SheetContent({ side = 'right', className, children, ...props }) {
     return (
         <DialogPrimitive.Portal>
             <DialogPrimitive.Overlay className="data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out fixed inset-0 z-[2000] bg-black/40" />
@@ -55,7 +49,7 @@ export function SheetContent({
                     aria-label="Fechar"
                     className="absolute top-4 right-4 cursor-pointer"
                 >
-                    <CloseIcon className="size-7" />
+                    <X className="size-6" />
                 </DialogPrimitive.Close>
             </DialogPrimitive.Content>
         </DialogPrimitive.Portal>

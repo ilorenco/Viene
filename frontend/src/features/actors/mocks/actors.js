@@ -2,10 +2,10 @@
 // planilha "ListaBasicaAtores_com_coordenadas.xlsx". FONTE ÚNICA: alimenta o
 // catálogo (página de Atores) e os marcadores + detalhe do Mapa.
 //
-// Para trocar por Banco de Dados depois, ver features/actors/services/actors.js
-// (a API deve devolver os atores neste mesmo formato).
+// Para trocar por Banco de Dados depois, ver src/services/actors.js (a API deve
+// devolver os atores neste mesmo formato).
 //   - category: id da área (ambientes | privado | educacao | publico)
-//   - type:     id do tipo (ver features/actors/mocks/actorTypes.js)
+//   - type:     id do tipo (ver src/lib/atorTypes.js)
 //   - neighborhood/city: bairro e cidade (usados na localização do card)
 //   - position: [lat, lng]; address/cep/founded/tags/website/phone/email e
 //     linkedin/instagram/youtube (URLs prontas) podem ser null quando não há dado.

@@ -95,7 +95,7 @@ export function MapMobileSheet({ filterProps, listProps, expanded, setExpanded }
                             Lista ({total})
                         </button>
                     </div>
-                    <div className="min-h-0 flex-1 overflow-y-auto px-3 pb-4">
+                    <div className="viene-scrollbar min-h-0 flex-1 overflow-y-auto px-3 pb-4">
                         {tab === 'filtros' ? (
                             <MapFilterControls {...filterProps} />
                         ) : (

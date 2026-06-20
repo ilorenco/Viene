@@ -1,8 +1,15 @@
 // Serviço do Mapa Interativo (atores georreferenciados + eventos no mapa).
-// Mock por enquanto (ver mockDelay); quando a API existir, trocar pelo cliente HTTP.
-//   GET  /map         -> pontos do mapa (atores, com coordenadas)
-//   GET  /map/eventos -> eventos georreferenciados
-//   POST /map         -> sugerir um novo ponto (moderação - RN_003)
+//
+// Estilo da branch do colega: cada função espera um mockDelay() e devolve o mock,
+// sem o ramo duplo USE_MOCKS/http.js. Quando a API existir, troca-se o corpo.
+//
+// Endpoints reais (ver MapPointController, prefixo /map):
+//   GET  /map          -> pontos do mapa (atores, com coordenadas)
+//   GET  /map/eventos  -> eventos georreferenciados (a confirmar)
+//   POST /map          -> sugerir um novo ponto (vai para moderação - RN_003)
+//
+// Observação: no back-end as coordenadas usam PostGIS; ao trocar para a API real,
+// garanta que cada ponto chegue com position: [lat, lng].
 
 import { mockActors } from '@/features/actors/mocks/actors'
 import { mockMapEvents } from '@/features/map/mocks/mapEvents'
@@ -19,9 +26,10 @@ export async function listMapEvents() {
     return mockMapEvents
 }
 
-// Sugere um novo ponto no mapa. RN_003: entra como pendente e passa pela
-// moderação de um administrador antes de aparecer publicamente.
+// Sugere um novo ponto no mapa. RN_003: a sugestão entra como pendente e passa
+// pela moderação de um administrador antes de aparecer publicamente.
 export async function suggestPoint(data) {
+    // data: { name, type, address, position, description, contact, tags, ... }
     await mockDelay()
     return { id: Date.now(), ...data, status: 'pendente' }
 }

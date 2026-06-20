@@ -1,10 +1,25 @@
+// Mapa de inovação — IMPLEMENTAÇÃO COM LEAFLET (react-leaflet).
+//
+// >>> CAMADA QUE ISOLA A BIBLIOTECA DE MAPA <<<
+// O resto do app NÃO conhece o Leaflet. Ele apenas:
+//   - passa props de DADOS:  actors, events, selected, onSelect
+//     (cada item tem { id, name, position: [lat, lng], color })
+//   - recebe um CONTROLADOR: onReady(controller), com o contrato
+//       controller = { flyTo(position, zoom), zoomIn(), zoomOut() }
+//
+// Para TROCAR de biblioteca (MapLibre, Mapbox, Google Maps...), reescreva SÓ este
+// arquivo (e o LocationPicker, que também usa Leaflet), mantendo as MESMAS props e
+// o MESMO controlador. Nada mais no app precisa mudar (página, hooks de filtro,
+// painéis, lista lateral e controles de zoom/localização).
+
 import L from 'leaflet'
 import { useEffect, useMemo, useRef } from 'react'
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
 
 import 'leaflet/dist/leaflet.css'
 
-const JOINVILLE_CENTER = [-26.3041, -48.8478]
+import { JOINVILLE_CENTER, MAP_ATTRIBUTION, MAP_TILE_URL } from '@/features/map/constants'
+
 export const EVENT_COLOR = '#7c3aed'
 
 // Cor do marcador de agrupamento quando há tipos diferentes no mesmo ponto
@@ -73,7 +88,7 @@ function ClusterMarker({ group, onSelect }) {
     return (
         <Marker position={group[0].position} icon={icon}>
             <Popup>
-                <div className="flex max-h-48 min-w-44 flex-col gap-1 overflow-y-auto">
+                <div className="viene-scrollbar flex max-h-48 min-w-44 flex-col gap-1 overflow-y-auto">
                     <p className="text-secondary font-montserrat px-1 text-xs font-extrabold">
                         {group.length} neste local
                     </p>
@@ -102,21 +117,27 @@ function ClusterMarker({ group, onSelect }) {
     )
 }
 
-// Captura a instância do mapa e a entrega ao componente pai (zoom, flyTo...).
-// Guarda onReady numa ref para o efeito depender só do mapa (evita reentregas).
-function MapReady({ onReady }) {
+// Constrói o CONTROLADOR do mapa (a interface estável do app) a partir da instância
+// do Leaflet e o entrega ao pai. O resto do app fala só com este controlador —
+// nunca com o Leaflet direto. Guarda onReady numa ref p/ o efeito depender só do
+// mapa (evita reentregas). Trocar de lib = reconstruir este mesmo objeto.
+function MapController({ onReady }) {
     const map = useMap()
     const ref = useRef(onReady)
     useEffect(() => {
         ref.current = onReady
     })
     useEffect(() => {
-        if (ref.current) ref.current(map)
+        ref.current?.({
+            flyTo: (position, zoom = 16) => map.flyTo(position, zoom, { duration: 0.8 }),
+            zoomIn: () => map.zoomIn(),
+            zoomOut: () => map.zoomOut(),
+        })
     }, [map])
     return null
 }
 
-export function InnovationMap({ actors = [], events = [], selected, onSelect, onMapReady }) {
+export function InnovationMap({ actors = [], events = [], selected, onSelect, onReady }) {
     // Junta atores e eventos numa lista única (com kind/cor) e agrupa por ponto.
     // Só recalcula quando os itens visíveis mudam (filtros, busca).
     const groups = useMemo(() => {
@@ -146,12 +167,9 @@ export function InnovationMap({ actors = [], events = [], selected, onSelect, on
             zoomControl={false}
             className="absolute inset-0 h-full w-full"
         >
-            <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
+            <TileLayer attribution={MAP_ATTRIBUTION} url={MAP_TILE_URL} />
 
-            <MapReady onReady={onMapReady} />
+            <MapController onReady={onReady} />
 
             {groups.map((group) => {
                 // Vários itens no mesmo ponto -> marcador de agrupamento.

@@ -12,12 +12,19 @@ import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Modal, ModalContent, ModalTitle } from '@/components/ui/Modal'
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/Select'
 import { Textarea } from '@/components/ui/Textarea'
-import { ACTOR_TYPES } from '@/features/actors/mocks/actorTypes'
 import { isAuthenticated } from '@/features/auth/services/auth'
 import { mockEventCategories } from '@/features/events/mocks/eventCategories'
 import { LocationPicker } from '@/features/map/components/LocationPicker'
-import { suggestPoint } from '@/features/map/services/map'
+import { useSuggestPoint } from '@/features/map/hooks/useSuggestPoint'
+import { ATOR_TYPES } from '@/lib/atorTypes'
 import { TAGS } from '@/lib/tags'
 import { cn } from '@/lib/utils'
 
@@ -25,7 +32,7 @@ const initialForm = {
     name: '',
     address: '',
     description: '',
-    type: ACTOR_TYPES[0].id,
+    type: ATOR_TYPES[0].id,
     startDate: '',
     endDate: '',
     category: mockEventCategories[0].value,
@@ -61,9 +68,8 @@ export function SuggestPointModal({ open, onClose }) {
     const [photo, setPhoto] = useState(null)
     const [showTags, setShowTags] = useState(false)
     const [showContact, setShowContact] = useState(false)
-    const [submitting, setSubmitting] = useState(false)
-    const [done, setDone] = useState(false)
     const [error, setError] = useState('')
+    const suggest = useSuggestPoint()
 
     function setField(key, value) {
         setForm((prev) => ({ ...prev, [key]: value }))
@@ -98,8 +104,8 @@ export function SuggestPointModal({ open, onClose }) {
         setPhoto(null)
         setShowTags(false)
         setShowContact(false)
-        setDone(false)
         setError('')
+        suggest.reset()
     }
 
     function handleClose() {
@@ -148,10 +154,7 @@ export function SuggestPointModal({ open, onClose }) {
                       category: form.category,
                   }
 
-        setSubmitting(true)
-        await suggestPoint(data)
-        setSubmitting(false)
-        setDone(true)
+        suggest.mutate(data)
     }
 
     return (
@@ -171,7 +174,7 @@ export function SuggestPointModal({ open, onClose }) {
                         </Link>{' '}
                         para solicitar um marcador no mapa.
                     </p>
-                ) : done ? (
+                ) : suggest.isSuccess ? (
                     <div className="flex flex-col gap-3">
                         <p className="rounded-xl bg-green-100 px-4 py-2 text-sm font-medium text-green-700">
                             Solicitação enviada! Ela passará pela moderação de um administrador. 👍
@@ -205,12 +208,12 @@ export function SuggestPointModal({ open, onClose }) {
                         </div>
 
                         <label
-                            htmlFor="suggest-name"
+                            htmlFor="sp-nome"
                             className="text-secondary flex flex-col gap-1 text-sm font-semibold"
                         >
                             Nome *
                             <Input
-                                id="suggest-name"
+                                id="sp-nome"
                                 value={form.name}
                                 onChange={(event) => setField('name', event.target.value)}
                                 placeholder={
@@ -223,12 +226,12 @@ export function SuggestPointModal({ open, onClose }) {
                         </label>
 
                         <label
-                            htmlFor="suggest-address"
+                            htmlFor="sp-endereco"
                             className="text-secondary flex flex-col gap-1 text-sm font-semibold"
                         >
                             Endereço *
                             <Input
-                                id="suggest-address"
+                                id="sp-endereco"
                                 value={form.address}
                                 onChange={(event) => setField('address', event.target.value)}
                                 placeholder="Rua, número, bairro, cidade"
@@ -238,20 +241,29 @@ export function SuggestPointModal({ open, onClose }) {
 
                         {/* Campos específicos */}
                         {kind === 'ator' ? (
-                            <label className="text-secondary flex flex-col gap-1 text-sm font-semibold">
-                                Tipo de autor *
-                                <select
+                            <div className="flex flex-col gap-1">
+                                <span className="text-secondary text-sm font-semibold">
+                                    Tipo de autor *
+                                </span>
+                                <Select
                                     value={form.type}
-                                    onChange={(event) => setField('type', event.target.value)}
-                                    className={selectClass}
+                                    onValueChange={(value) => setField('type', value)}
                                 >
-                                    {ACTOR_TYPES.map((option) => (
-                                        <option key={option.id} value={option.id}>
-                                            {option.label}
-                                        </option>
-                                    ))}
-                                </select>
-                            </label>
+                                    <SelectTrigger
+                                        aria-label="Tipo de autor"
+                                        className="border-secondary text-secondary flex w-full items-center justify-between rounded-2xl border-2 bg-transparent px-4 py-3 text-left"
+                                    >
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent className="z-[2100] max-h-72">
+                                        {ATOR_TYPES.map((option) => (
+                                            <SelectItem key={option.id} value={option.id}>
+                                                {option.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
                         ) : (
                             <>
                                 <div className="flex gap-2">
@@ -278,22 +290,29 @@ export function SuggestPointModal({ open, onClose }) {
                                         />
                                     </label>
                                 </div>
-                                <label className="text-secondary flex flex-col gap-1 text-sm font-semibold">
-                                    Tipo de evento *
-                                    <select
+                                <div className="flex flex-col gap-1">
+                                    <span className="text-secondary text-sm font-semibold">
+                                        Tipo de evento *
+                                    </span>
+                                    <Select
                                         value={form.category}
-                                        onChange={(event) =>
-                                            setField('category', event.target.value)
-                                        }
-                                        className={selectClass}
+                                        onValueChange={(value) => setField('category', value)}
                                     >
-                                        {mockEventCategories.map((option) => (
-                                            <option key={option.value} value={option.value}>
-                                                {option.label}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </label>
+                                        <SelectTrigger
+                                            aria-label="Tipo de evento"
+                                            className="border-secondary text-secondary flex w-full items-center justify-between rounded-2xl border-2 bg-transparent px-4 py-3 text-left"
+                                        >
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent className="z-[2100] max-h-72">
+                                            {mockEventCategories.map((option) => (
+                                                <SelectItem key={option.value} value={option.value}>
+                                                    {option.label}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
                             </>
                         )}
 
@@ -310,12 +329,12 @@ export function SuggestPointModal({ open, onClose }) {
                         </div>
 
                         <label
-                            htmlFor="suggest-description"
+                            htmlFor="sp-descricao"
                             className="text-secondary flex flex-col gap-1 text-sm font-semibold"
                         >
                             Descrição
                             <Textarea
-                                id="suggest-description"
+                                id="sp-descricao"
                                 value={form.description}
                                 onChange={(event) => setField('description', event.target.value)}
                                 placeholder="Descreva o ponto..."
@@ -412,10 +431,10 @@ export function SuggestPointModal({ open, onClose }) {
                             <Button
                                 type="submit"
                                 size="sm"
-                                disabled={submitting}
+                                disabled={suggest.isPending}
                                 className="flex-1"
                             >
-                                {submitting ? 'Enviando...' : 'Enviar'}
+                                {suggest.isPending ? 'Enviando...' : 'Enviar'}
                             </Button>
                         </div>
                     </form>

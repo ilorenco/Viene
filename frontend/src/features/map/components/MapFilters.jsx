@@ -33,7 +33,7 @@ export function MapFilters({ open, onToggleOpen, ...controlProps }) {
             </button>
 
             {open && (
-                <div className="flex-1 overflow-y-auto px-3 pb-3">
+                <div className="viene-scrollbar flex-1 overflow-y-auto px-3 pb-3">
                     <MapFilterControls {...controlProps} />
                 </div>
             )}
