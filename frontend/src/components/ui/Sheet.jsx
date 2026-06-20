@@ -1,6 +1,6 @@
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { cva } from 'class-variance-authority'
-import { Menu } from 'lucide-react'
+import { X } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
@@ -39,7 +39,13 @@ export function SheetDescription(props) {
     return <DialogPrimitive.Description {...props} />
 }
 
-export function SheetContent({ side = 'right', className, children, ...props }) {
+export function SheetContent({
+    side = 'right',
+    closeIcon: CloseIcon = X,
+    className,
+    children,
+    ...props
+}) {
     return (
         <DialogPrimitive.Portal>
             <DialogPrimitive.Overlay className="data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out fixed inset-0 z-50 bg-black/40" />
@@ -49,7 +55,7 @@ export function SheetContent({ side = 'right', className, children, ...props }) 
                     aria-label="Fechar"
                     className="absolute top-4 right-4 cursor-pointer"
                 >
-                    <Menu className="size-7" />
+                    <CloseIcon className="size-7" />
                 </DialogPrimitive.Close>
             </DialogPrimitive.Content>
         </DialogPrimitive.Portal>
