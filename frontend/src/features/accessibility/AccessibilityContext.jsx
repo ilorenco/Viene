@@ -51,6 +51,18 @@ export function AccessibilityProvider({ children }) {
         const fontSizes = { small: '14px', normal: '', large: '19px' }
         root.style.fontSize = fontSizes[settings.fontScale] ?? ''
 
+        // Ícone da página (favicon): no modo noturno usa a versão AZUL da marca.
+        const favicon = document.querySelector("link[rel='icon']")
+        if (favicon) {
+            if (settings.nightMode) {
+                favicon.href = '/favicon-blue.svg'
+                favicon.type = 'image/svg+xml'
+            } else {
+                favicon.href = '/favicon.svg'
+                favicon.type = 'image/svg+xml'
+            }
+        }
+
         try {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(settings))
         } catch {

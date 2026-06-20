@@ -1,8 +1,8 @@
 import { lazy, Suspense } from 'react'
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
 
-import { StopReadingOnNavigate } from '@/components/accessibility/StopReadingOnNavigate'
 import { ScrollToTop } from '@/components/layout/ScrollToTop'
+import { StopReadingOnNavigate } from '@/features/accessibility/components/StopReadingOnNavigate'
 import { AuthLayout } from '@/layouts/AuthLayout'
 import { MainLayout } from '@/layouts/MainLayout'
 import { Actors } from '@/pages/Actors'
