@@ -15,7 +15,7 @@ import { mockFilterOptions, mockPlaceOptions } from '@/features/home/mocks/homeF
 const sections = ['Propagandas', 'Novos eventos', 'Principais agentes de inovação']
 
 function HomeCarousels() {
-    const { data: events } = useEvents()
+    const events = useEvents()
     return sections.map((title) => <EventCarousel key={title} title={title} events={events} />)
 }
 

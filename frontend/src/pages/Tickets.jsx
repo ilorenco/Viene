@@ -9,7 +9,7 @@ import { useEvents } from '@/features/events/hooks/useEvents'
 import { mockTicketDays } from '@/features/tickets/mocks/ticketDays'
 
 function TicketsEvents({ onGenerateTicket }) {
-    const { data: events } = useEvents()
+    const events = useEvents()
     return <EventList events={events} onGenerateTicket={onGenerateTicket} />
 }
 

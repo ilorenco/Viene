@@ -13,7 +13,7 @@ const tabs = [
 ]
 
 function FavoriteEvents() {
-    const { data: events } = useEvents()
+    const events = useEvents()
     return <EventList events={events} />
 }
 

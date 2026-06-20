@@ -6,7 +6,7 @@
 import { useEvents } from '@/features/events/hooks/useEvents'
 
 export function useRelatedEvents(actor) {
-    const { data: events } = useEvents()
+    const events = useEvents()
     const city = (actor.city || '').toLowerCase()
     const sameCity = events.filter(
         (event) => city && (event.address || '').toLowerCase().includes(city),
