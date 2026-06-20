@@ -16,6 +16,7 @@ import { Favorites } from '@/pages/Favorites'
 import { Home } from '@/pages/Home'
 import { NotFound } from '@/pages/NotFound'
 import { Profile } from '@/pages/Profile'
+import { Sobre } from '@/pages/Sobre'
 import { Tickets } from '@/pages/Tickets'
 
 // Carrega o mapa (Leaflet) sob demanda, fora do bundle inicial.
@@ -77,6 +78,10 @@ const router = createBrowserRouter([
                     {
                         path: '/ajuda',
                         element: <Faq />,
+                    },
+                    {
+                        path: '/sobre',
+                        element: <Sobre />,
                     },
                     {
                         path: '*',
