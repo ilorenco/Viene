@@ -6,7 +6,7 @@ import blueLogo from '@/assets/branding/logo-blue.png'
 import { MainMenu } from '@/components/layout/MainMenu'
 import { Avatar } from '@/components/ui/Avatar'
 import { Sheet, SheetTrigger } from '@/components/ui/Sheet'
-import { useAccessibility } from '@/contexts/AccessibilityContext'
+import { useAccessibility } from '@/features/accessibility/AccessibilityContext'
 import { cn } from '@/lib/utils'
 
 // Item da navbar: fica LARANJA quando a página atual é (ou está dentro de) a rota.

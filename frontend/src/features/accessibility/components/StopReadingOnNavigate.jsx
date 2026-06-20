@@ -6,7 +6,7 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
-import { useAccessibility } from '@/contexts/AccessibilityContext'
+import { useAccessibility } from '@/features/accessibility/AccessibilityContext'
 
 export function StopReadingOnNavigate() {
     const { pathname } = useLocation()
