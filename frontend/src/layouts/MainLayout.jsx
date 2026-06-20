@@ -2,7 +2,6 @@ import { QueryErrorResetBoundary } from '@tanstack/react-query'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Outlet } from 'react-router-dom'
 
-import { StopReadingOnNavigate } from '@/components/accessibility/StopReadingOnNavigate'
 import { RouteError } from '@/components/feedback/RouteError'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
@@ -10,13 +9,14 @@ import { Header } from '@/components/layout/Header'
 export function MainLayout() {
     return (
         <div className="flex min-h-screen flex-col">
-            <StopReadingOnNavigate />
             <Header />
-            {/* p-4 dá respiro ao conteúdo abaixo do header sticky. Porém heros
-                full-bleed de topo (PageBanner, Map, EventDetails) precisam cancelar o
-                padding do topo com -mt-4. TODO: pensar num padrão melhor no futuro
-                (ex.: um componente <TopHero> que já embuta -mx-4 -mt-4). */}
-            <main className="flex flex-1 flex-col gap-5 p-4">
+            {/* Tratamento de erro CENTRAL: qualquer página que falhe ao carregar
+                (React Query + Suspense) cai no <ErrorBoundary> e mostra o
+                <RouteError> — cada página só precisa do seu <Suspense>, sem repetir
+                o boundary. pt-4 dá respiro abaixo do header sticky; heros full-bleed
+                de topo (PageBanner, Map, EventDetails) cancelam esse respiro com
+                -mt-4. */}
+            <main className="flex flex-1 flex-col gap-5 overflow-x-hidden px-4 pt-4 pb-4 lg:px-[10%]">
                 <QueryErrorResetBoundary>
                     {({ reset }) => (
                         <ErrorBoundary onReset={reset} FallbackComponent={RouteError}>

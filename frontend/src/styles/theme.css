@@ -13,6 +13,8 @@
     --animate-slide-in-right: slide-in-right 250ms ease-out;
     --animate-slide-out-right: slide-out-right 250ms ease-in;
     --animate-like-pop: like-pop 300ms ease-out;
+    --animate-zoom-in: zoom-in 200ms ease-out;
+    --animate-zoom-out: zoom-out 150ms ease-in;
 
     @keyframes fade-in {
         from {
@@ -56,6 +58,26 @@
         }
         70% {
             transform: scale(0.85);
+        }
+    }
+    @keyframes zoom-in {
+        from {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+    @keyframes zoom-out {
+        from {
+            opacity: 1;
+            transform: scale(1);
+        }
+        to {
+            opacity: 0;
+            transform: scale(0.95);
         }
     }
 }

@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 
 import notFoundIllustration from '@/assets/errors/not-found.png'
-import { Button } from '@/components/ui/Button'
 
 export function NotFound() {
     return (
@@ -28,9 +27,12 @@ export function NotFound() {
                 Que tal voltar para o início e continuar explorando?
             </p>
 
-            <Button asChild size="sm" className="text-background font-bold">
-                <Link to="/">Ir para o início</Link>
-            </Button>
+            <Link
+                to="/"
+                className="bg-primary text-background rounded-full px-4 py-2 text-base font-bold"
+            >
+                Ir para o início
+            </Link>
         </div>
     )
 }

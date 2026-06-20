@@ -5,7 +5,14 @@ import { cn } from '@/lib/utils'
 
 // Esboço: estado de "favoritado" mantido em memória apenas para validar a
 // interação/animação com o time. Trocar por estado vindo do backend quando pronto.
-export function LikeButton({ defaultLiked = false, size = 'size-10', className, ...props }) {
+// `colorClass` permite usar o coração claro sobre fundos escuros (padrão: escuro).
+export function LikeButton({
+    defaultLiked = false,
+    size = 'size-8 sm:size-10',
+    colorClass = 'text-secondary',
+    className,
+    ...props
+}) {
     const [liked, setLiked] = useState(defaultLiked)
 
     return (
@@ -22,7 +29,8 @@ export function LikeButton({ defaultLiked = false, size = 'size-10', className, 
                 fill={liked ? 'currentColor' : 'none'}
                 aria-hidden="true"
                 className={cn(
-                    'text-secondary transition-colors duration-200',
+                    'transition-colors duration-200',
+                    colorClass,
                     liked && 'animate-like-pop',
                     size,
                 )}
