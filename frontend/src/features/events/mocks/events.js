@@ -1,28 +1,44 @@
 const defaultAddress = 'Rua Joinville, Zona Industrial Norte, Joinville - SC, 89239-220'
-const defaultDatetime = '13:00 - 15 Abr. 2025 > 19:00 - 15 Abr. 2025'
 const defaultDescription =
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vitae tellus nec metus feugiat varius. Morbi at nisi a risus lacinia hendrerit. Vivamus ac sapien sed enim finibus eleifend. Sed at justo nec ipsum lobortis feugiat. Nulla facilisi.'
 const defaultPolicies =
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vitae tellus nec metus feugiat varius. Morbi at nisi a risus lacinia hendrerit. Vivamus ac sapien sed enim finibus eleifend. Sed at justo nec ipsum lobortis feugiat. Nulla facilisi.'
 
-const defaults = {
-    address: defaultAddress,
-    datetime: defaultDatetime,
-    description: defaultDescription,
-    policies: defaultPolicies,
+const MONTHS = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+
+// Constrói o texto de exibição a partir de uma data ISO (YYYY-MM-DD).
+function displayDate(date) {
+    const [year, month, day] = date.split('-')
+    return `${day} ${MONTHS[Number(month) - 1]}. ${year}`
+}
+
+// `date` (ISO) é usado pelo calendário para destacar os dias com eventos;
+// `category` é usado pelo filtro de tipos de evento;
+// `datetime` é o texto exibido nos cards.
+function makeEvent(id, title, date, start, end, category) {
+    return {
+        id,
+        title,
+        date,
+        category,
+        datetime: `${start} - ${displayDate(date)} > ${end} - ${displayDate(date)}`,
+        address: defaultAddress,
+        description: defaultDescription,
+        policies: defaultPolicies,
+    }
 }
 
 export const mockEvents = [
-    { id: 1, title: 'Evento Pitch Inovaparq 2025', category: 'demoday', ...defaults },
-    { id: 2, title: 'Hackathon Joinville Tech', category: 'hackathons', ...defaults },
-    { id: 3, title: 'Workshop UX Design', category: 'workshops', ...defaults },
-    { id: 4, title: 'Meetup React Brasil', category: 'meetups', ...defaults },
-    { id: 5, title: 'Conferência Startup Day', category: 'conferencias', ...defaults },
-    { id: 6, title: 'Bootcamp Cloud Computing', category: 'bootcamps', ...defaults },
-    { id: 7, title: 'Festival de Inovação Catarinense', category: 'feiras', ...defaults },
-    { id: 8, title: 'Demo Day Aceleradoras', category: 'demoday', ...defaults },
-    { id: 9, title: 'Talk: Liderança em Tech', category: 'palestras', ...defaults },
-    { id: 10, title: 'Encontro de Mulheres na Tecnologia', category: 'meetups', ...defaults },
-    { id: 11, title: 'Imersão em Produto Digital', category: 'workshops', ...defaults },
-    { id: 12, title: 'Open Day Universidades de SC', category: 'feiras', ...defaults },
+    makeEvent(1, 'Evento Pitch Inovaparq 2025', '2026-06-05', '13:00', '19:00', 'demoday'),
+    makeEvent(2, 'Hackathon Joinville Tech', '2026-06-08', '09:00', '18:00', 'hackathons'),
+    makeEvent(3, 'Workshop UX Design', '2026-06-12', '19:00', '22:00', 'workshops'),
+    makeEvent(4, 'Meetup React Brasil', '2026-06-12', '19:30', '21:30', 'meetups'),
+    makeEvent(5, 'Conferência Startup Day', '2026-06-18', '08:30', '17:00', 'conferencias'),
+    makeEvent(6, 'Bootcamp Cloud Computing', '2026-06-22', '08:00', '12:00', 'bootcamps'),
+    makeEvent(7, 'Festival de Inovação Catarinense', '2026-06-25', '10:00', '20:00', 'feiras'),
+    makeEvent(8, 'Demo Day Aceleradoras', '2026-07-02', '14:00', '18:00', 'demoday'),
+    makeEvent(9, 'Talk: Liderança em Tech', '2026-07-09', '19:00', '21:00', 'palestras'),
+    makeEvent(10, 'Encontro de Mulheres na Tecnologia', '2026-07-15', '18:30', '21:00', 'meetups'),
+    makeEvent(11, 'Imersão em Produto Digital', '2026-07-20', '09:00', '17:00', 'workshops'),
+    makeEvent(12, 'Open Day Universidades de SC', '2026-07-28', '10:00', '16:00', 'feiras'),
 ]
