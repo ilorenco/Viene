@@ -4,10 +4,10 @@
 import { ChevronDown } from 'lucide-react'
 import { useState } from 'react'
 
-import { ACTOR_AREAS } from '@/features/actors/mocks/actorTypes'
 import { mockEventCategories } from '@/features/events/mocks/eventCategories'
 import { EVENT_COLOR } from '@/features/map/components/InnovationMap'
 import { MapEventDateFilter } from '@/features/map/components/MapEventDateFilter'
+import { ATOR_AREAS } from '@/lib/atorTypes'
 import { cn } from '@/lib/utils'
 
 function Switch({ checked, onChange, label }) {
@@ -126,7 +126,7 @@ export function MapFilterControls({
                 enabled={showActors}
                 onToggle={() => setShowActors(!showActors)}
             >
-                {ACTOR_AREAS.map((area) => {
+                {ATOR_AREAS.map((area) => {
                     const allOn = area.types.every((type) => enabledTypes.has(type.id))
                     const someOn = area.types.some((type) => enabledTypes.has(type.id))
                     return (

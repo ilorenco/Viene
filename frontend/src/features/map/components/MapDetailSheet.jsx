@@ -57,7 +57,7 @@ export function MapDetailSheet({ item, type, onClose }) {
             </button>
 
             {/* Informações rolam; o botão fica FIXO no rodapé (sempre visível). */}
-            <div className="min-h-0 flex-1 overflow-y-auto px-4">
+            <div className="viene-scrollbar min-h-0 flex-1 overflow-y-auto px-4">
                 <MapDetailContent item={item} type={type} />
             </div>
             <div className="border-secondary/10 shrink-0 border-t px-4 py-3">

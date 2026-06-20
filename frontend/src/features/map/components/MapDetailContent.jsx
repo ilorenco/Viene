@@ -7,7 +7,7 @@
 import { Clock, MapPin } from 'lucide-react'
 
 import { Badge } from '@/components/ui/Badge'
-import { labelForType } from '@/features/actors/mocks/actorTypes'
+import { labelForType } from '@/lib/atorTypes'
 
 export function MapDetailContent({ item, type }) {
     if (type === 'ator') {

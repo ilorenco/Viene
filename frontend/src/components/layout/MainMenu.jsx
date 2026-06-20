@@ -4,7 +4,6 @@ import {
     HelpCircle,
     Info,
     MapPin,
-    Menu,
     Search,
     Settings,
     Shield,
@@ -49,7 +48,7 @@ const sections = [
 
 export function MainMenu() {
     return (
-        <SheetContent closeIcon={Menu} className="gap-8 overflow-y-auto">
+        <SheetContent className="gap-8 overflow-y-auto">
             <SheetTitle className="sr-only">Menu</SheetTitle>
 
             <SheetClose asChild>

@@ -2,8 +2,8 @@
 // lateral (desktop) e na gaveta (mobile). Clicar centraliza o mapa no item.
 // A busca fica fora deste componente (ver MapSearch) e já chega filtrada.
 
-import { labelForType } from '@/features/actors/mocks/actorTypes'
 import { EVENT_COLOR } from '@/features/map/components/InnovationMap'
+import { labelForType } from '@/lib/atorTypes'
 import { cn } from '@/lib/utils'
 
 function Row({ color, title, subtitle, active, onClick }) {

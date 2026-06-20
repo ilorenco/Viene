@@ -54,7 +54,7 @@ export function MapSidePanel({
                         />
                     </div>
 
-                    <div className="flex-1 overflow-y-auto p-2">
+                    <div className="viene-scrollbar flex-1 overflow-y-auto p-2">
                         <MapItemList
                             actors={actors}
                             events={events}
