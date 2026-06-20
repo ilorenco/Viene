@@ -43,34 +43,89 @@
     }
 }
 
+/* Barra de rolagem SEMPRE visível (ex.: dropdowns de tags) — dá a pista visual de
+   que há mais opções ao rolar, mesmo quando o sistema usa scrollbars que somem
+   (overlay). Cinza-médio translúcido para ficar visível no claro e no escuro. */
+.viene-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(120, 120, 128, 0.5) transparent;
+}
+.viene-scrollbar::-webkit-scrollbar {
+    width: 8px;
+}
+.viene-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(120, 120, 128, 0.5);
+    border-radius: 9999px;
+}
+.viene-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* O Radix Select ESCONDE a barra de rolagem do viewport por padrão (assume o uso
+   dos botões de rolagem). Nos dropdowns do app (tags, áreas, categorias...) usamos
+   a .viene-scrollbar para dar a PISTA VISUAL de que há mais opções ao rolar — então
+   reexpomos a barra, com especificidade maior que o estilo injetado pelo Radix. */
+[data-radix-select-viewport].viene-scrollbar {
+    scrollbar-width: thin !important;
+}
+[data-radix-select-viewport].viene-scrollbar::-webkit-scrollbar {
+    display: block;
+    width: 8px;
+}
+
 /* ===================== Acessibilidade ===================== */
 /* As classes abaixo são ativadas por atributos no <html> definidos pelo
    AccessibilityContext (modo noturno, daltonismo e realce de palavras). */
 
 /* Modo noturno: escurece o fundo, clareia o texto e troca o laranja por um azul
-   claro. `color-scheme: dark` deixa scrollbars e controles nativos (selects, date
+   escuro. `color-scheme: dark` deixa scrollbars e controles nativos (selects, date
    pickers) escuros — evita "caixas brancas" no modo noturno. */
 html[data-viene-night='true'] {
     --color-background: #15151b;
     --color-foreground: #ededed;
-    --color-primary: #6cb6ff;
+    --color-primary: #3b59a4;
     color-scheme: dark;
 }
 html[data-viene-night='true'] body {
     background-color: var(--color-background);
     color: var(--color-foreground);
 }
-/* Texto escuro (text-secondary) clareia — EXCETO sobre botões coloridos
-   (.bg-primary), onde fica escuro para contrastar com o azul claro. */
+/* Texto escuro (text-secondary) clareia. Exceções: sobre botões azuis (.bg-primary,
+   tratado abaixo) e DENTRO de campos (input/textarea), que ficam brancos. */
 html[data-viene-night='true']:not([data-viene-highlight='true'])
-    [class*='text-secondary']:not(.bg-primary) {
+    [class*='text-secondary']:not(.bg-primary):not(input):not(textarea) {
     color: #d8d8d8 !important;
+}
+/* Sobre os botões/realces AZUIS (bg-primary, agora um azul mais escuro): texto
+   BRANCO para garantir contraste. */
+html[data-viene-night='true'] .bg-primary {
+    color: #ffffff !important;
+}
+/* Texto claro (text-background) é usado SOBRE elementos escuros — precisa continuar
+   claro no modo noturno (senão viraria a cor de fundo escura e sumiria). */
+html[data-viene-night='true'] [class*='text-background'] {
+    color: #ededed !important;
+}
+/* Texto digitado nos campos (busca/formulários) fica BRANCO — o cinza padrão
+   ficava ilegível no escuro. O placeholder vira um cinza claro visível. */
+html[data-viene-night='true'] input,
+html[data-viene-night='true'] textarea {
+    color: #ffffff !important;
+}
+html[data-viene-night='true'] input::placeholder,
+html[data-viene-night='true'] textarea::placeholder {
+    color: #a0a0a8 !important;
 }
 html[data-viene-night='true'] [class*='border-secondary'] {
     border-color: #3a3a44 !important;
 }
 html[data-viene-night='true'] .bg-white {
     background-color: #20202a !important;
+}
+/* Fundos/botões que usam o cinza-escuro (bg-secondary) ficavam "escondidos" no
+   fundo quase preto do modo noturno → sobem para um cinza mais claro e visível. */
+html[data-viene-night='true'] .bg-secondary {
+    background-color: #34343f !important;
 }
 /* Mapa no modo noturno: escurece só as imagens do mapa (tiles do Leaflet),
    sem afetar os marcadores/pinos, que ficam em outra camada (.leaflet-marker-pane). */
@@ -79,6 +134,20 @@ html[data-viene-night='true'] .leaflet-tile {
 }
 html[data-viene-night='true'] .leaflet-container {
     background: #15151b;
+}
+/* Popup do Leaflet (lista do agrupamento de pinos): cantos arredondados como os
+   cartões do app e, no modo noturno, fundo/letra escuros — o padrão do Leaflet é
+   uma caixa branca, que no escuro fica com o texto cinza-claro ilegível. */
+.leaflet-popup-content-wrapper {
+    border-radius: 0.75rem;
+}
+html[data-viene-night='true'] .leaflet-popup-content-wrapper,
+html[data-viene-night='true'] .leaflet-popup-tip {
+    background: #20202a;
+    color: #ededed;
+}
+html[data-viene-night='true'] .leaflet-popup-close-button {
+    color: #a0a0a8;
 }
 
 /* Filtro de daltonismo: aplicado ao conteúdo principal (#root). */

@@ -32,12 +32,23 @@ export function SelectContent({ className, children, ...props }) {
                 position="popper"
                 sideOffset={6}
                 className={cn(
-                    'bg-background data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out z-50 min-w-(--radix-select-trigger-width) overflow-hidden rounded-lg p-1 shadow-lg',
+                    'bg-background data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out z-50 min-w-(--radix-select-trigger-width) overflow-hidden rounded-lg shadow-lg',
                     className,
                 )}
                 {...props}
             >
-                <SelectPrimitive.Viewport>{children}</SelectPrimitive.Viewport>
+                {/* Mostra ~5 opções e rola para ver as demais; o limite acompanha a
+                    altura disponível (calculada pelo Radix), então nunca passa da
+                    borda da tela. */}
+                <SelectPrimitive.Viewport
+                    className="viene-scrollbar overflow-y-auto p-1"
+                    style={{
+                        maxHeight:
+                            'min(13rem, var(--radix-select-content-available-height, 13rem))',
+                    }}
+                >
+                    {children}
+                </SelectPrimitive.Viewport>
             </SelectPrimitive.Content>
         </SelectPrimitive.Portal>
     )
