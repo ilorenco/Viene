@@ -1,0 +1,33 @@
+// Tags / áreas de atuação (verticais de tecnologia), conforme a "Legenda Tags"
+// da Região de Joinville. Usadas para classificar atores/pontos.
+
+export const TAGS = [
+    { id: 'industria40', label: 'Indústria 4.0 & Manufatura Avançada' },
+    { id: 'iot', label: 'Internet das Coisas (IoT)' },
+    { id: 'ia', label: 'Inteligência Artificial & Big Data' },
+    { id: 'biotec', label: 'Biotecnologia & Nanotecnologia' },
+    { id: 'arvr', label: 'Realidade Virtual/Aumentada (AR/VR)' },
+    { id: 'blockchain', label: 'Blockchain / Web3' },
+    { id: 'cyber', label: 'Cybersecurity' },
+    { id: 'quantica', label: 'Computação Quântica' },
+    { id: 'impressao3d', label: 'Impressão 3D & Manufatura Aditiva' },
+    { id: 'logtech', label: 'LogTech (Logística & Supply Chain)' },
+    { id: 'hardtech', label: 'HardTech & Metal-Mecânica' },
+    { id: 'plasttech', label: 'PlastTech & Química' },
+    { id: 'autotech', label: 'AutoTech & Mobilidade' },
+    { id: 'healthtech', label: 'HealthTech' },
+    { id: 'fintech', label: 'FinTech' },
+    { id: 'govtech', label: 'GovTech' },
+    { id: 'edtech', label: 'EdTech' },
+    { id: 'greentech', label: 'Sustentabilidade & ESG (GreenTech)' },
+    { id: 'retailtech', label: 'RetailTech' },
+    { id: 'hrtech', label: 'HRTech' },
+    { id: 'creator', label: 'Creator Economy & MídiaTech' },
+    { id: 'proptech', label: 'PropertyTech / PropTech' },
+    { id: 'insuretech', label: 'InsureTech' },
+    { id: 'foodtech', label: 'FoodTech' },
+    { id: 'traveltech', label: 'TravelTech (Turismo)' },
+    { id: 'martech', label: 'MarTech (Marketing)' },
+    { id: 'smartcities', label: 'Smart Cities' },
+    { id: 'agritech', label: 'AgriTech' },
+]

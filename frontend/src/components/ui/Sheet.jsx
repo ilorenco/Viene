@@ -5,7 +5,7 @@ import { X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const sheetVariants = cva(
-    'bg-background fixed z-50 flex flex-col gap-4 p-6 pt-14 shadow-xl data-[state=open]:animate-slide-in-right data-[state=closed]:animate-slide-out-right',
+    'bg-background fixed z-[2000] flex flex-col gap-4 p-6 pt-14 shadow-xl data-[state=open]:animate-slide-in-right data-[state=closed]:animate-slide-out-right',
     {
         variants: {
             side: {
@@ -48,7 +48,7 @@ export function SheetContent({
 }) {
     return (
         <DialogPrimitive.Portal>
-            <DialogPrimitive.Overlay className="data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out fixed inset-0 z-50 bg-black/40" />
+            <DialogPrimitive.Overlay className="data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out fixed inset-0 z-[2000] bg-black/40" />
             <DialogPrimitive.Content className={cn(sheetVariants({ side }), className)} {...props}>
                 {children}
                 <DialogPrimitive.Close

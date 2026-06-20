@@ -2,7 +2,7 @@
 // Joinville. As cores acompanham o código de cores do documento e são usadas
 // para colorir os pinos do mapa e os filtros.
 
-const ACTOR_AREAS = [
+export const ACTOR_AREAS = [
     {
         id: 'ambientes',
         label: 'Ambientes de Inovação e Facilitadores',
@@ -60,3 +60,11 @@ export const ACTOR_TYPES = ACTOR_AREAS.flatMap((area) =>
         color: area.color,
     })),
 )
+
+export function labelForType(typeId) {
+    return ACTOR_TYPES.find((type) => type.id === typeId)?.label ?? 'Ator'
+}
+
+export function colorForType(typeId) {
+    return ACTOR_TYPES.find((type) => type.id === typeId)?.color ?? '#f48634'
+}
