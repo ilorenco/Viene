@@ -42,3 +42,82 @@
         background-color: color-mix(in srgb, var(--color-secondary) 55%, transparent);
     }
 }
+
+/* ===================== Acessibilidade ===================== */
+/* As classes abaixo são ativadas por atributos no <html> definidos pelo
+   AccessibilityContext (modo noturno, daltonismo e realce de palavras). */
+
+/* Modo noturno: escurece o fundo, clareia o texto e troca o laranja por um azul
+   claro. `color-scheme: dark` deixa scrollbars e controles nativos (selects, date
+   pickers) escuros — evita "caixas brancas" no modo noturno. */
+html[data-viene-night='true'] {
+    --color-background: #15151b;
+    --color-foreground: #ededed;
+    --color-primary: #6cb6ff;
+    color-scheme: dark;
+}
+html[data-viene-night='true'] body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+}
+/* Texto escuro (text-secondary) clareia — EXCETO sobre botões coloridos
+   (.bg-primary), onde fica escuro para contrastar com o azul claro. */
+html[data-viene-night='true']:not([data-viene-highlight='true'])
+    [class*='text-secondary']:not(.bg-primary) {
+    color: #d8d8d8 !important;
+}
+html[data-viene-night='true'] [class*='border-secondary'] {
+    border-color: #3a3a44 !important;
+}
+html[data-viene-night='true'] .bg-white {
+    background-color: #20202a !important;
+}
+/* Mapa no modo noturno: escurece só as imagens do mapa (tiles do Leaflet),
+   sem afetar os marcadores/pinos, que ficam em outra camada (.leaflet-marker-pane). */
+html[data-viene-night='true'] .leaflet-tile {
+    filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9);
+}
+html[data-viene-night='true'] .leaflet-container {
+    background: #15151b;
+}
+
+/* Filtro de daltonismo: aplicado ao conteúdo principal (#root). */
+html[data-viene-colorblind='protanopia'] #root {
+    filter: url('#viene-protanopia');
+}
+html[data-viene-colorblind='deuteranopia'] #root {
+    filter: url('#viene-deuteranopia');
+}
+html[data-viene-colorblind='tritanopia'] #root {
+    filter: url('#viene-tritanopia');
+}
+
+/* Realce de palavras: fundo claro levemente amarelado atrás do texto, com letras
+   maiores e em negrito, para facilitar a leitura.
+   - Aplica-se só a elementos de TEXTO de conteúdo (parágrafos, listas, títulos).
+     Links isolados (logo, avatar, menus) ficam de fora — como são inline, antes
+     ganhavam uma "caixa" colorida que subia sobre a linha de cima e cobria o
+     texto. Links dentro de um parágrafo continuam realçados, pois herdam o fundo.
+   - line-height generoso garante que o realce de uma linha não invada a de cima. */
+/* Texto de conteúdo e BOTÕES: fundo amarelo claro, negrito e letras um pouco
+   maiores (1.06em). */
+html[data-viene-highlight='true'] :is(p, li, dt, dd, button) {
+    background-color: #fdf6dc;
+    color: #1a1a1a;
+    font-weight: 800;
+    font-size: 1.06em;
+    line-height: 1.65;
+    border-radius: 0.25rem;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+}
+/* Títulos: o MESMO marcador, mas mantendo a tipografia — sem aumentar a fonte
+   nem forçar o peso (já são grandes e em negrito). */
+html[data-viene-highlight='true'] :is(h1, h2, h3, h4) {
+    background-color: #fdf6dc;
+    color: #1a1a1a;
+    line-height: 1.65;
+    border-radius: 0.25rem;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+}
