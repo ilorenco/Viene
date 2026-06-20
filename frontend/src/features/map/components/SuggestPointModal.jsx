@@ -20,13 +20,13 @@ import {
     SelectValue,
 } from '@/components/ui/Select'
 import { Textarea } from '@/components/ui/Textarea'
-import { isAuthenticated } from '@/features/auth/services/auth'
 import { mockEventCategories } from '@/features/events/mocks/eventCategories'
 import { LocationPicker } from '@/features/map/components/LocationPicker'
 import { useSuggestPoint } from '@/features/map/hooks/useSuggestPoint'
 import { ATOR_TYPES } from '@/lib/atorTypes'
 import { TAGS } from '@/lib/tags'
 import { cn } from '@/lib/utils'
+import { isAuthenticated } from '@/services/auth'
 
 const initialForm = {
     name: '',
