@@ -50,18 +50,19 @@ const router = createBrowserRouter([
                 element: <Profile />,
             },
             {
-                path: '/map',
-                element: (
-                    <Suspense fallback={<div className="flex flex-1" />}>
-                        <Map />
-                    </Suspense>
-                ),
-            },
-            {
                 path: '*',
                 element: <NotFound />,
             },
         ],
+    },
+    {
+        // Mapa: tela cheia com Header próprio, fora do MainLayout (sem Footer/padding).
+        path: '/map',
+        element: (
+            <Suspense fallback={<div className="h-[100dvh]" />}>
+                <Map />
+            </Suspense>
+        ),
     },
     {
         element: <AuthLayout />,
