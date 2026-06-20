@@ -11,6 +11,7 @@ import { Login } from '@/pages/auth/Login'
 import { Register } from '@/pages/auth/Register'
 import { EventDetails } from '@/pages/EventDetails'
 import { Events } from '@/pages/Events'
+import { Faq } from '@/pages/Faq'
 import { Favorites } from '@/pages/Favorites'
 import { Home } from '@/pages/Home'
 import { NotFound } from '@/pages/NotFound'
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
                     {
                         path: '/profile',
                         element: <Profile />,
+                    },
+                    {
+                        path: '/ajuda',
+                        element: <Faq />,
                     },
                     {
                         path: '*',
