@@ -1,14 +1,16 @@
 import { Heart } from 'lucide-react'
-import { useState } from 'react'
 
+import { useFavorite } from '@/hooks/useFavorite'
 import { useRequireAuth } from '@/hooks/useRequireAuth'
 import { cn } from '@/lib/utils'
 
-// Esboço: estado de "favoritado" mantido em memória apenas para validar a
-// interação/animação com o time. Trocar por estado vindo do backend quando pronto.
-// `colorClass` permite usar o coração claro sobre fundos escuros (padrão: escuro).
+// Favoritar de verdade (POST/DELETE /favoritos, ver useFavorite) — essa é a
+// versão compacta usada nos carrosséis (mesmo backend do coração de
+// ActorActions). `colorClass` permite usar o coração claro sobre fundos
+// escuros (padrão: escuro). `entityType`/`entityId` identificam o ator/evento.
 export function LikeButton({
-    defaultLiked = false,
+    entityType,
+    entityId,
     size = 'size-8 sm:size-10',
     colorClass = 'text-secondary',
     className,
@@ -16,33 +18,33 @@ export function LikeButton({
 }) {
     // Favoritar exige login: sem conta, requireAuth leva ao /login.
     const { requireAuth } = useRequireAuth()
-    const [liked, setLiked] = useState(defaultLiked)
+    const { isFavorited, toggle } = useFavorite(entityType, entityId)
 
     function handleClick(event) {
         // Evita que o clique no coração dispare a navegação do card (quando o
         // botão fica sobre/junto de um Link) e exige login antes de favoritar.
         event.preventDefault()
         event.stopPropagation()
-        requireAuth(() => setLiked((prev) => !prev))
+        requireAuth(toggle)
     }
 
     return (
         <button
             type="button"
-            aria-pressed={liked}
-            aria-label={liked ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
+            aria-pressed={isFavorited}
+            aria-label={isFavorited ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
             onClick={handleClick}
             className={cn('shrink-0 cursor-pointer', className)}
             {...props}
         >
             <Heart
                 strokeWidth={1.5}
-                fill={liked ? 'currentColor' : 'none'}
+                fill={isFavorited ? 'currentColor' : 'none'}
                 aria-hidden="true"
                 className={cn(
                     'transition-colors duration-200',
                     colorClass,
-                    liked && 'animate-like-pop',
+                    isFavorited && 'animate-like-pop',
                     size,
                 )}
             />

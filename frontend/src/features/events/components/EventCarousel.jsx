@@ -16,6 +16,8 @@ export function EventCarousel({ title, events }) {
                             key={event.id}
                             to={`/events/${event.id}`}
                             title={event.title}
+                            entityType="evento"
+                            entityId={event.id}
                         />
                     ))}
                 </DraggableTrack>

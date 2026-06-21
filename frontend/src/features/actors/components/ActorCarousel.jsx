@@ -18,6 +18,8 @@ export function ActorCarousel({ title, actors }) {
                             key={actor.id}
                             to={`/actors/${actor.id}`}
                             title={actor.name}
+                            entityType="ator"
+                            entityId={actor.id}
                         />
                     ))}
                 </DraggableTrack>
