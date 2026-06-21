@@ -1,10 +1,10 @@
 package com.viene.event.dto;
 
+import com.viene.common.PortugueseDates;
 import com.viene.event.Event;
 import com.viene.event.EventCategory;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 public record EventResponse(
         Long id,
@@ -20,14 +20,10 @@ public record EventResponse(
         String ticketUrl,
         String image) {
 
-    private static final String[] MONTHS = {
-            "Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"
-    };
-
     public static EventResponse from(Event event) {
-        String displayDate = displayDate(event.getDate());
-        String start = formatTime(event.getStart());
-        String end = formatTime(event.getEnd());
+        String displayDate = PortugueseDates.displayDate(event.getDate());
+        String start = PortugueseDates.formatTime(event.getStart());
+        String end = PortugueseDates.formatTime(event.getEnd());
         String datetime = "%s - %s > %s - %s".formatted(start, displayDate, end, displayDate);
 
         return new EventResponse(
@@ -43,13 +39,5 @@ public record EventResponse(
                 event.getPolicies(),
                 event.getTicketUrl(),
                 event.getImage());
-    }
-
-    private static String displayDate(LocalDate date) {
-        return "%02d %s. %d".formatted(date.getDayOfMonth(), MONTHS[date.getMonthValue() - 1], date.getYear());
-    }
-
-    private static String formatTime(LocalTime time) {
-        return "%02d:%02d".formatted(time.getHour(), time.getMinute());
     }
 }

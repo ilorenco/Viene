@@ -1,5 +1,7 @@
 package com.viene.event;
 
+import com.viene.common.ModerationStatus;
+import com.viene.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -7,15 +9,19 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -55,4 +61,17 @@ public class Event {
     private String ticketUrl;
 
     private String image;
+
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private ModerationStatus status = ModerationStatus.APROVADO;
+
+    @ManyToOne
+    @JoinColumn(name = "submitted_by")
+    private User submittedBy;
+
+    private String moderationComment;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 }

@@ -1,6 +1,9 @@
 package com.viene.event;
 
+import com.viene.common.ModerationStatus;
 import com.viene.common.exception.ResourceNotFoundException;
+import com.viene.event.dto.CreateEventRequest;
+import com.viene.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +15,56 @@ public class EventService {
 
     private final EventRepository eventRepository;
 
-    public List<Event> findAll() {
-        return eventRepository.findAll();
+    public List<Event> findAllApproved() {
+        return eventRepository.findByStatus(ModerationStatus.APROVADO);
+    }
+
+    public Event findApprovedById(Long id) {
+        Event event = findById(id);
+        if (event.getStatus() != ModerationStatus.APROVADO) {
+            throw new ResourceNotFoundException("Evento não encontrado: " + id);
+        }
+        return event;
     }
 
     public Event findById(Long id) {
         return eventRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Evento não encontrado: " + id));
+    }
+
+    public Event create(CreateEventRequest request, User submitter) {
+        Event event = Event.builder()
+                .title(request.title())
+                .address(request.address())
+                .date(request.date())
+                .start(request.start())
+                .end(request.end())
+                .category(request.category())
+                .description(request.description())
+                .ticketUrl(request.ticketUrl())
+                .status(ModerationStatus.PENDENTE)
+                .submittedBy(submitter)
+                .build();
+
+        return eventRepository.save(event);
+    }
+
+    public List<Event> findSubmissions() {
+        return eventRepository.findBySubmittedByIsNotNull();
+    }
+
+    public Event decide(Long id, boolean approved, String comment) {
+        Event event = findById(id);
+        event.setStatus(approved ? ModerationStatus.APROVADO : ModerationStatus.REJEITADO);
+        if (comment != null && !comment.isBlank()) {
+            event.setModerationComment(comment);
+        }
+        return eventRepository.save(event);
+    }
+
+    public Event addModerationComment(Long id, String comment) {
+        Event event = findById(id);
+        event.setModerationComment(comment);
+        return eventRepository.save(event);
     }
 }

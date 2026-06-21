@@ -26,6 +26,8 @@ public record ActorResponse(
         String image) {
 
     public static ActorResponse from(Actor actor) {
+        boolean hasPosition = actor.getLatitude() != null && actor.getLongitude() != null;
+
         return new ActorResponse(
                 actor.getId(),
                 actor.getName(),
@@ -34,7 +36,7 @@ public record ActorResponse(
                 actor.getType(),
                 actor.getCity(),
                 actor.getNeighborhood(),
-                new double[] { actor.getLatitude(), actor.getLongitude() },
+                hasPosition ? new double[] { actor.getLatitude(), actor.getLongitude() } : null,
                 actor.getAddress(),
                 actor.getCep(),
                 actor.getFounded(),
