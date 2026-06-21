@@ -9,11 +9,9 @@
 import { Plus, X } from 'lucide-react'
 
 import { useTagGroup } from '@/features/admin/hooks/useTagGroup'
-import { mockEventCategories } from '@/features/events/mocks/eventCategories'
-import { TAGS } from '@/lib/tags'
 
-function TagGroup({ title, kind, initial }) {
-    const { tags, draft, setDraft, feedback, add, remove } = useTagGroup({ kind, initial })
+function TagGroup({ title, kind }) {
+    const { tags, draft, setDraft, feedback, add, remove } = useTagGroup({ kind })
 
     return (
         <div className="border-secondary/10 flex flex-col gap-3 rounded-2xl border bg-white p-4">
@@ -79,12 +77,8 @@ export function AdminTags() {
                 Cadastre e remova as tags usadas para classificar atores e eventos. Remover uma tag
                 a retira de todos os registros vinculados (feito pelo back-end ao conectar).
             </p>
-            <TagGroup title="Tags de Atores" kind="ator" initial={TAGS.map((tag) => tag.label)} />
-            <TagGroup
-                title="Tags de Eventos"
-                kind="evento"
-                initial={mockEventCategories.map((category) => category.label)}
-            />
+            <TagGroup title="Tags de Atores" kind="ator" />
+            <TagGroup title="Tags de Eventos" kind="evento" />
         </div>
     )
 }
