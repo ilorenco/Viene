@@ -62,6 +62,10 @@ public class Event {
 
     private String image;
 
+    private Double latitude;
+
+    private Double longitude;
+
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private ModerationStatus status = ModerationStatus.APROVADO;

@@ -18,13 +18,15 @@ public record EventResponse(
         String description,
         String policies,
         String ticketUrl,
-        String image) {
+        String image,
+        double[] position) {
 
     public static EventResponse from(Event event) {
         String displayDate = PortugueseDates.displayDate(event.getDate());
         String start = PortugueseDates.formatTime(event.getStart());
         String end = PortugueseDates.formatTime(event.getEnd());
         String datetime = "%s - %s > %s - %s".formatted(start, displayDate, end, displayDate);
+        boolean hasPosition = event.getLatitude() != null && event.getLongitude() != null;
 
         return new EventResponse(
                 event.getId(),
@@ -38,6 +40,7 @@ public record EventResponse(
                 event.getDescription(),
                 event.getPolicies(),
                 event.getTicketUrl(),
-                event.getImage());
+                event.getImage(),
+                hasPosition ? new double[] { event.getLatitude(), event.getLongitude() } : null);
     }
 }

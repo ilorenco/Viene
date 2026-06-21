@@ -10,6 +10,7 @@ public record CreateActorRequest(
         @NotNull(message = "O tipo de ator é obrigatório.") ActorType type,
         double[] position,
         String description,
+        String tags,
         String website,
         String email,
         String phone) {

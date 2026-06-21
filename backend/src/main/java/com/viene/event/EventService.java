@@ -33,6 +33,8 @@ public class EventService {
     }
 
     public Event create(CreateEventRequest request, User submitter) {
+        double[] position = request.position();
+
         Event event = Event.builder()
                 .title(request.title())
                 .address(request.address())
@@ -42,6 +44,8 @@ public class EventService {
                 .category(request.category())
                 .description(request.description())
                 .ticketUrl(request.ticketUrl())
+                .latitude(position != null ? position[0] : null)
+                .longitude(position != null ? position[1] : null)
                 .status(ModerationStatus.PENDENTE)
                 .submittedBy(submitter)
                 .build();

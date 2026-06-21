@@ -15,5 +15,6 @@ public record CreateEventRequest(
         @NotNull(message = "O horário de término é obrigatório.") LocalTime end,
         @NotNull(message = "O tipo de evento é obrigatório.") EventCategory category,
         String description,
-        String ticketUrl) {
+        String ticketUrl,
+        double[] position) {
 }

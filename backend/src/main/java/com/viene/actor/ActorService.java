@@ -41,6 +41,7 @@ public class ActorService {
                 .type(request.type())
                 .category(request.type().category())
                 .description(request.description())
+                .tags(request.tags())
                 .website(request.website())
                 .email(request.email())
                 .phone(request.phone())
