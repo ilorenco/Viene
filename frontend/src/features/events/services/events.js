@@ -1,21 +1,22 @@
 // Serviço de Eventos.
 //
-// Estilo da branch do colega: cada função espera um mockDelay() e devolve o mock,
-// sem o ramo duplo USE_MOCKS/http.js. Quando a API REST existir, basta trocar o
-// CORPO de cada função por uma chamada real — as telas (que só falam com os hooks)
-// não mudam. Formato de cada evento: ver src/mocks/events.js.
+// Conectado à API real (ver EventController, prefixo /eventos):
 //   GET /eventos        -> lista de eventos
 //   GET /eventos/{id}   -> detalhe de um evento
 
-import { mockEvents } from '@/features/events/mocks/events'
-import { mockDelay } from '@/mocks/delay'
+import { ApiError, request } from '@/services/http'
 
 export async function listEvents() {
-    await mockDelay()
-    return mockEvents
+    return request('/eventos')
 }
 
+// Evento inexistente devolve null (em vez de lançar), pra manter o mesmo
+// contrato que a tela de detalhes (EventDetails) já espera.
 export async function getEventById(id) {
-    await mockDelay()
-    return mockEvents.find((event) => String(event.id) === String(id)) ?? null
+    try {
+        return await request(`/eventos/${id}`)
+    } catch (error) {
+        if (error instanceof ApiError && error.status === 404) return null
+        throw error
+    }
 }
