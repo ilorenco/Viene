@@ -49,6 +49,7 @@ public class SecurityConfig {
                                 "/h2-console/**")
                         .permitAll()
                         .requestMatchers(HttpMethod.GET, "/atores", "/atores/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/eventos", "/eventos/**").permitAll()
                         .anyRequest().authenticated())
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
                 .exceptionHandling(exceptions -> exceptions

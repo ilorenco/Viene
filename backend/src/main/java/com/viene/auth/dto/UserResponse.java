@@ -9,3 +9,4 @@ public record UserResponse(String name, String email, Role role) {
         return new UserResponse(user.getName(), user.getEmail(), user.getRole());
     }
 }
+  
