@@ -142,7 +142,7 @@ function ActorProfileContent() {
                                 {labelForType(actor.type)}
                             </span>
                         </div>
-                        <ActorActions name={actor.name} />
+                        <ActorActions name={actor.name} entityId={actor.id} />
                     </div>
 
                     {/* Tags */}

@@ -1,13 +1,13 @@
 // Ações do perfil de ator (canto superior direito do bloco de conteúdo):
-//   - Favoritar: coração que liga/desliga e mostra um AVISO no canto inferior
-//     direito da tela (toast com auto-dispensa, via useFeedback).
+//   - Favoritar: coração que liga/desliga de verdade (POST/DELETE /favoritos,
+//     ver useFavorite) e mostra um AVISO no canto inferior direito da tela
+//     (toast com auto-dispensa, via useFeedback).
 //   - Três pontos: abre um menu com "Compartilhar" e "Denunciar". Denunciar abre um
 //     diálogo pedindo a JUSTIFICATIVA, que é registrada e aparece na administração
 //     (Plataforma > Denúncias).
 //
-// Esboço (mock): favoritar é estado em memória; compartilhar copia o link; a
-// denúncia é salva numa lista em memória (services/reports). Trocar por chamadas
-// reais quando houver back-end.
+// Esboço (mock): compartilhar copia o link; a denúncia é salva numa lista em
+// memória (services/reports). Trocar por chamada real quando houver back-end.
 
 import { useQueryClient } from '@tanstack/react-query'
 import { Flag, Heart, MoreVertical, Share2, X } from 'lucide-react'
@@ -19,6 +19,7 @@ import { Modal, ModalContent, ModalDescription, ModalTitle } from '@/components/
 import { Textarea } from '@/components/ui/Textarea'
 import { ADMIN_KEYS } from '@/features/admin/hooks/useAdminData'
 import { submitReport } from '@/features/admin/services/reports'
+import { useFavorite } from '@/hooks/useFavorite'
 import { useFeedback } from '@/hooks/useFeedback'
 import { useRequireAuth } from '@/hooks/useRequireAuth'
 import { cn } from '@/lib/utils'
@@ -26,13 +27,14 @@ import { cn } from '@/lib/utils'
 const BUTTON_CLASS =
     'border-secondary/15 text-secondary hover:border-primary hover:text-primary flex size-10 shrink-0 items-center justify-center rounded-full border bg-white transition active:scale-90'
 
-// Reutilizável para atores e eventos: `name` é o nome exibido (toast/denúncia) e
-// `entityType` ('ator' | 'evento') marca o tipo na denúncia.
-export function ActorActions({ name, entityType = 'ator' }) {
+// Reutilizável para atores e eventos: `name` é o nome exibido (toast/denúncia),
+// `entityType` ('ator' | 'evento') marca o tipo na denúncia/favorito, e
+// `entityId` é o id do ator/evento (necessário pra favoritar de verdade).
+export function ActorActions({ name, entityType = 'ator', entityId }) {
     const queryClient = useQueryClient()
     // Favoritar e denunciar exigem login: sem conta, requireAuth leva ao /login.
     const { requireAuth } = useRequireAuth()
-    const [liked, setLiked] = useState(false)
+    const { isFavorited, toggle } = useFavorite(entityType, entityId)
     const [menuOpen, setMenuOpen] = useState(false)
     const [feedback, setFeedback] = useFeedback()
 
@@ -41,16 +43,14 @@ export function ActorActions({ name, entityType = 'ator' }) {
     const [reportReason, setReportReason] = useState('')
     const [sending, setSending] = useState(false)
 
-    function toggleLike() {
-        setLiked((prev) => {
-            const next = !prev
-            setFeedback(
-                next
-                    ? `"${name}" foi adicionado aos favoritos.`
-                    : `"${name}" foi removido dos favoritos.`,
-            )
-            return next
-        })
+    async function toggleLike() {
+        const wasFavorited = isFavorited
+        await toggle()
+        setFeedback(
+            wasFavorited
+                ? `"${name}" foi removido dos favoritos.`
+                : `"${name}" foi adicionado aos favoritos.`,
+        )
     }
 
     function share() {
@@ -92,13 +92,13 @@ export function ActorActions({ name, entityType = 'ator' }) {
                 <button
                     type="button"
                     onClick={() => requireAuth(toggleLike)}
-                    aria-pressed={liked}
-                    aria-label={liked ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
+                    aria-pressed={isFavorited}
+                    aria-label={isFavorited ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
                     className={BUTTON_CLASS}
                 >
                     <Heart
                         strokeWidth={1.5}
-                        className={cn('size-5', liked && 'text-primary fill-current')}
+                        className={cn('size-5', isFavorited && 'text-primary fill-current')}
                     />
                 </button>
 

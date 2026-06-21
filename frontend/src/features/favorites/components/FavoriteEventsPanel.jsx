@@ -11,7 +11,7 @@ import { Pagination } from '@/components/ui/Pagination'
 import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/Select'
 import { EventDateFilter } from '@/features/events/components/EventDateFilter'
 import { EventList } from '@/features/events/components/EventList'
-import { useFilteredEvents } from '@/features/events/hooks/useFilteredEvents'
+import { useFilteredFavoriteEvents } from '@/features/events/hooks/useFilteredEvents'
 import { mockEventCategories } from '@/features/events/mocks/eventCategories'
 import { usePagination } from '@/hooks/usePagination'
 
@@ -22,7 +22,7 @@ export function FavoriteEventsPanel({ search }) {
     const [selected, setSelected] = useState(() => new Set(ALL_CATEGORY_VALUES))
     const [period, setPeriod] = useState({ from: null, to: null })
 
-    const { items: filtered, all } = useFilteredEvents(selected, search, period)
+    const { items: filtered, all } = useFilteredFavoriteEvents(selected, search, period)
 
     const categoryValue = selected.size === 1 ? [...selected][0] : 'todas'
     const categoryLabel =

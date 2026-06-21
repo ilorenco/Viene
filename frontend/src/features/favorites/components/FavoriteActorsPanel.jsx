@@ -16,7 +16,7 @@ import {
     SelectValue,
 } from '@/components/ui/Select'
 import { ActorList } from '@/features/actors/components/ActorList'
-import { useFilteredActors } from '@/features/actors/hooks/useFilteredActors'
+import { useFilteredFavoriteActors } from '@/features/actors/hooks/useFilteredActors'
 import { useGridColumns } from '@/hooks/useGridColumns'
 import { usePagination } from '@/hooks/usePagination'
 import { ATOR_AREA_LABELS, ATOR_AREA_OPTIONS } from '@/lib/atorTypes'
@@ -25,7 +25,7 @@ export function FavoriteActorsPanel({ search }) {
     const [area, setArea] = useState('todos')
     const [tag, setTag] = useState('todas')
 
-    const { items, tagOptions } = useFilteredActors(area, tag, search)
+    const { items, tagOptions } = useFilteredFavoriteActors(area, tag, search)
 
     // Paginação por linhas, igual ao catálogo de atores (colunas * 7).
     const columns = useGridColumns()

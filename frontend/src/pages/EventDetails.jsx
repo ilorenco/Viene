@@ -128,7 +128,7 @@ function EventDetailsContent() {
                         <h1 className="font-montserrat text-secondary text-3xl font-extrabold">
                             {event.title}
                         </h1>
-                        <ActorActions name={event.title} entityType="evento" />
+                        <ActorActions name={event.title} entityType="evento" entityId={event.id} />
                     </div>
 
                     {/* Tag DE EVENTO (a categoria do evento). */}

@@ -1,13 +1,17 @@
-// Regra de filtro do catálogo de atores, separada da tela. Reaproveita o useActors
-// (useSuspenseQuery), então suspende junto. Filtra por ÁREA + BUSCA (nome/cidade/
-// área) e devolve { items, tagOptions }: a lista final (com o filtro de TAG já
-// aplicado) e as tags disponíveis (com contagem) calculadas a partir da base.
+// Regra de filtro do catálogo de atores, separada da tela. Filtra por ÁREA +
+// BUSCA (nome/cidade/área) e devolve { items, tagOptions }: a lista final
+// (com o filtro de TAG já aplicado) e as tags disponíveis (com contagem)
+// calculadas a partir da base.
+//
+// `filterActors` é a regra pura (recebe a lista, não busca nada) — reusada
+// tanto pelo catálogo completo (useFilteredActors) quanto pelos favoritos
+// (useFilteredFavoriteActors, ver features/favorites).
 
 import { useActors } from '@/features/actors/hooks/useActors'
+import { useFavoriteActors } from '@/features/favorites/hooks/useFavoriteActors'
 import { ATOR_AREA_LABELS } from '@/lib/atorTypes'
 
-export function useFilteredActors(area, tag, search) {
-    const actors = useActors()
+export function filterActors(actors, area, tag, search) {
     const term = search.trim().toLowerCase()
 
     // Base: filtra por ÁREA + BUSCA. É daqui que saem as tags disponíveis.
@@ -33,4 +37,14 @@ export function useFilteredActors(area, tag, search) {
     const items = tag === 'todas' ? base : base.filter((actor) => actor.tags === tag)
 
     return { items, tagOptions }
+}
+
+export function useFilteredActors(area, tag, search) {
+    const actors = useActors()
+    return filterActors(actors, area, tag, search)
+}
+
+export function useFilteredFavoriteActors(area, tag, search) {
+    const actors = useFavoriteActors()
+    return filterActors(actors, area, tag, search)
 }
