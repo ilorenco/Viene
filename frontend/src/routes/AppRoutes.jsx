@@ -17,6 +17,7 @@ import { Favorites } from '@/pages/Favorites'
 import { Home } from '@/pages/Home'
 import { NotFound } from '@/pages/NotFound'
 import { Profile } from '@/pages/Profile'
+import { Settings } from '@/pages/Settings'
 import { Sobre } from '@/pages/Sobre'
 import { Tickets } from '@/pages/Tickets'
 
@@ -75,6 +76,10 @@ const router = createBrowserRouter([
                     {
                         path: '/profile',
                         element: <Profile />,
+                    },
+                    {
+                        path: '/configuracoes',
+                        element: <Settings />,
                     },
                     {
                         path: '/ajuda',
