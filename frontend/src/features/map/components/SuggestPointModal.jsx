@@ -33,8 +33,9 @@ const initialForm = {
     address: '',
     description: '',
     type: ATOR_TYPES[0].id,
-    startDate: '',
-    endDate: '',
+    date: '',
+    start: '',
+    end: '',
     category: mockEventCategories[0].value,
     site: '',
     email: '',
@@ -124,33 +125,49 @@ export function SuggestPointModal({ open, onClose }) {
             return
         }
         if (kind === 'evento') {
-            if (!form.startDate || !form.endDate) {
-                setError('Informe as datas de início e fim.')
+            if (!form.date) {
+                setError('Informe a data do evento.')
                 return
             }
-            if (form.endDate < form.startDate) {
-                setError('A data de fim deve ser igual ou posterior à de início.')
+            if (!form.start || !form.end) {
+                setError('Informe os horários de início e término.')
+                return
+            }
+            if (form.end < form.start) {
+                setError('O horário de término deve ser igual ou posterior ao de início.')
                 return
             }
         }
 
-        const common = {
-            kind,
-            name: form.name.trim(),
-            address: form.address.trim(),
-            position,
-            description: form.description.trim(),
-            tags: [...tags],
-            contact: { site: form.site.trim(), email: form.email.trim(), phone: form.phone.trim() },
-            photo: photo?.name ?? null,
-        }
+        setError('')
+        // Tags/contato/foto só fazem sentido pro Ator (Event não tem esses
+        // campos no backend) — ver services/map.js -> suggestPoint. Ator.tags é
+        // uma string única, então só a primeira tag marcada é enviada.
+        const firstTagId = [...tags][0]
+        const firstTagLabel = TAGS.find((tag) => tag.id === firstTagId)?.label
         const data =
             kind === 'ator'
-                ? { ...common, type: form.type }
+                ? {
+                      kind,
+                      name: form.name.trim(),
+                      address: form.address.trim(),
+                      position,
+                      description: form.description.trim(),
+                      type: form.type,
+                      tags: firstTagLabel,
+                      website: form.site.trim(),
+                      email: form.email.trim(),
+                      phone: form.phone.trim(),
+                  }
                 : {
-                      ...common,
-                      startDate: form.startDate,
-                      endDate: form.endDate,
+                      kind,
+                      title: form.name.trim(),
+                      address: form.address.trim(),
+                      position,
+                      description: form.description.trim(),
+                      date: form.date,
+                      start: form.start,
+                      end: form.end,
                       category: form.category,
                   }
 
@@ -266,25 +283,34 @@ export function SuggestPointModal({ open, onClose }) {
                             </div>
                         ) : (
                             <>
+                                <label className="text-secondary flex flex-col gap-1 text-sm font-semibold">
+                                    Data *
+                                    <input
+                                        type="date"
+                                        value={form.date}
+                                        onChange={(event) => setField('date', event.target.value)}
+                                        className={selectClass}
+                                    />
+                                </label>
                                 <div className="flex gap-2">
                                     <label className="text-secondary flex flex-1 flex-col gap-1 text-sm font-semibold">
                                         Início *
                                         <input
-                                            type="date"
-                                            value={form.startDate}
+                                            type="time"
+                                            value={form.start}
                                             onChange={(event) =>
-                                                setField('startDate', event.target.value)
+                                                setField('start', event.target.value)
                                             }
                                             className={selectClass}
                                         />
                                     </label>
                                     <label className="text-secondary flex flex-1 flex-col gap-1 text-sm font-semibold">
-                                        Fim *
+                                        Término *
                                         <input
-                                            type="date"
-                                            value={form.endDate}
+                                            type="time"
+                                            value={form.end}
                                             onChange={(event) =>
-                                                setField('endDate', event.target.value)
+                                                setField('end', event.target.value)
                                             }
                                             className={selectClass}
                                         />
@@ -342,56 +368,61 @@ export function SuggestPointModal({ open, onClose }) {
                             />
                         </label>
 
-                        <Section
-                            title={`Áreas relacionadas (opcional)${tags.size ? ` — ${tags.size}` : ''}`}
-                            open={showTags}
-                            onToggle={() => setShowTags((value) => !value)}
-                        >
-                            <div className="flex flex-wrap gap-2">
-                                {TAGS.map((tag) => (
-                                    <button
-                                        key={tag.id}
-                                        type="button"
-                                        onClick={() => toggleTag(tag.id)}
-                                        aria-pressed={tags.has(tag.id)}
-                                        className={cn(
-                                            'rounded-full px-3 py-1 text-xs font-medium transition',
-                                            tags.has(tag.id)
-                                                ? 'bg-primary text-secondary'
-                                                : 'bg-secondary/10 text-secondary',
-                                        )}
-                                    >
-                                        {tag.label}
-                                    </button>
-                                ))}
-                            </div>
-                        </Section>
+                        {/* Tags e Contato só existem em Actor — sem efeito pra Evento. */}
+                        {kind === 'ator' && (
+                            <>
+                                <Section
+                                    title={`Áreas relacionadas (opcional)${tags.size ? ` — ${tags.size}` : ''}`}
+                                    open={showTags}
+                                    onToggle={() => setShowTags((value) => !value)}
+                                >
+                                    <div className="flex flex-wrap gap-2">
+                                        {TAGS.map((tag) => (
+                                            <button
+                                                key={tag.id}
+                                                type="button"
+                                                onClick={() => toggleTag(tag.id)}
+                                                aria-pressed={tags.has(tag.id)}
+                                                className={cn(
+                                                    'rounded-full px-3 py-1 text-xs font-medium transition',
+                                                    tags.has(tag.id)
+                                                        ? 'bg-primary text-secondary'
+                                                        : 'bg-secondary/10 text-secondary',
+                                                )}
+                                            >
+                                                {tag.label}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </Section>
 
-                        <Section
-                            title="Contato (opcional)"
-                            open={showContact}
-                            onToggle={() => setShowContact((value) => !value)}
-                        >
-                            <Input
-                                value={form.site}
-                                onChange={(event) => setField('site', event.target.value)}
-                                placeholder="Site"
-                                className="rounded-2xl"
-                            />
-                            <Input
-                                type="email"
-                                value={form.email}
-                                onChange={(event) => setField('email', event.target.value)}
-                                placeholder="E-mail"
-                                className="rounded-2xl"
-                            />
-                            <Input
-                                value={form.phone}
-                                onChange={(event) => setField('phone', event.target.value)}
-                                placeholder="Telefone"
-                                className="rounded-2xl"
-                            />
-                        </Section>
+                                <Section
+                                    title="Contato (opcional)"
+                                    open={showContact}
+                                    onToggle={() => setShowContact((value) => !value)}
+                                >
+                                    <Input
+                                        value={form.site}
+                                        onChange={(event) => setField('site', event.target.value)}
+                                        placeholder="Site"
+                                        className="rounded-2xl"
+                                    />
+                                    <Input
+                                        type="email"
+                                        value={form.email}
+                                        onChange={(event) => setField('email', event.target.value)}
+                                        placeholder="E-mail"
+                                        className="rounded-2xl"
+                                    />
+                                    <Input
+                                        value={form.phone}
+                                        onChange={(event) => setField('phone', event.target.value)}
+                                        placeholder="Telefone"
+                                        className="rounded-2xl"
+                                    />
+                                </Section>
+                            </>
+                        )}
 
                         <div className="flex flex-col gap-2">
                             <span className="text-secondary text-sm font-semibold">
@@ -418,6 +449,11 @@ export function SuggestPointModal({ open, onClose }) {
                         </div>
 
                         {error && <p className="text-danger text-sm">{error}</p>}
+                        {suggest.isError && (
+                            <p className="text-danger text-sm">
+                                {suggest.error.message ?? 'Não foi possível enviar a solicitação.'}
+                            </p>
+                        )}
 
                         <div className="mt-1 flex gap-2">
                             <Button

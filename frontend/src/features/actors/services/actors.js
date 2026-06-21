@@ -28,11 +28,21 @@ export async function deleteActor(id) {
     return request(`/atores/${id}`, { method: 'DELETE' })
 }
 
-// Solicita o cadastro de um ator (RegisterActorModal). RN_003: entra como
-// pendente até a moderação de um administrador.
-export async function createActor({ name, address, type, position, description, website, email, phone }) {
+// Solicita o cadastro de um ator (RegisterActorModal / SuggestPointModal do
+// Mapa). RN_003: entra como pendente até a moderação de um administrador.
+export async function createActor({
+    name,
+    address,
+    type,
+    position,
+    description,
+    tags,
+    website,
+    email,
+    phone,
+}) {
     return request('/atores', {
         method: 'POST',
-        body: { name, address, type, position, description, website, email, phone },
+        body: { name, address, type, position, description, tags, website, email, phone },
     })
 }

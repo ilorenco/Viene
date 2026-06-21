@@ -1,35 +1,23 @@
 // Serviço do Mapa Interativo (atores georreferenciados + eventos no mapa).
 //
-// Estilo da branch do colega: cada função espera um mockDelay() e devolve o mock,
-// sem o ramo duplo USE_MOCKS/http.js. Quando a API existir, troca-se o corpo.
-//
-// Endpoints reais (ver MapPointController, prefixo /map):
-//   GET  /map          -> pontos do mapa (atores, com coordenadas)
-//   GET  /map/eventos  -> eventos georreferenciados (a confirmar)
-//   POST /map          -> sugerir um novo ponto (vai para moderação - RN_003)
-//
-// Observação: no back-end as coordenadas usam PostGIS; ao trocar para a API real,
-// garanta que cada ponto chegue com position: [lat, lng].
+// O Mapa não tem endpoints próprios — reaproveita os catálogos reais de Atores
+// e Eventos (que já trazem `position` quando existe). "Sugerir um ponto" também
+// reaproveita createActor/createEvent (mesmo POST /atores ou /eventos que os
+// modais de cadastro usam): o Mapa só decide, pelo `kind`, qual dos dois chamar.
 
-import { mockActors } from '@/features/actors/mocks/actors'
-import { mockMapEvents } from '@/features/map/mocks/mapEvents'
-import { mockDelay } from '@/mocks/delay'
+import { createActor, listActors } from '@/features/actors/services/actors'
+import { createEvent, listEvents } from '@/features/events/services/events'
 
 export async function listInnovationUnits() {
-    await mockDelay()
-    // Mesma lista do catálogo de Atores (cada ator já vem com position).
-    return mockActors
+    return listActors()
 }
 
 export async function listMapEvents() {
-    await mockDelay()
-    return mockMapEvents
+    return listEvents()
 }
 
-// Sugere um novo ponto no mapa. RN_003: a sugestão entra como pendente e passa
-// pela moderação de um administrador antes de aparecer publicamente.
-export async function suggestPoint(data) {
-    // data: { name, type, address, position, description, contact, tags, ... }
-    await mockDelay()
-    return { id: Date.now(), ...data, status: 'pendente' }
+// Sugere um novo ponto (ator ou evento). RN_003: a sugestão entra como pendente
+// e passa pela moderação de um administrador antes de aparecer publicamente.
+export async function suggestPoint({ kind, ...data }) {
+    return kind === 'ator' ? createActor(data) : createEvent(data)
 }

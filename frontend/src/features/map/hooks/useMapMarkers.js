@@ -33,6 +33,7 @@ export function useMapMarkers({
             showActors
                 ? actors.filter(
                       (actor) =>
+                          actor.position &&
                           enabledTypes.has(actor.type) &&
                           (term === '' || actor.name.toLowerCase().includes(term)),
                   )
@@ -45,6 +46,7 @@ export function useMapMarkers({
             showEvents
                 ? events.filter(
                       (event) =>
+                          event.position &&
                           enabledCats.has(event.category) &&
                           (term === '' || event.title.toLowerCase().includes(term)) &&
                           (!eventRange.from || event.date >= eventRange.from) &&
