@@ -1,18 +1,21 @@
 import { Loader2, Lock, Mail } from 'lucide-react'
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { PasswordInput } from '@/components/ui/PasswordInput'
+import { useAuth } from '@/contexts/AuthContext'
 import { cn } from '@/lib/utils'
 import { isValidEmail } from '@/lib/validation'
-import { login, recoverPassword } from '@/services/auth'
+import { recoverPassword } from '@/services/auth'
 
 import { useAuthForm } from './AuthFormContext'
 
 export function Login() {
     const navigate = useNavigate()
+    const location = useLocation()
+    const { login } = useAuth()
     const { values, setField, reset } = useAuthForm()
 
     const [errors, setErrors] = useState({})
@@ -37,7 +40,10 @@ export function Login() {
             setInfo('')
             await login({ email: values.email, password: values.password })
             reset()
-            navigate('/')
+            // Volta para a página que o usuário tentou acessar antes do login
+            // (guardada pelo ProtectedRoute em state.from); senão, vai para a Home.
+            const from = location.state?.from?.pathname ?? '/'
+            navigate(from, { replace: true })
         } catch (error) {
             // RN_006: as mensagens de credenciais ("Senha incorreta", etc) vêm do back-end.
             setServerError(error.message ?? 'Não foi possível entrar.')

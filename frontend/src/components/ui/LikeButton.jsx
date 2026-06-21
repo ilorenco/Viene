@@ -1,6 +1,7 @@
 import { Heart } from 'lucide-react'
 import { useState } from 'react'
 
+import { useRequireAuth } from '@/hooks/useRequireAuth'
 import { cn } from '@/lib/utils'
 
 // Esboço: estado de "favoritado" mantido em memória apenas para validar a
@@ -13,14 +14,24 @@ export function LikeButton({
     className,
     ...props
 }) {
+    // Favoritar exige login: sem conta, requireAuth leva ao /login.
+    const { requireAuth } = useRequireAuth()
     const [liked, setLiked] = useState(defaultLiked)
+
+    function handleClick(event) {
+        // Evita que o clique no coração dispare a navegação do card (quando o
+        // botão fica sobre/junto de um Link) e exige login antes de favoritar.
+        event.preventDefault()
+        event.stopPropagation()
+        requireAuth(() => setLiked((prev) => !prev))
+    }
 
     return (
         <button
             type="button"
             aria-pressed={liked}
             aria-label={liked ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
-            onClick={() => setLiked((prev) => !prev)}
+            onClick={handleClick}
             className={cn('shrink-0 cursor-pointer', className)}
             {...props}
         >

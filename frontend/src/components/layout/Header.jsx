@@ -6,6 +6,7 @@ import blueLogo from '@/assets/branding/logo-blue.png'
 import { MainMenu } from '@/components/layout/MainMenu'
 import { Avatar } from '@/components/ui/Avatar'
 import { Sheet, SheetTrigger } from '@/components/ui/Sheet'
+import { useAuth } from '@/contexts/AuthContext'
 import { useAccessibility } from '@/features/accessibility/AccessibilityContext'
 import { cn } from '@/lib/utils'
 
@@ -20,6 +21,7 @@ function navItemClass({ isActive }) {
 export function Header() {
     // No modo noturno usa a logo AZUL (a preta sumiria no header escuro).
     const { settings } = useAccessibility()
+    const { isAuthenticated, user } = useAuth()
     const logo = settings.nightMode ? blueLogo : blackLogo
 
     return (
@@ -48,9 +50,20 @@ export function Header() {
                     </NavLink>
                 </nav>
 
-                <Link to="/profile" aria-label="Perfil">
-                    <Avatar size="sm" />
-                </Link>
+                {/* Logado: avatar com as iniciais leva ao perfil. Deslogado:
+                    botão "Entrar" leva ao login. */}
+                {isAuthenticated ? (
+                    <Link to="/profile" aria-label="Perfil">
+                        <Avatar size="sm" name={user?.name} />
+                    </Link>
+                ) : (
+                    <Link
+                        to="/login"
+                        className="text-primary hover:text-primary/80 text-sm font-bold transition"
+                    >
+                        Entrar
+                    </Link>
+                )}
 
                 <Sheet>
                     <SheetTrigger aria-label="Abrir menu" className="cursor-pointer">

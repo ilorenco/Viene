@@ -15,11 +15,11 @@ import { Link } from 'react-router-dom'
 import { FullBleed } from '@/components/layout/FullBleed'
 import { Button } from '@/components/ui/Button'
 import { Textarea } from '@/components/ui/Textarea'
-import { isAuthenticated } from '@/services/auth'
+import { useAuth } from '@/contexts/AuthContext'
 import { QUESTIONS_KEY, submitQuestion } from '@/services/questions'
 
 export function QuestionForm() {
-    const authed = isAuthenticated()
+    const { isAuthenticated: authed } = useAuth()
     const queryClient = useQueryClient()
     const [question, setQuestion] = useState('')
     const [sending, setSending] = useState(false)

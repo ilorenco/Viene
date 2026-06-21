@@ -10,12 +10,25 @@ import { delay, getToken, request, setToken } from './http'
 
 const USER_STORAGE_KEY = 'viene.user'
 
+// Papel do usuário no modo mock (sem back-end ainda). Convenção de TESTE: e-mails
+// começando com "admin@" (ex.: admin@viene.com) entram como ADMINISTRADOR; os
+// demais entram como usuário comum. Com a API real, o papel virá do back-end
+// (no JWT / no /me) e esta função deixa de ser usada.
+//
+// ⚠️ SEGURANÇA: o `role` definido aqui fica no navegador (localStorage) e serve só
+// para a UI do mock — NÃO é barreira de segurança (pode ser adulterado pelo
+// DevTools). Quando a API entrar, o back-end DEVE validar o papel em TODA rota
+// administrativa (/admin/*); o front-end nunca é fonte de verdade p/ autorização.
+function roleForEmail(email) {
+    return /^admin@/i.test(String(email).trim()) ? 'admin' : 'usuario'
+}
+
 export async function login({ email, password }) {
     if (USE_MOCKS) {
         await delay()
         // Modo mock: aceita qualquer e-mail/senha já validados na tela.
         const fakeToken = 'mock-jwt-token'
-        const user = { name: email.split('@')[0], email }
+        const user = { name: email.split('@')[0], email, role: roleForEmail(email) }
         setToken(fakeToken)
         saveUser(user)
         return { token: fakeToken, user }

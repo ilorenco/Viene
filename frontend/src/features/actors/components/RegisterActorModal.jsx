@@ -6,6 +6,7 @@
 
 import { ChevronDown } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -18,6 +19,7 @@ import {
     SelectValue,
 } from '@/components/ui/Select'
 import { Textarea } from '@/components/ui/Textarea'
+import { useAuth } from '@/contexts/AuthContext'
 import { LocationPicker } from '@/features/map/components/LocationPicker'
 import { ATOR_TYPES } from '@/lib/atorTypes'
 import { cn } from '@/lib/utils'
@@ -50,6 +52,7 @@ function Section({ title, open, onToggle, children }) {
 }
 
 export function RegisterActorModal({ open, onClose }) {
+    const { isAuthenticated } = useAuth()
     const [form, setForm] = useState(initialForm)
     const [position, setPosition] = useState(null)
     const [photo, setPhoto] = useState(null)
@@ -111,7 +114,14 @@ export function RegisterActorModal({ open, onClose }) {
             <ModalContent aria-describedby={undefined}>
                 <ModalTitle>Cadastrar ator</ModalTitle>
 
-                {done ? (
+                {!isAuthenticated ? (
+                    <p className="text-secondary/70 text-sm">
+                        <Link to="/login" className="text-primary font-semibold underline">
+                            Entre na sua conta
+                        </Link>{' '}
+                        para cadastrar um ator.
+                    </p>
+                ) : done ? (
                     <div className="flex flex-col gap-3">
                         <p className="rounded-xl bg-green-100 px-4 py-2 text-sm font-medium text-green-700">
                             Solicitação enviada! O ator passará pela moderação de um administrador
