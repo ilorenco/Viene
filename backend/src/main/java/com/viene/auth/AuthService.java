@@ -7,6 +7,7 @@ import com.viene.auth.dto.RecoverPasswordRequest;
 import com.viene.auth.dto.RegisterRequest;
 import com.viene.auth.dto.RegisterResponse;
 import com.viene.auth.dto.UserResponse;
+import com.viene.common.exception.ApiException;
 import com.viene.common.exception.EmailAlreadyInUseException;
 import com.viene.common.exception.InvalidCredentialsException;
 import com.viene.security.JwtService;
@@ -14,7 +15,9 @@ import com.viene.user.Role;
 import com.viene.user.User;
 import com.viene.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -48,6 +51,8 @@ public class AuthService {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.email(), request.password()));
+        } catch (LockedException ex) {
+            throw new ApiException("Sua conta foi bloqueada. Contate um administrador.", HttpStatus.FORBIDDEN);
         } catch (AuthenticationException ex) {
             throw new InvalidCredentialsException();
         }
