@@ -74,7 +74,7 @@ export function ActorActions({ name, entityType = 'ator', entityId }) {
         if (!reason || sending) return
         setSending(true)
         try {
-            await submitReport({ name, type: entityType, reason })
+            await submitReport({ type: entityType, targetId: entityId, reason })
             // Faz a administração (Plataforma > Denúncias) rebuscar a lista.
             queryClient.invalidateQueries({ queryKey: ADMIN_KEYS.reports })
             setReportOpen(false)
