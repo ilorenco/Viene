@@ -21,6 +21,7 @@ import { PageHeader } from '@/components/layout/PageHeader'
 import { Avatar } from '@/components/ui/Avatar'
 import { Button } from '@/components/ui/Button'
 import { useAuth } from '@/contexts/AuthContext'
+import { MyPublications } from '@/features/profile/components/MyPublications'
 import { MyQuestions } from '@/features/profile/components/MyQuestions'
 import { useLogout } from '@/hooks/useLogout'
 
@@ -134,6 +135,8 @@ export function Profile() {
     const { user } = useAuth()
     const displayName = user?.name ?? 'Usuário'
     const email = user?.email
+    // Usuários do tipo "ator" ganham o bloco de gestão das próprias publicações.
+    const isActor = user?.role === 'ator'
 
     return (
         <>
@@ -195,6 +198,9 @@ export function Profile() {
                     </ul>
                 </div>
             </Section>
+
+            {/* Bloco exclusivo de atores: gestão das próprias publicações. */}
+            {isActor && <MyPublications />}
 
             <Section title="Meus eventos" action={<SeeAll to="/events" />}>
                 <ul className={`${listClass} grid grid-cols-2 divide-x`}>
