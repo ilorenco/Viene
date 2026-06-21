@@ -2,6 +2,7 @@ package com.viene.common.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,6 +17,16 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleApiException(ApiException ex) {
         return ResponseEntity.status(ex.getStatus())
                 .body(new ErrorResponse(ex.getMessage(), ex.getStatus().value()));
+    }
+
+    // @PreAuthorize nega aqui dentro do DispatcherServlet (via AOP), antes que a
+    // ExceptionTranslationFilter da Security chegue a ver a exceção — por isso
+    // precisa de tratamento explícito aqui, e não só no accessDeniedHandler do
+    // SecurityConfig (esse só cobre negações no nível de filtro/URL).
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleAccessDenied(AccessDeniedException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new ErrorResponse("Acesso negado.", HttpStatus.FORBIDDEN.value()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
