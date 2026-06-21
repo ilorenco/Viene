@@ -6,6 +6,7 @@ import {
     Heart,
     History,
     Pencil,
+    Settings,
     SquarePlus,
     Store,
     Ticket,
@@ -15,6 +16,8 @@ import { Link } from 'react-router-dom'
 
 import { Avatar } from '@/components/ui/Avatar'
 import { Button } from '@/components/ui/Button'
+import { MyQuestions } from '@/features/profile/components/MyQuestions'
+import { useLogout } from '@/hooks/useLogout'
 import { cn } from '@/lib/utils'
 
 const stats = [
@@ -79,7 +82,9 @@ function ProfileSection({
             <header className="mb-3 flex items-center justify-between">
                 <div className="text-primary flex items-center gap-2">
                     <Icon className="size-5" />
-                    <h2 className="text-foreground font-inter text-lg font-bold">{title}</h2>
+                    <h2 className="text-secondary font-montserrat text-xl font-extrabold">
+                        {title}
+                    </h2>
                 </div>
                 {seeAllTo && (
                     <Link
@@ -92,7 +97,7 @@ function ProfileSection({
             </header>
             <ul
                 className={cn(
-                    'divide-foreground/10 rounded-lg bg-white text-sm shadow-sm',
+                    'border-secondary/10 divide-secondary/10 overflow-hidden rounded-2xl border bg-white text-sm',
                     containerClassName,
                 )}
             >
@@ -110,23 +115,25 @@ function CollectionItem({ icon: Icon, title, description, to, meta }) {
                     <Icon className="size-6" />
                 </div>
                 <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-                    <p className="text-foreground font-bold">{title}</p>
-                    <p className="text-foreground/50 text-xs leading-tight">{description}</p>
+                    <p className="text-secondary font-bold">{title}</p>
+                    <p className="text-secondary/50 text-xs leading-tight">{description}</p>
                 </div>
-                {meta && <span className="text-foreground/50 shrink-0 text-xs">{meta}</span>}
-                <ChevronRight className="text-foreground/70 size-5 shrink-0" />
+                {meta && <span className="text-secondary/50 shrink-0 text-xs">{meta}</span>}
+                <ChevronRight className="text-secondary/70 size-5 shrink-0" />
             </Link>
         </li>
     )
 }
 
 export function Profile() {
+    const handleLogout = useLogout()
+
     return (
         <>
-            <header className="bg-secondary rounded-lg p-5">
+            <header className="bg-secondary -mx-4 rounded-none p-6 lg:-mx-[5vw] lg:rounded-xl lg:p-8">
                 <div className="flex items-center gap-4">
                     <div className="relative shrink-0">
-                        <Avatar size="lg" />
+                        <Avatar size="lg" name="João Silva" />
                         <button
                             type="button"
                             aria-label="Editar foto de perfil"
@@ -140,6 +147,14 @@ export function Profile() {
                         <h1 className="font-inter text-lg leading-tight font-bold">João Silva</h1>
                         <p className="text-background/60 text-sm">Membro desde 2024</p>
                     </div>
+
+                    <Link
+                        to="/configuracoes"
+                        aria-label="Configurações"
+                        className="text-background/80 ml-auto self-start transition active:scale-90"
+                    >
+                        <Settings className="size-6" />
+                    </Link>
                 </div>
 
                 <ul className="divide-background/20 mt-4 flex divide-x">
@@ -178,7 +193,9 @@ export function Profile() {
                 ))}
             </ProfileSection>
 
-            <Button variant="danger" className="self-center" size="sm">
+            <MyQuestions />
+
+            <Button variant="danger" className="self-center" size="sm" onClick={handleLogout}>
                 Sair da conta
             </Button>
         </>
