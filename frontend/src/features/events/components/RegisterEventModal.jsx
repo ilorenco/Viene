@@ -1,10 +1,11 @@
 // Modal "Cadastrar evento" (aberto pelo botão do catálogo de Eventos). Espelha o
-// "Cadastrar ator": campos do evento — nome*, endereço*, data*, horários, tipo*,
-// localização no mapa, descrição, link do ingresso e foto/banner (opcionais). Como
-// ainda não há back-end, ao enviar apenas confirma o envio (a persistência entra
-// quando a API existir). RN_003: a solicitação passaria pela moderação de um admin.
+// "Cadastrar ator": campos do evento — nome*, endereço*, data*, horários*, tipo*,
+// localização no mapa (apenas visual; Evento ainda não tem posição no backend),
+// descrição, link do ingresso e foto/banner (opcionais). RN_003: a solicitação
+// entra como pendente até a moderação de um administrador (ver
+// services/events.js -> createEvent / módulo de Aprovações).
 
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -21,6 +22,7 @@ import {
 import { Textarea } from '@/components/ui/Textarea'
 import { useAuth } from '@/contexts/AuthContext'
 import { mockEventCategories } from '@/features/events/mocks/eventCategories'
+import { createEvent } from '@/features/events/services/events'
 import { LocationPicker } from '@/features/map/components/LocationPicker'
 import { cn } from '@/lib/utils'
 
@@ -62,6 +64,7 @@ export function RegisterEventModal({ open, onClose }) {
     const [showTicket, setShowTicket] = useState(false)
     const [error, setError] = useState('')
     const [done, setDone] = useState(false)
+    const [submitting, setSubmitting] = useState(false)
 
     function setField(key, value) {
         setForm((prev) => ({ ...prev, [key]: value }))
@@ -86,6 +89,7 @@ export function RegisterEventModal({ open, onClose }) {
         setShowTicket(false)
         setError('')
         setDone(false)
+        setSubmitting(false)
     }
 
     function handleClose() {
@@ -93,7 +97,7 @@ export function RegisterEventModal({ open, onClose }) {
         onClose()
     }
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault()
         if (!form.name.trim()) {
             setError('Informe o nome do evento.')
@@ -107,12 +111,34 @@ export function RegisterEventModal({ open, onClose }) {
             setError('Informe a data do evento.')
             return
         }
-        if (form.start && form.end && form.end < form.start) {
+        if (!form.start || !form.end) {
+            setError('Informe os horários de início e término.')
+            return
+        }
+        if (form.end < form.start) {
             setError('O horário de término deve ser igual ou posterior ao de início.')
             return
         }
-        // Sem back-end ainda: apenas confirma o envio.
-        setDone(true)
+
+        try {
+            setSubmitting(true)
+            setError('')
+            await createEvent({
+                title: form.name,
+                address: form.address,
+                date: form.date,
+                start: form.start,
+                end: form.end,
+                category: form.category,
+                description: form.description,
+                ticketUrl: form.ticketUrl,
+            })
+            setDone(true)
+        } catch (submitError) {
+            setError(submitError.message ?? 'Não foi possível enviar a solicitação.')
+        } finally {
+            setSubmitting(false)
+        }
     }
 
     return (
@@ -184,7 +210,7 @@ export function RegisterEventModal({ open, onClose }) {
 
                         <div className="flex gap-2">
                             <label className="text-secondary flex flex-1 flex-col gap-1 text-sm font-semibold">
-                                Início
+                                Início *
                                 <input
                                     type="time"
                                     value={form.start}
@@ -193,7 +219,7 @@ export function RegisterEventModal({ open, onClose }) {
                                 />
                             </label>
                             <label className="text-secondary flex flex-1 flex-col gap-1 text-sm font-semibold">
-                                Término
+                                Término *
                                 <input
                                     type="time"
                                     value={form.end}
@@ -301,8 +327,14 @@ export function RegisterEventModal({ open, onClose }) {
                             >
                                 Cancelar
                             </Button>
-                            <Button type="submit" size="sm" className="flex-1">
-                                Solicitar cadastro
+                            <Button
+                                type="submit"
+                                size="sm"
+                                disabled={submitting}
+                                className="flex flex-1 items-center justify-center gap-2"
+                            >
+                                {submitting && <Loader2 className="size-4 animate-spin" />}
+                                {submitting ? 'Enviando...' : 'Solicitar cadastro'}
                             </Button>
                         </div>
                     </form>

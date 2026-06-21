@@ -1,10 +1,10 @@
 // Modal "Cadastrar ator" (aberto pelo botão do catálogo). Tem os mesmos campos do
 // "Solicitar marcador" do mapa (versão Ator): nome*, endereço*, tipo de ator*,
-// localização no mapa, descrição, contato e foto/logo (opcionais). Como ainda não
-// há back-end, ao enviar apenas confirma o envio (a persistência entra quando a API
-// existir — ver services/). RN_003: a solicitação passaria pela moderação de um admin.
+// localização no mapa, descrição, contato e foto/logo (opcionais). RN_003: a
+// solicitação entra como pendente até a moderação de um administrador (ver
+// services/actors.js -> createActor / módulo de Aprovações).
 
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/Select'
 import { Textarea } from '@/components/ui/Textarea'
 import { useAuth } from '@/contexts/AuthContext'
+import { createActor } from '@/features/actors/services/actors'
 import { LocationPicker } from '@/features/map/components/LocationPicker'
 import { ATOR_TYPES } from '@/lib/atorTypes'
 import { cn } from '@/lib/utils'
@@ -59,6 +60,7 @@ export function RegisterActorModal({ open, onClose }) {
     const [showContact, setShowContact] = useState(false)
     const [error, setError] = useState('')
     const [done, setDone] = useState(false)
+    const [submitting, setSubmitting] = useState(false)
 
     function setField(key, value) {
         setForm((prev) => ({ ...prev, [key]: value }))
@@ -83,6 +85,7 @@ export function RegisterActorModal({ open, onClose }) {
         setShowContact(false)
         setError('')
         setDone(false)
+        setSubmitting(false)
     }
 
     function handleClose() {
@@ -90,7 +93,7 @@ export function RegisterActorModal({ open, onClose }) {
         onClose()
     }
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault()
         if (!form.name.trim()) {
             setError('Informe o nome do ator.')
@@ -100,8 +103,26 @@ export function RegisterActorModal({ open, onClose }) {
             setError('Informe o endereço.')
             return
         }
-        // Sem back-end ainda: apenas confirma o envio.
-        setDone(true)
+
+        try {
+            setSubmitting(true)
+            setError('')
+            await createActor({
+                name: form.name,
+                address: form.address,
+                type: form.type,
+                position,
+                description: form.description,
+                website: form.site,
+                email: form.email,
+                phone: form.phone,
+            })
+            setDone(true)
+        } catch (submitError) {
+            setError(submitError.message ?? 'Não foi possível enviar a solicitação.')
+        } finally {
+            setSubmitting(false)
+        }
     }
 
     return (
@@ -272,8 +293,14 @@ export function RegisterActorModal({ open, onClose }) {
                             >
                                 Cancelar
                             </Button>
-                            <Button type="submit" size="sm" className="flex-1">
-                                Solicitar cadastro
+                            <Button
+                                type="submit"
+                                size="sm"
+                                disabled={submitting}
+                                className="flex flex-1 items-center justify-center gap-2"
+                            >
+                                {submitting && <Loader2 className="size-4 animate-spin" />}
+                                {submitting ? 'Enviando...' : 'Solicitar cadastro'}
                             </Button>
                         </div>
                     </form>

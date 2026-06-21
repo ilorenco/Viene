@@ -3,6 +3,7 @@
 // Conectado à API real (ver ActorController, prefixo /atores):
 //   GET    /atores        -> lista de atores
 //   GET    /atores/{id}   -> detalhe de um ator
+//   POST   /atores        -> solicita o cadastro (autenticado; entra como pendente)
 //   DELETE /atores/{id}   -> remove um ator (admin)
 
 import { ApiError, request } from '@/services/http'
@@ -25,4 +26,13 @@ export async function getActorById(id) {
 // Remove um ator (ação de admin). Ainda não há UI que chame isto.
 export async function deleteActor(id) {
     return request(`/atores/${id}`, { method: 'DELETE' })
+}
+
+// Solicita o cadastro de um ator (RegisterActorModal). RN_003: entra como
+// pendente até a moderação de um administrador.
+export async function createActor({ name, address, type, position, description, website, email, phone }) {
+    return request('/atores', {
+        method: 'POST',
+        body: { name, address, type, position, description, website, email, phone },
+    })
 }
