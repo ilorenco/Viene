@@ -1,5 +1,6 @@
 import { QueryClientProvider } from '@tanstack/react-query'
 
+import { AuthProvider } from '@/contexts/AuthContext'
 import { EventFiltersProvider } from '@/contexts/EventFiltersContext'
 import { AccessibilityProvider } from '@/features/accessibility/AccessibilityContext'
 import { AccessibilityWidget } from '@/features/accessibility/components/AccessibilityWidget'
@@ -11,10 +12,12 @@ export function App() {
     return (
         <QueryClientProvider client={queryClient}>
             <AccessibilityProvider>
-                <EventFiltersProvider>
-                    <AppRoutes />
-                </EventFiltersProvider>
-                <AccessibilityWidget />
+                <AuthProvider>
+                    <EventFiltersProvider>
+                        <AppRoutes />
+                    </EventFiltersProvider>
+                    <AccessibilityWidget />
+                </AuthProvider>
             </AccessibilityProvider>
         </QueryClientProvider>
     )

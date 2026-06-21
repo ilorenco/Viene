@@ -20,13 +20,13 @@ import {
     SelectValue,
 } from '@/components/ui/Select'
 import { Textarea } from '@/components/ui/Textarea'
+import { useAuth } from '@/contexts/AuthContext'
 import { mockEventCategories } from '@/features/events/mocks/eventCategories'
 import { LocationPicker } from '@/features/map/components/LocationPicker'
 import { useSuggestPoint } from '@/features/map/hooks/useSuggestPoint'
 import { ATOR_TYPES } from '@/lib/atorTypes'
 import { TAGS } from '@/lib/tags'
 import { cn } from '@/lib/utils'
-import { isAuthenticated } from '@/services/auth'
 
 const initialForm = {
     name: '',
@@ -60,7 +60,7 @@ function Section({ title, open, onToggle, children }) {
 }
 
 export function SuggestPointModal({ open, onClose }) {
-    const authed = isAuthenticated()
+    const { isAuthenticated: authed } = useAuth()
     const [kind, setKind] = useState('ator')
     const [form, setForm] = useState(initialForm)
     const [position, setPosition] = useState(null)

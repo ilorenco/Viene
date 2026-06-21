@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom'
 
 import { Avatar } from '@/components/ui/Avatar'
 import { Button } from '@/components/ui/Button'
+import { useAuth } from '@/contexts/AuthContext'
 import { MyQuestions } from '@/features/profile/components/MyQuestions'
 import { useLogout } from '@/hooks/useLogout'
 import { cn } from '@/lib/utils'
@@ -127,13 +128,16 @@ function CollectionItem({ icon: Icon, title, description, to, meta }) {
 
 export function Profile() {
     const handleLogout = useLogout()
+    // Rota protegida (ProtectedRoute) → sempre há um usuário logado aqui.
+    const { user } = useAuth()
+    const displayName = user?.name ?? 'Usuário'
 
     return (
         <>
             <header className="bg-secondary -mx-4 rounded-none p-6 lg:-mx-[5vw] lg:rounded-xl lg:p-8">
                 <div className="flex items-center gap-4">
                     <div className="relative shrink-0">
-                        <Avatar size="lg" name="João Silva" />
+                        <Avatar size="lg" name={displayName} />
                         <button
                             type="button"
                             aria-label="Editar foto de perfil"
@@ -144,7 +148,9 @@ export function Profile() {
                     </div>
 
                     <div className="text-background flex flex-col gap-0.5">
-                        <h1 className="font-inter text-lg leading-tight font-bold">João Silva</h1>
+                        <h1 className="font-inter text-lg leading-tight font-bold">
+                            {displayName}
+                        </h1>
                         <p className="text-background/60 text-sm">Membro desde 2024</p>
                     </div>
 

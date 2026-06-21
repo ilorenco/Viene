@@ -8,6 +8,7 @@ import { Avatar } from '@/components/ui/Avatar'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Modal, ModalContent, ModalDescription, ModalTitle } from '@/components/ui/Modal'
+import { useAuth } from '@/contexts/AuthContext'
 import { AccessibilityControls } from '@/features/accessibility/components/AccessibilityControls'
 import { useLogout } from '@/hooks/useLogout'
 
@@ -39,10 +40,14 @@ function Section({ title, description, children }) {
 
 export function Settings() {
     const handleLogout = useLogout()
+    // Rota protegida (ProtectedRoute) → sempre há um usuário logado aqui. Os dados
+    // pessoais começam com o nome/e-mail da conta; telefone/nascimento são mock
+    // (entram de verdade quando o back-end de perfil existir).
+    const { user } = useAuth()
     const fileInputRef = useRef(null)
     const [form, setForm] = useState({
-        name: 'João Silva',
-        email: 'joao.silva@viene.com',
+        name: user?.name ?? '',
+        email: user?.email ?? '',
         phone: '(47) 99999-0000',
         birthdate: '',
     })

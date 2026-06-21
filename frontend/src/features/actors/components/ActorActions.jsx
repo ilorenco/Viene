@@ -20,6 +20,7 @@ import { Textarea } from '@/components/ui/Textarea'
 import { ADMIN_KEYS } from '@/features/admin/hooks/useAdminData'
 import { submitReport } from '@/features/admin/services/reports'
 import { useFeedback } from '@/hooks/useFeedback'
+import { useRequireAuth } from '@/hooks/useRequireAuth'
 import { cn } from '@/lib/utils'
 
 const BUTTON_CLASS =
@@ -29,6 +30,8 @@ const BUTTON_CLASS =
 // `entityType` ('ator' | 'evento') marca o tipo na denúncia.
 export function ActorActions({ name, entityType = 'ator' }) {
     const queryClient = useQueryClient()
+    // Favoritar e denunciar exigem login: sem conta, requireAuth leva ao /login.
+    const { requireAuth } = useRequireAuth()
     const [liked, setLiked] = useState(false)
     const [menuOpen, setMenuOpen] = useState(false)
     const [feedback, setFeedback] = useFeedback()
@@ -88,7 +91,7 @@ export function ActorActions({ name, entityType = 'ator' }) {
                 {/* Favoritar */}
                 <button
                     type="button"
-                    onClick={toggleLike}
+                    onClick={() => requireAuth(toggleLike)}
                     aria-pressed={liked}
                     aria-label={liked ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
                     className={BUTTON_CLASS}
@@ -132,7 +135,7 @@ export function ActorActions({ name, entityType = 'ator' }) {
                                 </button>
                                 <button
                                     type="button"
-                                    onClick={openReport}
+                                    onClick={() => requireAuth(openReport)}
                                     className="text-danger hover:bg-danger/5 flex items-center gap-3 px-4 py-3 text-left text-sm font-medium transition"
                                 >
                                     <Flag className="size-4 shrink-0" />

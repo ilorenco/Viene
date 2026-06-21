@@ -20,6 +20,7 @@ import { Profile } from '@/pages/Profile'
 import { Settings } from '@/pages/Settings'
 import { Sobre } from '@/pages/Sobre'
 import { Tickets } from '@/pages/Tickets'
+import { AdminRoute, ProtectedRoute } from '@/routes/ProtectedRoute'
 
 // Carrega o mapa (Leaflet) sob demanda, fora do bundle inicial.
 const Map = lazy(() => import('@/pages/Map').then((m) => ({ default: m.Map })))
@@ -49,14 +50,7 @@ const router = createBrowserRouter([
                         index: true,
                         element: <Home />,
                     },
-                    {
-                        path: '/favorites',
-                        element: <Favorites />,
-                    },
-                    {
-                        path: '/tickets',
-                        element: <Tickets />,
-                    },
+                    // Rotas PÚBLICAS (navegação de leitura, sem login).
                     {
                         path: '/actors',
                         element: <Actors />,
@@ -74,24 +68,44 @@ const router = createBrowserRouter([
                         element: <EventDetails />,
                     },
                     {
-                        path: '/profile',
-                        element: <Profile />,
-                    },
-                    {
-                        path: '/configuracoes',
-                        element: <Settings />,
+                        path: '/sobre',
+                        element: <Sobre />,
                     },
                     {
                         path: '/ajuda',
                         element: <Faq />,
                     },
+                    // Rotas que EXIGEM LOGIN (área da conta). Sem login → /login.
                     {
-                        path: '/sobre',
-                        element: <Sobre />,
+                        element: <ProtectedRoute />,
+                        children: [
+                            {
+                                path: '/favorites',
+                                element: <Favorites />,
+                            },
+                            {
+                                path: '/tickets',
+                                element: <Tickets />,
+                            },
+                            {
+                                path: '/profile',
+                                element: <Profile />,
+                            },
+                            {
+                                path: '/configuracoes',
+                                element: <Settings />,
+                            },
+                        ],
                     },
+                    // Rota que EXIGE ADMIN. Logado sem ser admin → Home.
                     {
-                        path: '/admin',
-                        element: <Admin />,
+                        element: <AdminRoute />,
+                        children: [
+                            {
+                                path: '/admin',
+                                element: <Admin />,
+                            },
+                        ],
                     },
                     {
                         path: '*',
