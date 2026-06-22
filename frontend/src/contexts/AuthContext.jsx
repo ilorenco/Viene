@@ -15,6 +15,7 @@ import {
     login as loginService,
     logout as logoutService,
     register as registerService,
+    updateProfile as updateProfileService,
 } from '@/services/auth'
 
 const AuthContext = createContext(null)
@@ -32,6 +33,12 @@ export function AuthProvider({ children }) {
 
     const register = useCallback((payload) => registerService(payload), [])
 
+    const updateProfile = useCallback(async (payload) => {
+        const data = await updateProfileService(payload)
+        setUser(data.user ?? getCurrentUser())
+        return data
+    }, [])
+
     const logout = useCallback(() => {
         logoutService()
         setUser(null)
@@ -44,9 +51,10 @@ export function AuthProvider({ children }) {
             isAdmin: user?.role === 'admin',
             login,
             register,
+            updateProfile,
             logout,
         }),
-        [user, login, register, logout],
+        [user, login, register, updateProfile, logout],
     )
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

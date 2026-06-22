@@ -40,19 +40,19 @@ function Section({ title, description, children }) {
 
 export function Settings() {
     const handleLogout = useLogout()
-    // Rota protegida (ProtectedRoute) → sempre há um usuário logado aqui. Os dados
-    // pessoais começam com o nome/e-mail da conta; telefone/nascimento são mock
-    // (entram de verdade quando o back-end de perfil existir).
-    const { user } = useAuth()
+    // Rota protegida (ProtectedRoute) → sempre há um usuário logado aqui.
+    const { user, updateProfile } = useAuth()
     const fileInputRef = useRef(null)
     const [form, setForm] = useState({
         name: user?.name ?? '',
         email: user?.email ?? '',
-        phone: '(47) 99999-0000',
-        birthdate: '',
+        phone: user?.phone ?? '',
+        birthdate: user?.birthdate ?? '',
     })
     const [photo, setPhoto] = useState(null)
+    const [saving, setSaving] = useState(false)
     const [saved, setSaved] = useState(false)
+    const [error, setError] = useState('')
     const [doc, setDoc] = useState(null)
 
     function setField(field, value) {
@@ -72,10 +72,23 @@ export function Settings() {
         setSaved(false)
     }
 
-    function handleSave(event) {
+    async function handleSave(event) {
         event.preventDefault()
-        // Mock: aqui chamaríamos o serviço de usuário (PUT /api/v1/user/profile).
-        setSaved(true)
+        setSaving(true)
+        setError('')
+        try {
+            await updateProfile({
+                name: form.name.trim(),
+                email: form.email.trim(),
+                phone: form.phone.trim(),
+                birthdate: form.birthdate || null,
+            })
+            setSaved(true)
+        } catch (err) {
+            setError(err?.message ?? 'Não foi possível salvar as alterações.')
+        } finally {
+            setSaving(false)
+        }
     }
 
     return (
@@ -107,12 +120,17 @@ export function Settings() {
                             </p>
                         </div>
                         <div className="flex shrink-0 flex-col items-end gap-1">
-                            <Button type="submit" size="sm">
-                                Salvar alterações
+                            <Button type="submit" size="sm" disabled={saving}>
+                                {saving ? 'Salvando...' : 'Salvar alterações'}
                             </Button>
                             {saved && (
                                 <span className="animate-fade-in text-sm font-medium text-green-600">
                                     Alterações salvas!
+                                </span>
+                            )}
+                            {error && (
+                                <span className="text-danger animate-fade-in text-sm font-semibold">
+                                    {error}
                                 </span>
                             )}
                         </div>
