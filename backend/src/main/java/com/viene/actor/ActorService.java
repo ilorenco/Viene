@@ -86,6 +86,7 @@ public class ActorService {
         actor.setWebsite(request.website());
         actor.setEmail(request.email());
         actor.setPhone(request.phone());
+        actor.setImage(request.image());
         return actorRepository.save(actor);
     }
 

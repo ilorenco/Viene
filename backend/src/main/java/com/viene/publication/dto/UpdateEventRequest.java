@@ -17,5 +17,6 @@ public record UpdateEventRequest(
         LocalTime end,
         String description,
         String ticketUrl,
+        String image,
         List<Long> linkedActorIds) {
 }

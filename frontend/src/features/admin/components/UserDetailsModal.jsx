@@ -18,7 +18,7 @@ export function UserDetailsModal({ user, onClose, onDelete }) {
                 {user && (
                     <>
                         <div className="flex items-center gap-3">
-                            <Avatar size="md" name={user.name} />
+                            <Avatar size="md" name={user.name} src={user.avatar} />
                             <div className="min-w-0">
                                 <ModalTitle className="truncate">{user.name}</ModalTitle>
                                 <p className="text-secondary/60 truncate text-sm">{user.email}</p>

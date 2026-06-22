@@ -12,7 +12,7 @@ export function UserRow({ user, onDetails, onToggleStatus, onDelete }) {
 
     return (
         <li className="border-secondary/10 flex items-center gap-3 rounded-2xl border bg-white p-3">
-            <Avatar size="sm" name={user.name} />
+            <Avatar size="sm" name={user.name} src={user.avatar} />
 
             <div className="min-w-0 flex-1">
                 <p className="text-secondary truncate font-semibold">{user.name}</p>

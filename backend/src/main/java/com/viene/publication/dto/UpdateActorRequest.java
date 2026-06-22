@@ -14,5 +14,6 @@ public record UpdateActorRequest(
         String website,
         String email,
         String phone,
+        String image,
         List<Long> linkedEventIds) {
 }

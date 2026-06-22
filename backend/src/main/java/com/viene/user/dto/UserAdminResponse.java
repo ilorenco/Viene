@@ -5,7 +5,8 @@ import com.viene.user.Role;
 import com.viene.user.User;
 import com.viene.user.UserStatus;
 
-public record UserAdminResponse(Long id, String name, String email, Role role, UserStatus status, String createdAt) {
+public record UserAdminResponse(
+        Long id, String name, String email, Role role, UserStatus status, String createdAt, String avatar) {
 
     public static UserAdminResponse from(User user) {
         return new UserAdminResponse(
@@ -14,6 +15,7 @@ public record UserAdminResponse(Long id, String name, String email, Role role, U
                 user.getEmail(),
                 user.getRole(),
                 user.getStatus(),
-                PortugueseDates.displayDate(user.getCreatedAt().toLocalDate()));
+                PortugueseDates.displayDate(user.getCreatedAt().toLocalDate()),
+                user.getAvatar());
     }
 }

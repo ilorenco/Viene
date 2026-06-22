@@ -6,7 +6,7 @@
 // Ator: tipo de autor*. Evento: data de início*, data de fim*, categoria*.
 
 import { ChevronDown } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { Button } from '@/components/ui/Button'
@@ -27,6 +27,7 @@ import { useSuggestPoint } from '@/features/map/hooks/useSuggestPoint'
 import { ATOR_TYPES } from '@/lib/atorTypes'
 import { TAGS } from '@/lib/tags'
 import { cn } from '@/lib/utils'
+import { uploadImage } from '@/services/uploads'
 
 const initialForm = {
     name: '',
@@ -67,6 +68,7 @@ export function SuggestPointModal({ open, onClose }) {
     const [position, setPosition] = useState(null)
     const [tags, setTags] = useState(() => new Set())
     const [photo, setPhoto] = useState(null)
+    const [uploadingPhoto, setUploadingPhoto] = useState(false)
     const [showTags, setShowTags] = useState(false)
     const [showContact, setShowContact] = useState(false)
     const [error, setError] = useState('')
@@ -85,17 +87,22 @@ export function SuggestPointModal({ open, onClose }) {
         })
     }
 
-    function handlePhoto(event) {
+    // Sobe o arquivo na hora que é escolhido — a URL exibida no preview já é a
+    // real (vinda do back-end), pronta pra mandar junto no submit do formulário.
+    async function handlePhoto(event) {
         const file = event.target.files?.[0]
-        if (file) setPhoto({ name: file.name, url: URL.createObjectURL(file) })
+        if (!file) return
+        setUploadingPhoto(true)
+        setError('')
+        try {
+            const { url } = await uploadImage(file)
+            setPhoto({ name: file.name, url })
+        } catch (uploadError) {
+            setError(uploadError.message ?? 'Não foi possível enviar a imagem.')
+        } finally {
+            setUploadingPhoto(false)
+        }
     }
-
-    // Libera a URL temporária da imagem ao trocá-la ou desmontar (evita vazamento).
-    useEffect(() => {
-        const url = photo?.url
-        if (!url) return
-        return () => URL.revokeObjectURL(url)
-    }, [photo?.url])
 
     function reset() {
         setKind('ator')
@@ -103,6 +110,7 @@ export function SuggestPointModal({ open, onClose }) {
         setPosition(null)
         setTags(new Set())
         setPhoto(null)
+        setUploadingPhoto(false)
         setShowTags(false)
         setShowContact(false)
         setError('')
@@ -140,9 +148,9 @@ export function SuggestPointModal({ open, onClose }) {
         }
 
         setError('')
-        // Tags/contato/foto só fazem sentido pro Ator (Event não tem esses
-        // campos no backend) — ver services/map.js -> suggestPoint. Ator.tags é
-        // uma string única, então só a primeira tag marcada é enviada.
+        // Tags/contato só fazem sentido pro Ator (Event não tem esses campos no
+        // backend) — ver services/map.js -> suggestPoint. Ator.tags é uma string
+        // única, então só a primeira tag marcada é enviada. Foto vale pra os dois.
         const firstTagId = [...tags][0]
         const firstTagLabel = TAGS.find((tag) => tag.id === firstTagId)?.label
         const data =
@@ -158,6 +166,7 @@ export function SuggestPointModal({ open, onClose }) {
                       website: form.site.trim(),
                       email: form.email.trim(),
                       phone: form.phone.trim(),
+                      image: photo?.url ?? null,
                   }
                 : {
                       kind,
@@ -169,6 +178,7 @@ export function SuggestPointModal({ open, onClose }) {
                       start: form.start,
                       end: form.end,
                       category: form.category,
+                      image: photo?.url ?? null,
                   }
 
         suggest.mutate(data)
@@ -436,12 +446,22 @@ export function SuggestPointModal({ open, onClose }) {
                                         className="size-14 rounded-xl object-cover"
                                     />
                                 )}
-                                <label className="bg-secondary/10 text-secondary cursor-pointer rounded-full px-3 py-2 text-sm font-semibold">
-                                    {photo ? 'Trocar imagem' : 'Escolher imagem'}
+                                <label
+                                    className={cn(
+                                        'bg-secondary/10 text-secondary cursor-pointer rounded-full px-3 py-2 text-sm font-semibold',
+                                        uploadingPhoto && 'pointer-events-none opacity-50',
+                                    )}
+                                >
+                                    {uploadingPhoto
+                                        ? 'Enviando...'
+                                        : photo
+                                          ? 'Trocar imagem'
+                                          : 'Escolher imagem'}
                                     <input
                                         type="file"
                                         accept="image/*"
                                         onChange={handlePhoto}
+                                        disabled={uploadingPhoto}
                                         className="hidden"
                                     />
                                 </label>
@@ -467,7 +487,7 @@ export function SuggestPointModal({ open, onClose }) {
                             <Button
                                 type="submit"
                                 size="sm"
-                                disabled={suggest.isPending}
+                                disabled={suggest.isPending || uploadingPhoto}
                                 className="flex-1"
                             >
                                 {suggest.isPending ? 'Enviando...' : 'Enviar'}

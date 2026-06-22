@@ -20,6 +20,7 @@ import { Textarea } from '@/components/ui/Textarea'
 import { mockEventCategories } from '@/features/events/mocks/eventCategories'
 import { MY_PUBLICATIONS_KEY, updateMyEvent } from '@/features/profile/services/publications'
 import { cn } from '@/lib/utils'
+import { uploadImage } from '@/services/uploads'
 
 const MONTHS = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
 
@@ -47,6 +48,8 @@ export function EditEventModal({ open, onClose, event, actorOptions = [] }) {
         ticketUrl: event.ticketUrl ?? '',
     })
     const [linked, setLinked] = useState(() => new Set(event.linkedActorIds ?? []))
+    const [photo, setPhoto] = useState(() => (event.image ? { name: '', url: event.image } : null))
+    const [uploadingPhoto, setUploadingPhoto] = useState(false)
     const [error, setError] = useState('')
 
     const save = useMutation({
@@ -68,6 +71,23 @@ export function EditEventModal({ open, onClose, event, actorOptions = [] }) {
             else next.add(id)
             return next
         })
+    }
+
+    // Sobe o arquivo na hora que é escolhido — a URL exibida no preview já é a
+    // real (vinda do back-end), pronta pra mandar junto no submit do formulário.
+    async function handlePhoto(changeEvent) {
+        const file = changeEvent.target.files?.[0]
+        if (!file) return
+        setUploadingPhoto(true)
+        setError('')
+        try {
+            const { url } = await uploadImage(file)
+            setPhoto({ name: file.name, url })
+        } catch (uploadError) {
+            setError(uploadError.message ?? 'Não foi possível enviar a imagem.')
+        } finally {
+            setUploadingPhoto(false)
+        }
     }
 
     function handleSubmit(submitEvent) {
@@ -99,6 +119,7 @@ export function EditEventModal({ open, onClose, event, actorOptions = [] }) {
             datetime: buildDatetime(form.date, form.start, form.end),
             description: form.description.trim(),
             ticketUrl: form.ticketUrl.trim(),
+            image: photo?.url ?? null,
             linkedActorIds: [...linked],
         })
     }
@@ -248,6 +269,40 @@ export function EditEventModal({ open, onClose, event, actorOptions = [] }) {
                         />
                     </label>
 
+                    <div className="flex flex-col gap-2">
+                        <span className="text-secondary text-sm font-semibold">
+                            Foto ou logo (opcional)
+                        </span>
+                        <div className="flex items-center gap-3">
+                            {photo && (
+                                <img
+                                    src={photo.url}
+                                    alt=""
+                                    className="size-14 rounded-xl object-cover"
+                                />
+                            )}
+                            <label
+                                className={cn(
+                                    'bg-secondary/10 text-secondary cursor-pointer rounded-full px-3 py-2 text-sm font-semibold',
+                                    uploadingPhoto && 'pointer-events-none opacity-50',
+                                )}
+                            >
+                                {uploadingPhoto
+                                    ? 'Enviando...'
+                                    : photo
+                                      ? 'Trocar imagem'
+                                      : 'Escolher imagem'}
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handlePhoto}
+                                    disabled={uploadingPhoto}
+                                    className="hidden"
+                                />
+                            </label>
+                        </div>
+                    </div>
+
                     {/* Campo novo: vincular este evento aos SEUS atores. */}
                     <div className="flex flex-col gap-2">
                         <span className="text-secondary text-sm font-semibold">
@@ -297,7 +352,7 @@ export function EditEventModal({ open, onClose, event, actorOptions = [] }) {
                         <Button
                             type="submit"
                             size="sm"
-                            disabled={save.isPending}
+                            disabled={save.isPending || uploadingPhoto}
                             className="flex-1"
                         >
                             {save.isPending ? 'Salvando...' : 'Salvar alterações'}

@@ -75,6 +75,7 @@ public class EventService {
         event.setEnd(request.end());
         event.setDescription(request.description());
         event.setTicketUrl(request.ticketUrl());
+        event.setImage(request.image());
         return eventRepository.save(event);
     }
 
