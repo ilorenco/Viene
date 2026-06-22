@@ -6,6 +6,7 @@ import com.viene.auth.dto.MessageResponse;
 import com.viene.auth.dto.RecoverPasswordRequest;
 import com.viene.auth.dto.RegisterRequest;
 import com.viene.auth.dto.RegisterResponse;
+import com.viene.auth.dto.UpdateProfileRequest;
 import com.viene.auth.dto.UserResponse;
 import com.viene.common.exception.ApiException;
 import com.viene.common.exception.EmailAlreadyInUseException;
@@ -72,5 +73,23 @@ public class AuthService {
 
     public UserResponse me(User user) {
         return UserResponse.from(user);
+    }
+
+    public AuthResponse updateProfile(User user, UpdateProfileRequest request) {
+        boolean emailChanged = !user.getEmail().equalsIgnoreCase(request.email());
+        if (emailChanged && userRepository.existsByEmail(request.email())) {
+            throw new EmailAlreadyInUseException(request.email());
+        }
+
+        user.setName(request.name());
+        user.setEmail(request.email());
+        user.setPhone(request.phone());
+        user.setBirthdate(request.birthdate());
+        User saved = userRepository.save(user);
+
+        // Token novo: o e-mail é o subject do JWT, então um token emitido antes
+        // da troca de e-mail deixaria de resolver o usuário no próximo request.
+        String token = jwtService.generateToken(saved);
+        return new AuthResponse(token, UserResponse.from(saved));
     }
 }
