@@ -13,5 +13,6 @@ public record CreateActorRequest(
         String tags,
         String website,
         String email,
-        String phone) {
+        String phone,
+        String image) {
 }

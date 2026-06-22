@@ -51,6 +51,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/atores", "/atores/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/eventos", "/eventos/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/ajuda").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll()
                         .anyRequest().authenticated())
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
                 .exceptionHandling(exceptions -> exceptions

@@ -44,6 +44,8 @@ public class User implements UserDetails {
 
     private LocalDate birthdate;
 
+    private String avatar;
+
     @JsonIgnore
     private String password;
 

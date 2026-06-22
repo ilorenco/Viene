@@ -16,5 +16,6 @@ public record CreateEventRequest(
         @NotNull(message = "O tipo de evento é obrigatório.") EventCategory category,
         String description,
         String ticketUrl,
-        double[] position) {
+        double[] position,
+        String image) {
 }

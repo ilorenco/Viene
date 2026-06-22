@@ -5,6 +5,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Upload de imagens (gerado em runtime, limpo a cada boot — ver UploadStartupCleaner)
+uploads/
+
 ### STS ###
 .apt_generated
 .classpath

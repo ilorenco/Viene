@@ -85,6 +85,7 @@ public class AuthService {
         user.setEmail(request.email());
         user.setPhone(request.phone());
         user.setBirthdate(request.birthdate());
+        user.setAvatar(request.avatar());
         User saved = userRepository.save(user);
 
         // Token novo: o e-mail é o subject do JWT, então um token emitido antes

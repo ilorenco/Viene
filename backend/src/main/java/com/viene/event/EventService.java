@@ -45,6 +45,7 @@ public class EventService {
                 .category(request.category())
                 .description(request.description())
                 .ticketUrl(request.ticketUrl())
+                .image(request.image())
                 .latitude(position != null ? position[0] : null)
                 .longitude(position != null ? position[1] : null)
                 .status(ModerationStatus.PENDENTE)

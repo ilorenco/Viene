@@ -49,6 +49,7 @@ public class ActorService {
                 .website(request.website())
                 .email(request.email())
                 .phone(request.phone())
+                .image(request.image())
                 .latitude(position != null ? position[0] : null)
                 .longitude(position != null ? position[1] : null)
                 .status(ModerationStatus.PENDENTE)
