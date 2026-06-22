@@ -10,6 +10,7 @@
 
 ### Frontend
 - cd frontend
+- cp .env.example .env (`.env` não é versionado; o `.env.example` traz os valores padrão de dev)
 - npm install
 - npm run dev
-- Sobe em http://localhost:5173 e já espera o backend em http://localhost:8080 (ver `frontend/.env`)
+- Sobe em http://localhost:5173 e já espera o backend em http://localhost:8080
