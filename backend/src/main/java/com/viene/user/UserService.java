@@ -7,6 +7,8 @@ import com.viene.common.exception.ResourceNotFoundException;
 import com.viene.event.Event;
 import com.viene.event.EventRepository;
 import com.viene.favorite.FavoriteRepository;
+import com.viene.question.Question;
+import com.viene.question.QuestionRepository;
 import com.viene.report.Report;
 import com.viene.report.ReportRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ public class UserService {
     private final EventRepository eventRepository;
     private final ReportRepository reportRepository;
     private final FavoriteRepository favoriteRepository;
+    private final QuestionRepository questionRepository;
 
     public List<User> findAll() {
         return userRepository.findAll();
@@ -49,6 +52,10 @@ public class UserService {
         reportRepository.saveAll(reports);
 
         favoriteRepository.deleteAll(favoriteRepository.findByUser(user));
+
+        List<Question> questions = questionRepository.findByAskedBy(user);
+        questions.forEach(question -> question.setAskedBy(null));
+        questionRepository.saveAll(questions);
 
         userRepository.delete(user);
     }
