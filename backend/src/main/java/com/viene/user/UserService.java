@@ -11,6 +11,7 @@ import com.viene.question.Question;
 import com.viene.question.QuestionRepository;
 import com.viene.report.Report;
 import com.viene.report.ReportRepository;
+import com.viene.ticket.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class UserService {
     private final ReportRepository reportRepository;
     private final FavoriteRepository favoriteRepository;
     private final QuestionRepository questionRepository;
+    private final TicketRepository ticketRepository;
 
     public List<User> findAll() {
         return userRepository.findAll();
@@ -52,6 +54,7 @@ public class UserService {
         reportRepository.saveAll(reports);
 
         favoriteRepository.deleteAll(favoriteRepository.findByUser(user));
+        ticketRepository.deleteAll(ticketRepository.findByUser(user));
 
         List<Question> questions = questionRepository.findByAskedBy(user);
         questions.forEach(question -> question.setAskedBy(null));

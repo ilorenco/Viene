@@ -1,0 +1,17 @@
+package com.viene.ticket;
+
+import com.viene.event.Event;
+import com.viene.user.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface TicketRepository extends JpaRepository<Ticket, Long> {
+
+    List<Ticket> findByUser(User user);
+
+    Optional<Ticket> findByUserAndEvent(User user, Event event);
+
+    boolean existsByUserAndEvent(User user, Event event);
+}
