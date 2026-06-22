@@ -1,10 +1,14 @@
 package com.viene.approval;
 
+import com.viene.actor.Actor;
 import com.viene.actor.ActorService;
 import com.viene.approval.dto.ApprovalItemResponse;
 import com.viene.approval.dto.ModerationCommentRequest;
 import com.viene.approval.dto.ModerationDecisionRequest;
+import com.viene.event.Event;
 import com.viene.event.EventService;
+import com.viene.user.User;
+import com.viene.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +22,7 @@ public class ApprovalService {
 
     private final ActorService actorService;
     private final EventService eventService;
+    private final UserService userService;
 
     public List<ApprovalItemResponse> findAll() {
         List<ApprovalItemResponse> items = new ArrayList<>();
@@ -28,11 +33,19 @@ public class ApprovalService {
     }
 
     public void decideActor(Long id, ModerationDecisionRequest request) {
-        actorService.decide(id, request.approved(), request.comment());
+        Actor actor = actorService.decide(id, request.approved(), request.comment());
+        promoteSubmitterIfApproved(actor.getSubmittedBy(), request.approved());
     }
 
     public void decideEvent(Long id, ModerationDecisionRequest request) {
-        eventService.decide(id, request.approved(), request.comment());
+        Event event = eventService.decide(id, request.approved(), request.comment());
+        promoteSubmitterIfApproved(event.getSubmittedBy(), request.approved());
+    }
+
+    private void promoteSubmitterIfApproved(User submitter, boolean approved) {
+        if (approved && submitter != null) {
+            userService.promoteToAtor(submitter);
+        }
     }
 
     public void addComment(ModerationCommentRequest request) {

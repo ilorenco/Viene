@@ -17,6 +17,6 @@ public final class PortugueseDates {
     }
 
     public static String formatTime(LocalTime time) {
-        return "%02d:%02d".formatted(time.getHour(), time.getMinute());
+        return time != null ? "%02d:%02d".formatted(time.getHour(), time.getMinute()) : "—";
     }
 }

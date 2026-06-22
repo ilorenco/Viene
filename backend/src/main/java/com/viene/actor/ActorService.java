@@ -3,9 +3,12 @@ package com.viene.actor;
 import com.viene.actor.dto.CreateActorRequest;
 import com.viene.common.ModerationStatus;
 import com.viene.common.exception.ResourceNotFoundException;
+import com.viene.publication.ActorEventLinkRepository;
+import com.viene.publication.dto.UpdateActorRequest;
 import com.viene.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,6 +17,7 @@ import java.util.List;
 public class ActorService {
 
     private final ActorRepository actorRepository;
+    private final ActorEventLinkRepository actorEventLinkRepository;
 
     public List<Actor> findAllApproved() {
         return actorRepository.findByStatus(ModerationStatus.APROVADO);
@@ -54,13 +58,34 @@ public class ActorService {
         return actorRepository.save(actor);
     }
 
+    @Transactional
     public void delete(Long id) {
         Actor actor = findById(id);
+        actorEventLinkRepository.deleteAllByActor(actor);
         actorRepository.delete(actor);
     }
 
     public List<Actor> findSubmissions() {
         return actorRepository.findBySubmittedByIsNotNull();
+    }
+
+    public List<Actor> findMyPublications(User user) {
+        return actorRepository.findBySubmittedBy(user).stream()
+                .filter(actor -> actor.getStatus() != ModerationStatus.PENDENTE)
+                .toList();
+    }
+
+    public Actor update(Long id, UpdateActorRequest request) {
+        Actor actor = findById(id);
+        actor.setName(request.name());
+        actor.setType(request.type());
+        actor.setCategory(request.type().category());
+        actor.setAddress(request.address());
+        actor.setDescription(request.description());
+        actor.setWebsite(request.website());
+        actor.setEmail(request.email());
+        actor.setPhone(request.phone());
+        return actorRepository.save(actor);
     }
 
     public Actor decide(Long id, boolean approved, String comment) {

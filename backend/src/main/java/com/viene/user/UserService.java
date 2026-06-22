@@ -60,6 +60,13 @@ public class UserService {
         userRepository.delete(user);
     }
 
+    public void promoteToAtor(User user) {
+        if (user.getRole() == Role.USUARIO) {
+            user.setRole(Role.ATOR);
+            userRepository.save(user);
+        }
+    }
+
     public User toggleStatus(Long id, User requester) {
         if (id.equals(requester.getId())) {
             throw new ApiException("Você não pode bloquear a própria conta.", HttpStatus.BAD_REQUEST);
