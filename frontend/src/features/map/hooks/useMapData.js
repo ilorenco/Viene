@@ -10,8 +10,8 @@
 // ambas chegam.
 //
 // Mantemos os services locais (listInnovationUnits/listMapEvents de
-// src/services/map.js), que seguem sendo o ponto único de troca mock -> API real
-// (flag VITE_USE_MOCKS).
+// src/services/map.js) como ponto único de acesso aos dados de Atores/Eventos
+// pro Mapa.
 
 import { useSuspenseQueries } from '@tanstack/react-query'
 

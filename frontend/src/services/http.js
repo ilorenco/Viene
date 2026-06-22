@@ -62,9 +62,3 @@ export async function request(path, { method = 'GET', body, headers } = {}) {
 
     return data
 }
-
-// Simula a latência da rede no modo mock, deixando a experiência parecida
-// com a da API real (telas com carregamento, etc).
-export function delay(ms = 400) {
-    return new Promise((resolve) => setTimeout(resolve, ms))
-}

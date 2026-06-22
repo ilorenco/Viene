@@ -2,9 +2,6 @@
 // o loading sobe via <Suspense> e a lista vem já resolvida. As mutações
 // (excluir/bloquear/moderar/responder) chamam o service e depois invalidam a
 // query correspondente (ADMIN_KEYS) para o React Query rebuscar.
-//
-// Os services (src/services/{admin,questions,faq}.js) seguem sendo o ponto de
-// troca mock -> API real (flag VITE_USE_MOCKS).
 
 import { useSuspenseQuery } from '@tanstack/react-query'
 
