@@ -44,10 +44,6 @@ function TicketsContent() {
         event.preventDefault()
     }
 
-    function handleGenerateTicket() {
-        // TODO: integrar com a geração de ticket quando o backend estiver pronto
-    }
-
     const { page, setPage, totalPages, pageItems } = usePagination(filtered, {
         pageSize: 6,
         resetKey: `${query}|${[...selected].sort().join(',')}|${period.from}|${period.to}`,
@@ -124,7 +120,7 @@ function TicketsContent() {
                 <EventDateFilter events={all} value={period} onChange={setPeriod} />
             </div>
 
-            <EventList events={pageItems} onGenerateTicket={handleGenerateTicket} />
+            <EventList events={pageItems} showTicketButton />
             <Pagination page={page} totalPages={totalPages} onChange={setPage} />
         </>
     )

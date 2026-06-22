@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom'
 
 import { EventMeta } from '@/features/events/components/EventMeta'
+import { useTicket } from '@/hooks/useTicket'
 
-export function EventDetailCard({ id, title, address, datetime, onGenerateTicket }) {
+export function EventDetailCard({ id, title, address, datetime, showTicketButton }) {
+    const { hasTicket, toggle } = useTicket(id, showTicketButton)
+
     return (
         <article className="border-secondary flex w-full flex-col gap-3 rounded-lg border-2 p-3">
             {/* Imagem (placeholder) com link para os detalhes do evento. O título
@@ -18,13 +21,14 @@ export function EventDetailCard({ id, title, address, datetime, onGenerateTicket
                     {title}
                 </h3>
 
-                {onGenerateTicket && (
+                {showTicketButton && (
                     <button
                         type="button"
-                        onClick={onGenerateTicket}
+                        aria-pressed={hasTicket}
+                        onClick={toggle}
                         className="bg-secondary text-primary absolute top-3 right-3 z-20 cursor-pointer rounded-full px-3 py-1 text-sm font-medium"
                     >
-                        Gerar Ticket
+                        {hasTicket ? 'Cancelar Ticket' : 'Gerar Ticket'}
                     </button>
                 )}
             </div>

@@ -4,7 +4,7 @@ import { EventDetailCard } from './EventDetailCard'
 
 const GRID = 'grid grid-cols-1 gap-y-3 sm:grid-cols-2 sm:gap-x-[3%] lg:grid-cols-3 2xl:grid-cols-4'
 
-export function EventList({ events, onGenerateTicket }) {
+export function EventList({ events, showTicketButton }) {
     return (
         <ul className={GRID}>
             {events.map((event) => (
@@ -14,7 +14,7 @@ export function EventList({ events, onGenerateTicket }) {
                         title={event.title}
                         address={event.address}
                         datetime={event.datetime}
-                        onGenerateTicket={onGenerateTicket && (() => onGenerateTicket(event.id))}
+                        showTicketButton={showTicketButton}
                     />
                 </li>
             ))}
