@@ -2,34 +2,25 @@
 // e perguntas. O LAYOUT segue o mesmo padrão da tela de Configurações — banner de
 // título + seções com cartões brancos — mantendo o conteúdo próprio do perfil.
 
-import {
-    CalendarCheck,
-    CalendarDays,
-    CalendarRange,
-    ChevronRight,
-    Heart,
-    LogOut,
-    Settings,
-    SquarePlus,
-    Store,
-    Ticket,
-    TreePine,
-} from 'lucide-react'
+import { CalendarDays, LogOut, Settings, SquarePlus } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 import { PageHeader } from '@/components/layout/PageHeader'
 import { Avatar } from '@/components/ui/Avatar'
 import { Button } from '@/components/ui/Button'
 import { useAuth } from '@/contexts/AuthContext'
+import { EventHistorySummary } from '@/features/profile/components/EventHistorySummary'
+import { FavoritesSummary } from '@/features/profile/components/FavoritesSummary'
 import { MyPublications } from '@/features/profile/components/MyPublications'
 import { MyQuestions } from '@/features/profile/components/MyQuestions'
+import {
+    CollectionItem,
+    listClass,
+    Section,
+    SeeAll,
+} from '@/features/profile/components/ProfileLayout'
+import { ProfileStats } from '@/features/profile/components/ProfileStats'
 import { useLogout } from '@/hooks/useLogout'
-
-const stats = [
-    { icon: CalendarRange, value: 12, label: 'Eventos participados' },
-    { icon: Ticket, value: 8, label: 'Ingressos comprados' },
-    { icon: Heart, value: 15, label: 'Favoritos salvos' },
-]
 
 const eventActions = [
     {
@@ -46,89 +37,6 @@ const eventActions = [
     },
 ]
 
-const favoriteCollections = [
-    { icon: Store, title: 'Empresas', description: 'Empresas que você segue', to: '/favorites' },
-    { icon: TreePine, title: 'Parques', description: 'Parques que você salvou', to: '/favorites' },
-]
-
-const eventHistory = [
-    {
-        icon: CalendarCheck,
-        title: 'Show de Rock no Parque Central',
-        description: 'Parque Central',
-        meta: '20 mai 2026',
-        to: '/events',
-    },
-    {
-        icon: CalendarCheck,
-        title: 'Feira de Inovação Tech',
-        description: 'Centro de Convenções',
-        meta: '12 abr 2026',
-        to: '/events',
-    },
-    {
-        icon: CalendarCheck,
-        title: 'Trilha Ecológica Guiada',
-        description: 'Parque Natural das Águas',
-        meta: '28 mar 2026',
-        to: '/events',
-    },
-]
-
-// Cabeçalho de seção no MESMO padrão da tela de Configurações: título (montserrat,
-// grande) + descrição opcional à esquerda e uma ação opcional à direita (ex.: o
-// botão "Salvar" das Configurações; aqui, "Ver todos" / "Editar").
-function Section({ title, description, action, children }) {
-    return (
-        <section className="flex flex-col gap-3">
-            <div className="flex items-start justify-between gap-3">
-                <div>
-                    <h2 className="text-secondary font-montserrat text-xl font-extrabold">
-                        {title}
-                    </h2>
-                    {description && <p className="text-secondary/60 text-sm">{description}</p>}
-                </div>
-                {action}
-            </div>
-            {children}
-        </section>
-    )
-}
-
-// Link "Ver todos" usado como ação à direita das seções de listas.
-function SeeAll({ to }) {
-    return (
-        <Link
-            to={to}
-            className="text-primary flex shrink-0 items-center gap-0.5 text-sm font-medium"
-        >
-            Ver todos <ChevronRight className="size-4" />
-        </Link>
-    )
-}
-
-// Lista de cartões brancos compartilhada pelas seções de listas.
-const listClass =
-    'border-secondary/10 divide-secondary/10 overflow-hidden rounded-2xl border bg-white text-sm'
-
-function CollectionItem({ icon: Icon, title, description, to, meta }) {
-    return (
-        <li>
-            <Link to={to} className="flex items-center gap-3 p-4">
-                <div className="bg-primary/10 text-primary shrink-0 rounded-full p-3">
-                    <Icon className="size-6" />
-                </div>
-                <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-                    <p className="text-secondary font-bold">{title}</p>
-                    <p className="text-secondary/50 text-xs leading-tight">{description}</p>
-                </div>
-                {meta && <span className="text-secondary/50 shrink-0 text-xs">{meta}</span>}
-                <ChevronRight className="text-secondary/70 size-5 shrink-0" />
-            </Link>
-        </li>
-    )
-}
-
 export function Profile() {
     const handleLogout = useLogout()
     // Rota protegida (ProtectedRoute) → sempre há um usuário logado aqui.
@@ -137,6 +45,7 @@ export function Profile() {
     const email = user?.email
     // Usuários do tipo "ator" ganham o bloco de gestão das próprias publicações.
     const isActor = user?.role === 'ator'
+    const memberSince = user?.createdAt ? new Date(user.createdAt).getFullYear() : null
 
     return (
         <>
@@ -176,26 +85,15 @@ export function Profile() {
                                 {displayName}
                             </p>
                             {email && <p className="text-secondary/50 truncate text-sm">{email}</p>}
-                            <p className="text-secondary/50 text-sm">Membro desde 2024</p>
+                            {memberSince && (
+                                <p className="text-secondary/50 text-sm">
+                                    Membro desde {memberSince}
+                                </p>
+                            )}
                         </div>
                     </div>
 
-                    <ul className="border-secondary/10 divide-secondary/10 flex divide-x border-t pt-5">
-                        {stats.map(({ icon: Icon, value, label }) => (
-                            <li
-                                key={label}
-                                className="flex flex-1 flex-col items-center gap-1 px-3"
-                            >
-                                <div className="text-primary flex items-center gap-1.5">
-                                    <Icon className="size-5" />
-                                    <span className="text-secondary font-bold">{value}</span>
-                                </div>
-                                <span className="text-secondary/50 text-center text-xs">
-                                    {label}
-                                </span>
-                            </li>
-                        ))}
-                    </ul>
+                    <ProfileStats />
                 </div>
             </Section>
 
@@ -211,20 +109,10 @@ export function Profile() {
             </Section>
 
             <Section title="Meus favoritos" action={<SeeAll to="/favorites" />}>
-                <ul className={`${listClass} grid grid-cols-2 divide-x`}>
-                    {favoriteCollections.map((item) => (
-                        <CollectionItem key={item.title} {...item} />
-                    ))}
-                </ul>
+                <FavoritesSummary />
             </Section>
 
-            <Section title="Histórico de eventos" action={<SeeAll to="/tickets" />}>
-                <ul className={`${listClass} flex flex-col divide-y`}>
-                    {eventHistory.map((item) => (
-                        <CollectionItem key={item.title} {...item} />
-                    ))}
-                </ul>
-            </Section>
+            <EventHistorySummary />
 
             <MyQuestions />
 

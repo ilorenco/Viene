@@ -9,6 +9,8 @@
 
 import { request } from '@/services/http'
 
+export const FAVORITES_KEY = ['favorites']
+
 export async function listFavoriteIds() {
     return request('/favoritos')
 }

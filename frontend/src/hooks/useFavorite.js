@@ -6,12 +6,15 @@
 // Sem login, `isFavorited` é sempre false e a consulta nem dispara — quem
 // chama `toggle()` deve garantir o login antes (ver useRequireAuth).
 
-import { useQueryClient, useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 import { useAuth } from '@/contexts/AuthContext'
-import { addFavorite, listFavoriteIds, removeFavorite } from '@/features/favorites/services/favorites'
-
-const FAVORITES_KEY = ['favorites']
+import {
+    addFavorite,
+    FAVORITES_KEY,
+    listFavoriteIds,
+    removeFavorite,
+} from '@/features/favorites/services/favorites'
 
 export function useFavorite(type, targetId) {
     const { isAuthenticated } = useAuth()
@@ -24,7 +27,8 @@ export function useFavorite(type, targetId) {
     })
 
     const isFavorited =
-        isAuthenticated && (favorites ?? []).some((fav) => fav.type === type && fav.targetId === targetId)
+        isAuthenticated &&
+        (favorites ?? []).some((fav) => fav.type === type && fav.targetId === targetId)
 
     async function toggle() {
         if (isFavorited) {

@@ -1,7 +1,8 @@
 // Serviço de Ingressos (gerar/cancelar um ticket pra um evento).
 //
 // Conectado à API real (ver TicketController, prefixo /usuarios/me/ingressos):
-//   GET    /usuarios/me/ingressos           -> [{id, eventId}] do usuário logado
+//   GET    /usuarios/me/ingressos           -> [{id, eventId, eventTitle, eventDate,
+//                                               eventDatetime, eventAddress}] do usuário logado
 //   POST   /usuarios/me/ingressos           -> gera {eventId}
 //   DELETE /usuarios/me/ingressos/{eventId} -> cancela
 
