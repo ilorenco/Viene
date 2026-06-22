@@ -38,10 +38,13 @@ public class ActorService {
 
     public Actor create(CreateActorRequest request, User submitter) {
         double[] position = request.position();
+        String[] location = parseLocation(request.address());
 
         Actor actor = Actor.builder()
                 .name(request.name())
                 .address(request.address())
+                .neighborhood(location[0])
+                .city(location[1])
                 .type(request.type())
                 .category(request.type().category())
                 .description(request.description())
@@ -57,6 +60,22 @@ public class ActorService {
                 .build();
 
         return actorRepository.save(actor);
+    }
+
+    // O formulário pede o endereço no formato "rua, número, bairro, cidade"
+    // (mesma convenção da planilha original semeada em ActorSeeder) — extrai
+    // bairro/cidade dos dois últimos segmentos pra alimentar o card/filtro de
+    // cidade sem exigir campos extras no formulário. Sem vírgula suficiente,
+    // devolve os dois null (sem adivinhar).
+    private static String[] parseLocation(String address) {
+        if (address == null) return new String[] { null, null };
+        String[] parts = address.split(",");
+        if (parts.length < 2) return new String[] { null, null };
+        String city = parts[parts.length - 1].trim();
+        // Só assume bairro com os 4 segmentos completos (rua, número, bairro,
+        // cidade) — com 3 (sem bairro), o penúltimo seria o número da casa.
+        String neighborhood = parts.length >= 4 ? parts[parts.length - 2].trim() : "";
+        return new String[] { neighborhood.isEmpty() ? null : neighborhood, city.isEmpty() ? null : city };
     }
 
     @Transactional
@@ -78,10 +97,13 @@ public class ActorService {
 
     public Actor update(Long id, UpdateActorRequest request) {
         Actor actor = findById(id);
+        String[] location = parseLocation(request.address());
         actor.setName(request.name());
         actor.setType(request.type());
         actor.setCategory(request.type().category());
         actor.setAddress(request.address());
+        actor.setNeighborhood(location[0]);
+        actor.setCity(location[1]);
         actor.setDescription(request.description());
         actor.setWebsite(request.website());
         actor.setEmail(request.email());

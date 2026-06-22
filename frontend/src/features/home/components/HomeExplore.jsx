@@ -17,8 +17,10 @@ import {
 } from '@/components/ui/Select'
 import { ActorCarousel } from '@/features/actors/components/ActorCarousel'
 import { EventCarousel } from '@/features/events/components/EventCarousel'
+import { useCityOptions } from '@/features/home/hooks/useCityOptions'
 import { useExploreCarousels } from '@/features/home/hooks/useExploreCarousels'
-import { mockCityOptions, mockSortOptions } from '@/features/home/mocks/homeFilters'
+import { mockSortOptions } from '@/features/home/mocks/homeFilters'
+import { cn } from '@/lib/utils'
 
 // Carrosséis filtrados/ordenados conforme os controles acima (regra no hook).
 function ExploreCarousels({ sort, city }) {
@@ -53,6 +55,37 @@ function ExploreSkeleton() {
 const TRIGGER_CLASS =
     'text-background border-background/20 bg-white/10 gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold sm:text-sm'
 
+// Opções de cidade vêm dos atores reais (useCityOptions -> useActors,
+// Suspense próprio): cai na mesma cache de ['actors'] do carrossel, sem
+// disparar uma 2ª busca.
+function CityFilter({ city, onChange }) {
+    const options = useCityOptions()
+    return (
+        <Select value={city} onValueChange={onChange}>
+            <SelectTrigger className={TRIGGER_CLASS}>
+                <MapPin className="text-primary size-4 shrink-0" />
+                <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="max-h-72">
+                {options.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                    </SelectItem>
+                ))}
+            </SelectContent>
+        </Select>
+    )
+}
+
+function CityFilterFallback() {
+    return (
+        <div className={cn(TRIGGER_CLASS, 'inline-flex items-center opacity-50')}>
+            <MapPin className="text-primary size-4 shrink-0" />
+            Todas as cidades
+        </div>
+    )
+}
+
 export function HomeExplore() {
     const [sort, setSort] = useState('recentes')
     const [city, setCity] = useState('todas')
@@ -81,19 +114,9 @@ export function HomeExplore() {
                             </SelectContent>
                         </Select>
 
-                        <Select value={city} onValueChange={setCity}>
-                            <SelectTrigger className={TRIGGER_CLASS}>
-                                <MapPin className="text-primary size-4 shrink-0" />
-                                <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent className="max-h-72">
-                                {mockCityOptions.map((option) => (
-                                    <SelectItem key={option.value} value={option.value}>
-                                        {option.label}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
+                        <Suspense fallback={<CityFilterFallback />}>
+                            <CityFilter city={city} onChange={setCity} />
+                        </Suspense>
                     </div>
                 </div>
 

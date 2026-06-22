@@ -38,7 +38,7 @@ export function useTagGroup({ kind }) {
     }
 
     async function remove(tag) {
-        const used = countTagUsage(kind, tag)
+        const used = await countTagUsage(kind, tag)
         await deleteTag({ id: idsByLabel.get(tag), label: tag, kind }) // back-end cascateia p/ atores/eventos
         setTags((prev) => prev.filter((current) => current !== tag))
         setFeedback(

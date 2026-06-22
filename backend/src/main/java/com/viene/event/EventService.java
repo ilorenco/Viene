@@ -3,10 +3,13 @@ package com.viene.event;
 import com.viene.common.ModerationStatus;
 import com.viene.common.exception.ResourceNotFoundException;
 import com.viene.event.dto.CreateEventRequest;
+import com.viene.publication.ActorEventLinkRepository;
 import com.viene.publication.dto.UpdateEventRequest;
+import com.viene.ticket.TicketRepository;
 import com.viene.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,6 +18,8 @@ import java.util.List;
 public class EventService {
 
     private final EventRepository eventRepository;
+    private final ActorEventLinkRepository actorEventLinkRepository;
+    private final TicketRepository ticketRepository;
 
     public List<Event> findAllApproved() {
         return eventRepository.findByStatus(ModerationStatus.APROVADO);
@@ -53,6 +58,14 @@ public class EventService {
                 .build();
 
         return eventRepository.save(event);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        Event event = findById(id);
+        actorEventLinkRepository.deleteAllByEvent(event);
+        ticketRepository.deleteAllByEvent(event);
+        eventRepository.delete(event);
     }
 
     public List<Event> findSubmissions() {
