@@ -72,17 +72,17 @@ export async function recoverPassword({ email }) {
     })
 }
 
-export async function updateProfile({ name, email, phone, birthdate }) {
+export async function updateProfile({ name, email, phone, birthdate, avatar }) {
     if (USE_MOCKS) {
         await delay()
-        const user = { ...getCurrentUser(), name, email, phone, birthdate }
+        const user = { ...getCurrentUser(), name, email, phone, birthdate, avatar }
         saveUser(user)
         return { token: getToken(), user }
     }
 
     const data = await request('/api/v1/user/profile', {
         method: 'PUT',
-        body: { name, email, phone, birthdate },
+        body: { name, email, phone, birthdate, avatar },
     })
     // O e-mail é o subject do JWT: trocá-lo invalida o token antigo, por isso o
     // back devolve um token novo (igual ao login) e o front precisa trocá-lo já.

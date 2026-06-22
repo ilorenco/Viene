@@ -24,9 +24,19 @@ export async function getEventById(id) {
 
 // Solicita o cadastro de um evento (RegisterEventModal). RN_003: entra como
 // pendente até a moderação de um administrador.
-export async function createEvent({ title, address, date, start, end, category, description, ticketUrl }) {
+export async function createEvent({
+    title,
+    address,
+    date,
+    start,
+    end,
+    category,
+    description,
+    ticketUrl,
+    image,
+}) {
     return request('/eventos', {
         method: 'POST',
-        body: { title, address, date, start, end, category, description, ticketUrl },
+        body: { title, address, date, start, end, category, description, ticketUrl, image },
     })
 }

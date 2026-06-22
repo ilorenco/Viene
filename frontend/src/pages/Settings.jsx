@@ -11,6 +11,7 @@ import { Modal, ModalContent, ModalDescription, ModalTitle } from '@/components/
 import { useAuth } from '@/contexts/AuthContext'
 import { AccessibilityControls } from '@/features/accessibility/components/AccessibilityControls'
 import { useLogout } from '@/hooks/useLogout'
+import { uploadImage } from '@/services/uploads'
 
 const legalDocs = {
     termos: {
@@ -49,7 +50,8 @@ export function Settings() {
         phone: user?.phone ?? '',
         birthdate: user?.birthdate ?? '',
     })
-    const [photo, setPhoto] = useState(null)
+    const [photo, setPhoto] = useState(user?.avatar ?? null)
+    const [uploadingPhoto, setUploadingPhoto] = useState(false)
     const [saving, setSaving] = useState(false)
     const [saved, setSaved] = useState(false)
     const [error, setError] = useState('')
@@ -60,16 +62,22 @@ export function Settings() {
         setSaved(false)
     }
 
-    // Carrega a imagem escolhida e gera uma URL local só para a pré-visualização
-    // (mock; quando houver back-end, aqui se faria o upload do arquivo).
-    function handlePhotoChange(event) {
+    // Sobe o arquivo na hora que é escolhido (preview já é a URL real, vinda do
+    // back-end) — o restante do formulário só manda essa URL como texto comum.
+    async function handlePhotoChange(event) {
         const file = event.target.files?.[0]
         if (!file) return
-        setPhoto((prev) => {
-            if (prev) URL.revokeObjectURL(prev)
-            return URL.createObjectURL(file)
-        })
-        setSaved(false)
+        setUploadingPhoto(true)
+        setError('')
+        try {
+            const { url } = await uploadImage(file)
+            setPhoto(url)
+            setSaved(false)
+        } catch (err) {
+            setError(err?.message ?? 'Não foi possível enviar a foto.')
+        } finally {
+            setUploadingPhoto(false)
+        }
     }
 
     async function handleSave(event) {
@@ -82,6 +90,7 @@ export function Settings() {
                 email: form.email.trim(),
                 phone: form.phone.trim(),
                 birthdate: form.birthdate || null,
+                avatar: photo,
             })
             setSaved(true)
         } catch (err) {
@@ -120,7 +129,7 @@ export function Settings() {
                             </p>
                         </div>
                         <div className="flex shrink-0 flex-col items-end gap-1">
-                            <Button type="submit" size="sm" disabled={saving}>
+                            <Button type="submit" size="sm" disabled={saving || uploadingPhoto}>
                                 {saving ? 'Salvando...' : 'Salvar alterações'}
                             </Button>
                             {saved && (
@@ -142,9 +151,14 @@ export function Settings() {
                             <button
                                 type="button"
                                 onClick={() => fileInputRef.current?.click()}
-                                className="text-primary text-sm font-semibold"
+                                disabled={uploadingPhoto}
+                                className="text-primary text-sm font-semibold disabled:opacity-50"
                             >
-                                {photo ? 'Trocar foto' : 'Carregar foto'}
+                                {uploadingPhoto
+                                    ? 'Enviando...'
+                                    : photo
+                                      ? 'Trocar foto'
+                                      : 'Carregar foto'}
                             </button>
                             {/* Input de arquivo escondido: o botão acima é quem o aciona. */}
                             <input

@@ -5,7 +5,7 @@
 // services/actors.js -> createActor / módulo de Aprovações).
 
 import { ChevronDown, Loader2 } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { Button } from '@/components/ui/Button'
@@ -24,6 +24,7 @@ import { createActor } from '@/features/actors/services/actors'
 import { LocationPicker } from '@/features/map/components/LocationPicker'
 import { ATOR_TYPES } from '@/lib/atorTypes'
 import { cn } from '@/lib/utils'
+import { uploadImage } from '@/services/uploads'
 
 const initialForm = {
     name: '',
@@ -57,6 +58,7 @@ export function RegisterActorModal({ open, onClose }) {
     const [form, setForm] = useState(initialForm)
     const [position, setPosition] = useState(null)
     const [photo, setPhoto] = useState(null)
+    const [uploadingPhoto, setUploadingPhoto] = useState(false)
     const [showContact, setShowContact] = useState(false)
     const [error, setError] = useState('')
     const [done, setDone] = useState(false)
@@ -66,22 +68,28 @@ export function RegisterActorModal({ open, onClose }) {
         setForm((prev) => ({ ...prev, [key]: value }))
     }
 
-    function handlePhoto(event) {
+    // Sobe o arquivo na hora que é escolhido — a URL exibida no preview já é a
+    // real (vinda do back-end), pronta pra mandar junto no submit do formulário.
+    async function handlePhoto(event) {
         const file = event.target.files?.[0]
-        if (file) setPhoto({ name: file.name, url: URL.createObjectURL(file) })
+        if (!file) return
+        setUploadingPhoto(true)
+        setError('')
+        try {
+            const { url } = await uploadImage(file)
+            setPhoto({ name: file.name, url })
+        } catch (uploadError) {
+            setError(uploadError.message ?? 'Não foi possível enviar a imagem.')
+        } finally {
+            setUploadingPhoto(false)
+        }
     }
-
-    // Libera a URL temporária da imagem ao trocá-la ou desmontar (evita vazamento).
-    useEffect(() => {
-        const url = photo?.url
-        if (!url) return
-        return () => URL.revokeObjectURL(url)
-    }, [photo?.url])
 
     function reset() {
         setForm(initialForm)
         setPosition(null)
         setPhoto(null)
+        setUploadingPhoto(false)
         setShowContact(false)
         setError('')
         setDone(false)
@@ -116,6 +124,7 @@ export function RegisterActorModal({ open, onClose }) {
                 website: form.site,
                 email: form.email,
                 phone: form.phone,
+                image: photo?.url ?? null,
             })
             setDone(true)
         } catch (submitError) {
@@ -270,12 +279,22 @@ export function RegisterActorModal({ open, onClose }) {
                                         className="size-14 rounded-xl object-cover"
                                     />
                                 )}
-                                <label className="bg-secondary/10 text-secondary cursor-pointer rounded-full px-3 py-2 text-sm font-semibold">
-                                    {photo ? 'Trocar imagem' : 'Escolher imagem'}
+                                <label
+                                    className={cn(
+                                        'bg-secondary/10 text-secondary cursor-pointer rounded-full px-3 py-2 text-sm font-semibold',
+                                        uploadingPhoto && 'pointer-events-none opacity-50',
+                                    )}
+                                >
+                                    {uploadingPhoto
+                                        ? 'Enviando...'
+                                        : photo
+                                          ? 'Trocar imagem'
+                                          : 'Escolher imagem'}
                                     <input
                                         type="file"
                                         accept="image/*"
                                         onChange={handlePhoto}
+                                        disabled={uploadingPhoto}
                                         className="hidden"
                                     />
                                 </label>
@@ -296,7 +315,7 @@ export function RegisterActorModal({ open, onClose }) {
                             <Button
                                 type="submit"
                                 size="sm"
-                                disabled={submitting}
+                                disabled={submitting || uploadingPhoto}
                                 className="flex flex-1 items-center justify-center gap-2"
                             >
                                 {submitting && <Loader2 className="size-4 animate-spin" />}

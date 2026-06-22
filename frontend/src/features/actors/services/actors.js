@@ -40,9 +40,10 @@ export async function createActor({
     website,
     email,
     phone,
+    image,
 }) {
     return request('/atores', {
         method: 'POST',
-        body: { name, address, type, position, description, tags, website, email, phone },
+        body: { name, address, type, position, description, tags, website, email, phone, image },
     })
 }

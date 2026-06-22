@@ -31,6 +31,10 @@ export function setToken(token) {
 export async function request(path, { method = 'GET', body, headers } = {}) {
     const token = getToken()
 
+    // FormData (upload de arquivo): o browser define o Content-Type certo
+    // (com o boundary do multipart) sozinho — não dá pra forçar nem serializar.
+    const isFormData = body instanceof FormData
+
     // Envolve o fetch em try/catch para transformar falha de rede (sem conexão,
     // DNS, CORS, etc.) em um ApiError padronizado com status 0.
     let response
@@ -38,11 +42,11 @@ export async function request(path, { method = 'GET', body, headers } = {}) {
         response = await fetch(`${API_BASE_URL}${path}`, {
             method,
             headers: {
-                'Content-Type': 'application/json',
+                ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
                 ...(token ? { Authorization: `Bearer ${token}` } : {}),
                 ...headers,
             },
-            body: body != null ? JSON.stringify(body) : undefined,
+            body: isFormData ? body : body != null ? JSON.stringify(body) : undefined,
         })
     } catch {
         throw new ApiError('Falha de conexão. Verifique sua internet.', 0, null)
