@@ -3,90 +3,43 @@
 // Fluxo: o usuário (logado) envia uma pergunta pela página /ajuda -> ela entra
 // como "pendente" -> o admin responde -> a resposta aparece no perfil do usuário.
 //
-// Estilo da branch do colega: cada função espera um mockDelay() e devolve o mock,
-// sem o ramo duplo USE_MOCKS/http.js. A lista editável em memória simula o banco.
-//
-// Endpoints reais (a confirmar no contrato):
-//   POST   /ajuda/perguntas                -> usuário envia pergunta
-//   GET    /admin/perguntas                -> admin lista as perguntas
+// Conectado à API real (ver QuestionController):
+//   POST   /ajuda/perguntas                -> usuário envia pergunta (autenticado)
+//   GET    /ajuda/perguntas                -> lista só as MINHAS perguntas
+//   GET    /admin/perguntas                -> admin lista TODAS as perguntas
 //   PUT    /admin/perguntas/{id}/responder -> admin responde
 //   DELETE /admin/perguntas/{id}           -> admin remove
+//
+// IMPORTANTE: listQuestions (admin, todas) e listMyQuestions (perfil, só as
+// minhas) usam queries DIFERENTES — antes do back-end existir, o mock
+// compartilhava os dois, mas isso devolveria as perguntas de todo mundo na
+// tela de perfil de qualquer usuário (falha de privacidade) e quebraria com
+// 403 quando GET /admin/perguntas exige admin.
 
-import { mockDelay } from '@/mocks/delay'
+import { request } from '@/services/http'
 
-import { getCurrentUser } from './auth'
+// Chave do React Query da lista do ADMIN (todas as perguntas).
+export const QUESTIONS_KEY = ['questions', 'admin']
 
-// Chave ÚNICA do React Query para a lista de perguntas — usada por TODOS os
-// consumidores (Perfil, Admin) para que uma invalidação atualize ambas as telas.
-export const QUESTIONS_KEY = ['questions']
-
-// Lista editável em memória (mock) — compartilhada entre FAQ, Admin e Perfil.
-let questions = [
-    {
-        id: 1,
-        question: 'Consigo transferir meu ingresso para outra pessoa?',
-        userName: 'João Silva',
-        userEmail: 'joao.silva@viene.com',
-        status: 'respondida',
-        answer: 'Sim! Em breve a transferência de ingressos estará disponível direto pelo app.',
-        createdAt: '28 Mai. 2026',
-        answeredAt: '29 Mai. 2026',
-    },
-    {
-        id: 2,
-        question: 'Como minha empresa vira um "ator" verificado no mapa?',
-        userName: 'João Silva',
-        userEmail: 'joao.silva@viene.com',
-        status: 'pendente',
-        answer: null,
-        createdAt: '01 Jun. 2026',
-        answeredAt: null,
-    },
-]
-let nextId = 3
-
-function today() {
-    try {
-        return new Date().toLocaleDateString('pt-BR')
-    } catch {
-        return ''
-    }
-}
+// Chave do React Query da lista do PERFIL (só as minhas).
+export const MY_QUESTIONS_KEY = ['questions', 'mine']
 
 export async function listQuestions() {
-    await mockDelay()
-    return questions.map((item) => ({ ...item }))
+    return request('/admin/perguntas')
+}
+
+export async function listMyQuestions() {
+    return request('/ajuda/perguntas')
 }
 
 export async function submitQuestion({ question }) {
-    await mockDelay()
-    const user = getCurrentUser()
-    const item = {
-        id: nextId++,
-        question,
-        userName: user?.name ?? 'Usuário',
-        userEmail: user?.email ?? '',
-        status: 'pendente',
-        answer: null,
-        createdAt: today(),
-        answeredAt: null,
-    }
-    questions = [item, ...questions]
-    return item
+    return request('/ajuda/perguntas', { method: 'POST', body: { question } })
 }
 
 export async function answerQuestion(id, { answer }) {
-    await mockDelay()
-    questions = questions.map((item) =>
-        item.id === id ? { ...item, answer, status: 'respondida', answeredAt: today() } : item,
-    )
-    // Retorna uma cópia para não expor a referência interna da lista mock.
-    const item = questions.find((item) => item.id === id)
-    return { ...item }
+    return request(`/admin/perguntas/${id}/responder`, { method: 'PUT', body: { answer } })
 }
 
 export async function deleteQuestion(id) {
-    await mockDelay()
-    questions = questions.filter((item) => item.id !== id)
-    return { id, deleted: true }
+    return request(`/admin/perguntas/${id}`, { method: 'DELETE' })
 }

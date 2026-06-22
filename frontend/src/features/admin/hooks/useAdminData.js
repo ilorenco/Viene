@@ -16,8 +16,8 @@ import { listQuestions, QUESTIONS_KEY } from '@/services/questions'
 export const ADMIN_KEYS = {
     users: ['admin', 'users'],
     approvals: ['admin', 'approvals'],
-    // Perguntas usam a chave compartilhada (mesma do Perfil) — invalidar aqui
-    // atualiza as duas telas, pois é o MESMO dado (listQuestions).
+    // Lista de TODAS as perguntas (admin) — diferente de MY_QUESTIONS_KEY do
+    // Perfil, que é só as perguntas do usuário logado.
     questions: QUESTIONS_KEY,
     faqs: ['admin', 'faqs'],
     reports: ['admin', 'reports'],

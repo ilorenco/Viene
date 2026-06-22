@@ -86,7 +86,8 @@ export function AdminQuestionList() {
     async function handleSave({ answer, publish }) {
         await answerQuestion(answering.id, { answer })
         if (publish) {
-            await createFaq({ question: answering.question, answer })
+            // Pergunta de usuário não tem página específica — entra como "Geral".
+            await createFaq({ category: 'geral', question: answering.question, answer })
             await queryClient.invalidateQueries({ queryKey: ADMIN_KEYS.faqs })
         }
         setAnswering(null)

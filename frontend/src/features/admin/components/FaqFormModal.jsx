@@ -5,9 +5,21 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Modal, ModalContent, ModalTitle } from '@/components/ui/Modal'
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/Select'
 import { Textarea } from '@/components/ui/Textarea'
+import { FAQ_PAGE_OPTIONS } from '@/features/faq/mocks/faqs'
+
+// Opções de categoria pro select (sem "todas", que é só filtro da página pública).
+const CATEGORY_OPTIONS = FAQ_PAGE_OPTIONS.filter((option) => option.value !== 'todas')
 
 export function FaqFormModal({ open, faq, onClose, onSave }) {
+    const [category, setCategory] = useState(CATEGORY_OPTIONS[0].value)
     const [question, setQuestion] = useState('')
     const [answer, setAnswer] = useState('')
     const [submitting, setSubmitting] = useState(false)
@@ -19,6 +31,7 @@ export function FaqFormModal({ open, faq, onClose, onSave }) {
     const [prevResetKey, setPrevResetKey] = useState(resetKey)
     if (resetKey !== prevResetKey) {
         setPrevResetKey(resetKey)
+        setCategory(faq?.category ?? CATEGORY_OPTIONS[0].value)
         setQuestion(faq?.question ?? '')
         setAnswer(faq?.answer ?? '')
         setError('')
@@ -30,7 +43,7 @@ export function FaqFormModal({ open, faq, onClose, onSave }) {
             return
         }
         setSubmitting(true)
-        await onSave({ question: question.trim(), answer: answer.trim() })
+        await onSave({ category, question: question.trim(), answer: answer.trim() })
         setSubmitting(false)
     }
 
@@ -43,6 +56,25 @@ export function FaqFormModal({ open, faq, onClose, onSave }) {
         >
             <ModalContent aria-describedby={undefined}>
                 <ModalTitle>{faq ? 'Editar pergunta' : 'Nova pergunta'}</ModalTitle>
+
+                <div className="flex flex-col gap-1">
+                    <span className="text-secondary text-sm font-semibold">Página</span>
+                    <Select value={category} onValueChange={setCategory}>
+                        <SelectTrigger
+                            aria-label="Página"
+                            className="border-secondary text-secondary flex w-full items-center justify-between rounded-2xl border-2 bg-transparent px-4 py-3 text-left"
+                        >
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="z-[2100] max-h-72">
+                            {CATEGORY_OPTIONS.map((option) => (
+                                <SelectItem key={option.value} value={option.value}>
+                                    {option.label}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
 
                 <label
                     htmlFor="faq-question"

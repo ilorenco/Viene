@@ -16,7 +16,7 @@ import { FullBleed } from '@/components/layout/FullBleed'
 import { Button } from '@/components/ui/Button'
 import { Textarea } from '@/components/ui/Textarea'
 import { useAuth } from '@/contexts/AuthContext'
-import { QUESTIONS_KEY, submitQuestion } from '@/services/questions'
+import { MY_QUESTIONS_KEY, submitQuestion } from '@/services/questions'
 
 export function QuestionForm() {
     const { isAuthenticated: authed } = useAuth()
@@ -33,8 +33,8 @@ export function QuestionForm() {
         setError('')
         try {
             await submitQuestion({ question: question.trim() })
-            // Mutação: invalida o cache de perguntas para o Perfil e o Admin rebuscarem.
-            await queryClient.invalidateQueries({ queryKey: QUESTIONS_KEY })
+            // Mutação: invalida o cache de "minhas perguntas" pro Perfil rebuscar.
+            await queryClient.invalidateQueries({ queryKey: MY_QUESTIONS_KEY })
             setSent(true)
             setQuestion('')
         } catch (err) {
