@@ -6,12 +6,16 @@ import { Link } from 'react-router-dom'
 
 import { LikeButton } from '@/components/ui/LikeButton'
 
-export function CarouselCard({ to, title, entityType, entityId }) {
+export function CarouselCard({ to, title, image, entityType, entityId }) {
     return (
         <article className="flex w-72 shrink-0 flex-col gap-2">
             {/* Link apenas na imagem (permite copiar o título). */}
             <Link to={to} aria-label={title} className="block">
-                <div className="bg-primary h-32 rounded-md" />
+                {image ? (
+                    <img src={image} alt="" className="h-32 w-full rounded-md object-cover" />
+                ) : (
+                    <div className="bg-primary h-32 rounded-md" />
+                )}
             </Link>
 
             <div className="flex items-center justify-between gap-2 pl-2">

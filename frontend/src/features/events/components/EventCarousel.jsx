@@ -16,6 +16,7 @@ export function EventCarousel({ title, events }) {
                             key={event.id}
                             to={`/events/${event.id}`}
                             title={event.title}
+                            image={event.image}
                             entityType="evento"
                             entityId={event.id}
                         />

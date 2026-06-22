@@ -3,21 +3,40 @@ import { Link } from 'react-router-dom'
 import { EventMeta } from '@/features/events/components/EventMeta'
 import { useTicket } from '@/hooks/useTicket'
 
-export function EventDetailCard({ id, title, address, datetime, showTicketButton }) {
+export function EventDetailCard({ id, title, image, address, datetime, showTicketButton }) {
     const { hasTicket, toggle } = useTicket(id, showTicketButton)
 
     return (
         <article className="border-secondary flex w-full flex-col gap-3 rounded-lg border-2 p-3">
-            {/* Imagem (placeholder) com link para os detalhes do evento. O título
-                fica sobre a imagem, com um respiro nas laterais (left-3/right-3)
-                para não encostar na borda direita. */}
-            <div className="bg-primary relative h-48 rounded-md">
+            {/* Imagem (real, se houver, senão placeholder) com link para os detalhes
+                do evento. O título fica sobre a imagem, com um respiro nas laterais
+                (left-3/right-3) para não encostar na borda direita — com foto real,
+                um gradiente escuro no rodapé mantém o título legível. */}
+            <div
+                className={
+                    image ? 'relative h-48 rounded-md' : 'bg-primary relative h-48 rounded-md'
+                }
+            >
+                {image && (
+                    <img
+                        src={image}
+                        alt=""
+                        className="absolute inset-0 size-full rounded-md object-cover"
+                    />
+                )}
+                {image && (
+                    <div className="absolute inset-0 rounded-md bg-gradient-to-t from-black/70 to-transparent" />
+                )}
                 <Link
                     to={`/events/${id}`}
                     aria-label={title}
                     className="absolute inset-0 z-10 rounded-md"
                 />
-                <h3 className="font-montserrat text-secondary absolute right-3 bottom-3 left-3 text-xl font-extrabold">
+                <h3
+                    className={`font-montserrat absolute right-3 bottom-3 left-3 text-xl font-extrabold ${
+                        image ? 'text-white' : 'text-secondary'
+                    }`}
+                >
                     {title}
                 </h3>
 

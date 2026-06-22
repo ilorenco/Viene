@@ -18,6 +18,7 @@ export function ActorCarousel({ title, actors }) {
                             key={actor.id}
                             to={`/actors/${actor.id}`}
                             title={actor.name}
+                            image={actor.image}
                             entityType="ator"
                             entityId={actor.id}
                         />

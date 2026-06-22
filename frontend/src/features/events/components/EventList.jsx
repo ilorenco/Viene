@@ -12,6 +12,7 @@ export function EventList({ events, showTicketButton }) {
                     <EventDetailCard
                         id={event.id}
                         title={event.title}
+                        image={event.image}
                         address={event.address}
                         datetime={event.datetime}
                         showTicketButton={showTicketButton}
