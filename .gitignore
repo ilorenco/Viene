@@ -1,1 +1,6 @@
 .claude/
+
+# Upload de imagens do backend (gerado em runtime). O caminho é relativo ao
+# diretório de onde o backend é iniciado — se rodar de fora de backend/ (em vez
+# de "cd backend && ./mvnw spring-boot:run"), a pasta cai aqui na raiz.
+uploads/

@@ -78,7 +78,7 @@ export function MainMenu() {
             {isAuthenticated ? (
                 <SheetClose asChild>
                     <Link to="/profile" className="flex items-center gap-3 text-left">
-                        <Avatar size="md" name={user?.name} />
+                        <Avatar size="md" name={user?.name} src={user?.avatar} />
                         <div className="flex flex-col">
                             <p className="text-foreground font-bold">Olá, {firstName}</p>
                             <p className="text-secondary text-sm">Veja o seu perfil e atividade</p>

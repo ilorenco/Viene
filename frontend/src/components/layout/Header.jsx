@@ -50,11 +50,11 @@ export function Header() {
                     </NavLink>
                 </nav>
 
-                {/* Logado: avatar com as iniciais leva ao perfil. Deslogado:
+                {/* Logado: avatar (foto ou iniciais) leva ao perfil. Deslogado:
                     botão "Entrar" leva ao login. */}
                 {isAuthenticated ? (
                     <Link to="/profile" aria-label="Perfil">
-                        <Avatar size="sm" name={user?.name} />
+                        <Avatar size="sm" name={user?.name} src={user?.avatar} />
                     </Link>
                 ) : (
                     <Link

@@ -170,7 +170,7 @@ export function Profile() {
             >
                 <div className="border-secondary/10 flex flex-col gap-5 rounded-2xl border bg-white p-6 lg:p-8">
                     <div className="flex items-center gap-4">
-                        <Avatar size="lg" name={displayName} />
+                        <Avatar size="lg" name={displayName} src={user?.avatar} />
                         <div className="flex min-w-0 flex-col gap-0.5">
                             <p className="text-secondary font-montserrat text-lg leading-tight font-bold">
                                 {displayName}
