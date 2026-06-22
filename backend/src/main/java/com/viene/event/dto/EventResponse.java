@@ -22,10 +22,9 @@ public record EventResponse(
         double[] position) {
 
     public static EventResponse from(Event event) {
-        String displayDate = PortugueseDates.displayDate(event.getDate());
         String start = PortugueseDates.formatTime(event.getStart());
         String end = PortugueseDates.formatTime(event.getEnd());
-        String datetime = "%s - %s > %s - %s".formatted(start, displayDate, end, displayDate);
+        String datetime = PortugueseDates.formatRange(event.getDate(), event.getStart(), event.getEnd());
         boolean hasPosition = event.getLatitude() != null && event.getLongitude() != null;
 
         return new EventResponse(

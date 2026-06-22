@@ -26,10 +26,9 @@ public record EventPublicationResponse(
         List<Long> linkedActorIds) {
 
     public static EventPublicationResponse from(Event event, List<Long> linkedActorIds) {
-        String displayDate = PortugueseDates.displayDate(event.getDate());
         String start = PortugueseDates.formatTime(event.getStart());
         String end = PortugueseDates.formatTime(event.getEnd());
-        String datetime = "%s - %s > %s - %s".formatted(start, displayDate, end, displayDate);
+        String datetime = PortugueseDates.formatRange(event.getDate(), event.getStart(), event.getEnd());
         boolean hasPosition = event.getLatitude() != null && event.getLongitude() != null;
         String status = event.getStatus() == ModerationStatus.APROVADO ? "ativo" : "bloqueado";
 
