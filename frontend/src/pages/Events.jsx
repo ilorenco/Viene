@@ -1,5 +1,6 @@
 import { CalendarPlus, Search, Tag } from 'lucide-react'
-import { Suspense, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import { PageHeader } from '@/components/layout/PageHeader'
 import { DraggableTrack } from '@/components/ui/DraggableTrack'
@@ -21,12 +22,23 @@ const TYPE_OPTIONS = [{ value: 'todas', label: 'Todos' }, ...mockEventCategories
 const ALL_CATEGORY_VALUES = mockEventCategories.map((category) => category.value)
 
 function EventsContent() {
+    const location = useLocation()
+    const navigate = useNavigate()
     const { selectedEventCategories: selected, setSelectedEventCategories: setSelected } =
         useEventFilters()
     const [query, setQuery] = useState('')
     // Filtro por data/período: { from, to } em ISO (null = sem limite).
     const [period, setPeriod] = useState({ from: null, to: null })
-    const [registerOpen, setRegisterOpen] = useState(false)
+    // Abre o modal de cadastro já aberto quando se chega aqui pelo atalho do
+    // Perfil (state.openRegister — ver Profile.jsx). Limpa o state na hora pra
+    // um back/forward do navegador não reabrir o modal sozinho.
+    const [registerOpen, setRegisterOpen] = useState(() => Boolean(location.state?.openRegister))
+    useEffect(() => {
+        if (location.state?.openRegister) {
+            navigate(location.pathname, { replace: true })
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps -- só na primeira renderização (consome o state uma vez)
+    }, [])
 
     // Busca + regra de filtro ficam no hook (useSuspenseQuery por dentro): a página
     // recebe a lista já filtrada (filtered) e a lista completa (all), esta última
@@ -83,7 +95,7 @@ function EventsContent() {
             {/* Banner escuro no estilo da página de Atores: vai de canto a canto no
                 mobile; ~5% das bordas e cantos arredondados no desktop. À esquerda,
                 título; à direita, busca + (no mobile) carrossel de tipos de evento. */}
-            <div className="bg-secondary -mx-4 flex flex-col gap-6 rounded-none p-6 lg:-mx-[5vw] lg:flex-row lg:items-start lg:justify-between lg:rounded-xl lg:p-8">
+            <div className="bg-secondary -mx-6 flex flex-col gap-6 rounded-none p-6 lg:-mx-[5vw] lg:flex-row lg:items-start lg:justify-between lg:rounded-xl lg:p-8">
                 <div className="flex flex-col gap-3 lg:max-w-sm">
                     {/* Mobile: título curto + linha. Desktop: título + subtítulo. */}
                     <PageHeader title="Encontre Eventos" className="text-white lg:hidden" />

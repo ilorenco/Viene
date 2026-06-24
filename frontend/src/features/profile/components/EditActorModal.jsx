@@ -127,169 +127,182 @@ export function EditActorModal({ open, onClose, actor, eventOptions = [] }) {
                 if (!value && !save.isPending) onClose()
             }}
         >
-            <ModalContent aria-describedby={undefined}>
+            <ModalContent aria-describedby={undefined} className="lg:max-w-2xl">
                 <ModalTitle>Editar ator</ModalTitle>
                 <ModalDescription>
                     Alterações em uma publicação sua entram direto, sem nova aprovação.
                 </ModalDescription>
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-                    <label
-                        htmlFor="ea-nome"
-                        className="text-secondary flex flex-col gap-1 text-sm font-semibold"
-                    >
-                        Nome *
-                        <Input
-                            id="ea-nome"
-                            value={form.name}
-                            onChange={(event) => setField('name', event.target.value)}
-                            className="rounded-2xl"
-                        />
-                    </label>
-
-                    <label
-                        htmlFor="ea-endereco"
-                        className="text-secondary flex flex-col gap-1 text-sm font-semibold"
-                    >
-                        Endereço *
-                        <Input
-                            id="ea-endereco"
-                            value={form.address}
-                            onChange={(event) => setField('address', event.target.value)}
-                            className="rounded-2xl"
-                        />
-                    </label>
-
-                    <div className="flex flex-col gap-1">
-                        <span className="text-secondary text-sm font-semibold">Tipo de ator *</span>
-                        <Select
-                            value={form.type}
-                            onValueChange={(value) => setField('type', value)}
-                        >
-                            <SelectTrigger
-                                aria-label="Tipo de ator"
-                                className="border-secondary text-secondary flex w-full items-center justify-between rounded-2xl border-2 bg-transparent px-4 py-3 text-left"
-                            >
-                                <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent className="z-[2100] max-h-72">
-                                {ATOR_TYPES.map((option) => (
-                                    <SelectItem key={option.id} value={option.id}>
-                                        {option.label}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-
-                    <label
-                        htmlFor="ea-descricao"
-                        className="text-secondary flex flex-col gap-1 text-sm font-semibold"
-                    >
-                        Descrição
-                        <Textarea
-                            id="ea-descricao"
-                            value={form.description}
-                            onChange={(event) => setField('description', event.target.value)}
-                            rows={3}
-                        />
-                    </label>
-
-                    <CollapsibleSection
-                        title="Contato"
-                        open={showContact}
-                        onToggle={() => setShowContact((value) => !value)}
-                    >
-                        <Input
-                            aria-label="Site"
-                            value={form.site}
-                            onChange={(event) => setField('site', event.target.value)}
-                            placeholder="Site"
-                            className="rounded-2xl"
-                        />
-                        <Input
-                            aria-label="E-mail"
-                            type="email"
-                            value={form.email}
-                            onChange={(event) => setField('email', event.target.value)}
-                            placeholder="E-mail"
-                            className="rounded-2xl"
-                        />
-                        <Input
-                            aria-label="Telefone"
-                            value={form.phone}
-                            onChange={(event) => setField('phone', event.target.value)}
-                            placeholder="Telefone"
-                            className="rounded-2xl"
-                        />
-                    </CollapsibleSection>
-
-                    <div className="flex flex-col gap-2">
-                        <span className="text-secondary text-sm font-semibold">
-                            Foto ou logo (opcional)
-                        </span>
-                        <div className="flex items-center gap-3">
-                            {photo && (
-                                <img
-                                    src={photo.url}
-                                    alt=""
-                                    className="size-14 rounded-xl object-cover"
-                                />
-                            )}
+                    {/* Desktop (lg): texto numa coluna, foto+vínculos+contato na
+                        outra — usa o espaço horizontal extra do modal mais largo.
+                        Mobile: as duas colunas empilham na ordem natural. */}
+                    <div className="flex flex-col gap-3 lg:flex-row lg:gap-5">
+                        <div className="flex flex-1 flex-col gap-3">
                             <label
-                                className={cn(
-                                    'bg-secondary/10 text-secondary cursor-pointer rounded-full px-3 py-2 text-sm font-semibold',
-                                    uploadingPhoto && 'pointer-events-none opacity-50',
-                                )}
+                                htmlFor="ea-nome"
+                                className="text-secondary flex flex-col gap-1 text-sm font-semibold"
                             >
-                                {uploadingPhoto
-                                    ? 'Enviando...'
-                                    : photo
-                                      ? 'Trocar imagem'
-                                      : 'Escolher imagem'}
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handlePhoto}
-                                    disabled={uploadingPhoto}
-                                    className="hidden"
+                                Nome *
+                                <Input
+                                    id="ea-nome"
+                                    value={form.name}
+                                    onChange={(event) => setField('name', event.target.value)}
+                                    className="rounded-2xl"
+                                />
+                            </label>
+
+                            <label
+                                htmlFor="ea-endereco"
+                                className="text-secondary flex flex-col gap-1 text-sm font-semibold"
+                            >
+                                Endereço *
+                                <Input
+                                    id="ea-endereco"
+                                    value={form.address}
+                                    onChange={(event) => setField('address', event.target.value)}
+                                    className="rounded-2xl"
+                                />
+                            </label>
+
+                            <div className="flex flex-col gap-1">
+                                <span className="text-secondary text-sm font-semibold">
+                                    Tipo de ator *
+                                </span>
+                                <Select
+                                    value={form.type}
+                                    onValueChange={(value) => setField('type', value)}
+                                >
+                                    <SelectTrigger
+                                        aria-label="Tipo de ator"
+                                        className="border-secondary text-secondary flex w-full items-center justify-between rounded-2xl border-2 bg-transparent px-4 py-3 text-left"
+                                    >
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent className="z-[2100] max-h-72">
+                                        {ATOR_TYPES.map((option) => (
+                                            <SelectItem key={option.id} value={option.id}>
+                                                {option.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <label
+                                htmlFor="ea-descricao"
+                                className="text-secondary flex flex-col gap-1 text-sm font-semibold"
+                            >
+                                Descrição
+                                <Textarea
+                                    id="ea-descricao"
+                                    value={form.description}
+                                    onChange={(event) =>
+                                        setField('description', event.target.value)
+                                    }
+                                    rows={3}
                                 />
                             </label>
                         </div>
-                    </div>
 
-                    {/* Campo novo: vincular este ator aos SEUS eventos. */}
-                    <div className="flex flex-col gap-2">
-                        <span className="text-secondary text-sm font-semibold">
-                            Vincular eventos
-                        </span>
-                        {eventOptions.length === 0 ? (
-                            <p className="text-secondary/50 text-xs">
-                                Você ainda não tem eventos para vincular.
-                            </p>
-                        ) : (
-                            <div className="flex flex-wrap gap-2">
-                                {eventOptions.map((option) => {
-                                    const active = linked.has(option.id)
-                                    return (
-                                        <button
-                                            key={option.id}
-                                            type="button"
-                                            onClick={() => toggleLink(option.id)}
-                                            aria-pressed={active}
-                                            className={cn(
-                                                'rounded-full border px-3 py-1.5 text-xs font-semibold transition',
-                                                active
-                                                    ? 'bg-secondary border-secondary text-background'
-                                                    : 'border-secondary/30 text-secondary hover:border-secondary',
-                                            )}
-                                        >
-                                            {option.label}
-                                        </button>
-                                    )
-                                })}
+                        <div className="flex flex-1 flex-col gap-3">
+                            <div className="flex flex-col gap-2">
+                                <span className="text-secondary text-sm font-semibold">
+                                    Foto ou logo (opcional)
+                                </span>
+                                <div className="flex items-center gap-3">
+                                    {photo && (
+                                        <img
+                                            src={photo.url}
+                                            alt=""
+                                            className="size-14 rounded-xl object-cover"
+                                        />
+                                    )}
+                                    <label
+                                        className={cn(
+                                            'bg-secondary/10 text-secondary cursor-pointer rounded-full px-3 py-2 text-sm font-semibold',
+                                            uploadingPhoto && 'pointer-events-none opacity-50',
+                                        )}
+                                    >
+                                        {uploadingPhoto
+                                            ? 'Enviando...'
+                                            : photo
+                                              ? 'Trocar imagem'
+                                              : 'Escolher imagem'}
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handlePhoto}
+                                            disabled={uploadingPhoto}
+                                            className="hidden"
+                                        />
+                                    </label>
+                                </div>
                             </div>
-                        )}
+
+                            {/* Campo novo: vincular este ator aos SEUS eventos. */}
+                            <div className="flex flex-col gap-2">
+                                <span className="text-secondary text-sm font-semibold">
+                                    Vincular eventos
+                                </span>
+                                {eventOptions.length === 0 ? (
+                                    <p className="text-secondary/50 text-xs">
+                                        Você ainda não tem eventos para vincular.
+                                    </p>
+                                ) : (
+                                    <div className="flex flex-wrap gap-2">
+                                        {eventOptions.map((option) => {
+                                            const active = linked.has(option.id)
+                                            return (
+                                                <button
+                                                    key={option.id}
+                                                    type="button"
+                                                    onClick={() => toggleLink(option.id)}
+                                                    aria-pressed={active}
+                                                    className={cn(
+                                                        'rounded-full border px-3 py-1.5 text-xs font-semibold transition',
+                                                        active
+                                                            ? 'bg-secondary border-secondary text-background'
+                                                            : 'border-secondary/30 text-secondary hover:border-secondary',
+                                                    )}
+                                                >
+                                                    {option.label}
+                                                </button>
+                                            )
+                                        })}
+                                    </div>
+                                )}
+                            </div>
+
+                            <CollapsibleSection
+                                title="Contato"
+                                open={showContact}
+                                onToggle={() => setShowContact((value) => !value)}
+                            >
+                                <Input
+                                    aria-label="Site"
+                                    value={form.site}
+                                    onChange={(event) => setField('site', event.target.value)}
+                                    placeholder="Site"
+                                    className="rounded-2xl"
+                                />
+                                <Input
+                                    aria-label="E-mail"
+                                    type="email"
+                                    value={form.email}
+                                    onChange={(event) => setField('email', event.target.value)}
+                                    placeholder="E-mail"
+                                    className="rounded-2xl"
+                                />
+                                <Input
+                                    aria-label="Telefone"
+                                    value={form.phone}
+                                    onChange={(event) => setField('phone', event.target.value)}
+                                    placeholder="Telefone"
+                                    className="rounded-2xl"
+                                />
+                            </CollapsibleSection>
+                        </div>
                     </div>
 
                     {error && <p className="text-danger text-sm">{error}</p>}

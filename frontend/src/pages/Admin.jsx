@@ -1,6 +1,6 @@
 // Tela do módulo de Administração (/admin). Agora dentro do MainLayout, então usa
 // a NAVBAR padrão das demais telas. Banner full-bleed "Administrador" (lado a
-// lado, -mt-4 cancela o pt do main) + sub-guias: Painel / Aprovações / Usuários /
+// lado, -mt-24 cancela o pt do main) + sub-guias: Painel / Aprovações / Usuários /
 // Plataforma.
 //
 // Observação: a proteção real por perfil (RBAC) — só o Administrador acessa —
@@ -29,8 +29,8 @@ export function Admin() {
     return (
         <>
             {/* Banner: só o título "Administrador", lado a lado, um pouco menor que
-                os banners das outras telas (py-5). -mt-4 cancela o pt do <main>. */}
-            <FullBleed className="bg-secondary -mt-4">
+                os banners das outras telas (py-5). -mt-24 cancela o pt do <main>. */}
+            <FullBleed className="bg-secondary -mt-24">
                 <div className="px-4 py-5 lg:px-[10%]">
                     <h1 className="font-montserrat text-2xl font-extrabold text-white">
                         Área Administradores

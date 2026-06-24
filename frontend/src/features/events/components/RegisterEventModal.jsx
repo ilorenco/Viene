@@ -157,7 +157,7 @@ export function RegisterEventModal({ open, onClose }) {
                 if (!value) handleClose()
             }}
         >
-            <ModalContent aria-describedby={undefined}>
+            <ModalContent aria-describedby={undefined} className="lg:max-w-2xl">
                 <ModalTitle>Cadastrar evento</ModalTitle>
 
                 {!isAuthenticated ? (
@@ -179,159 +179,178 @@ export function RegisterEventModal({ open, onClose }) {
                     </div>
                 ) : (
                     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-                        <label
-                            htmlFor="ev-nome"
-                            className="text-secondary flex flex-col gap-1 text-sm font-semibold"
-                        >
-                            Nome do evento *
-                            <Input
-                                id="ev-nome"
-                                value={form.name}
-                                onChange={(event) => setField('name', event.target.value)}
-                                placeholder="Ex: Meetup de Inteligência Artificial"
-                                className="rounded-2xl"
-                            />
-                        </label>
-
-                        <label
-                            htmlFor="ev-endereco"
-                            className="text-secondary flex flex-col gap-1 text-sm font-semibold"
-                        >
-                            Endereço *
-                            <Input
-                                id="ev-endereco"
-                                value={form.address}
-                                onChange={(event) => setField('address', event.target.value)}
-                                placeholder="Rua, número, bairro, cidade"
-                                className="rounded-2xl"
-                            />
-                        </label>
-
-                        <label className="text-secondary flex flex-col gap-1 text-sm font-semibold">
-                            Data *
-                            <input
-                                type="date"
-                                value={form.date}
-                                onChange={(event) => setField('date', event.target.value)}
-                                className={selectClass}
-                            />
-                        </label>
-
-                        <div className="flex gap-2">
-                            <label className="text-secondary flex flex-1 flex-col gap-1 text-sm font-semibold">
-                                Início *
-                                <input
-                                    type="time"
-                                    value={form.start}
-                                    onChange={(event) => setField('start', event.target.value)}
-                                    className={selectClass}
-                                />
-                            </label>
-                            <label className="text-secondary flex flex-1 flex-col gap-1 text-sm font-semibold">
-                                Término *
-                                <input
-                                    type="time"
-                                    value={form.end}
-                                    onChange={(event) => setField('end', event.target.value)}
-                                    className={selectClass}
-                                />
-                            </label>
-                        </div>
-
-                        <div className="flex flex-col gap-1">
-                            <span className="text-secondary text-sm font-semibold">
-                                Tipo de evento *
-                            </span>
-                            <Select
-                                value={form.category}
-                                onValueChange={(value) => setField('category', value)}
-                            >
-                                <SelectTrigger
-                                    aria-label="Tipo de evento"
-                                    className="border-secondary text-secondary flex w-full items-center justify-between rounded-2xl border-2 bg-transparent px-4 py-3 text-left"
-                                >
-                                    <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent className="z-[2100] max-h-72">
-                                    {mockEventCategories.map((option) => (
-                                        <SelectItem key={option.value} value={option.value}>
-                                            {option.label}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
-
-                        <div className="flex flex-col gap-1">
-                            <span className="text-secondary text-sm font-semibold">
-                                Localização no mapa
-                            </span>
-                            <LocationPicker position={position} onChange={setPosition} />
-                            <span className="text-secondary/50 text-xs">
-                                {position
-                                    ? `Marcado em ${position[0].toFixed(4)}, ${position[1].toFixed(4)} (arraste o pino para ajustar).`
-                                    : 'Toque no mapa para marcar o local do evento.'}
-                            </span>
-                        </div>
-
-                        <label
-                            htmlFor="ev-descricao"
-                            className="text-secondary flex flex-col gap-1 text-sm font-semibold"
-                        >
-                            Descrição (opcional)
-                            <Textarea
-                                id="ev-descricao"
-                                value={form.description}
-                                onChange={(event) => setField('description', event.target.value)}
-                                placeholder="Conte do que se trata o evento, programação..."
-                                rows={3}
-                            />
-                        </label>
-
-                        <Section
-                            title="Link do ingresso (opcional)"
-                            open={showTicket}
-                            onToggle={() => setShowTicket((value) => !value)}
-                        >
-                            <Input
-                                value={form.ticketUrl}
-                                onChange={(event) => setField('ticketUrl', event.target.value)}
-                                placeholder="Ex: https://www.sympla.com.br/evento/..."
-                                className="rounded-2xl"
-                            />
-                        </Section>
-
-                        <div className="flex flex-col gap-2">
-                            <span className="text-secondary text-sm font-semibold">
-                                Foto ou banner (opcional)
-                            </span>
-                            <div className="flex items-center gap-3">
-                                {photo && (
-                                    <img
-                                        src={photo.url}
-                                        alt=""
-                                        className="size-14 rounded-xl object-cover"
-                                    />
-                                )}
+                        {/* Desktop (lg): texto numa coluna, mapa+foto na outra —
+                            usa o espaço horizontal extra do modal mais largo.
+                            Mobile: as duas colunas empilham na ordem natural. */}
+                        <div className="flex flex-col gap-3 lg:flex-row lg:gap-5">
+                            <div className="flex flex-1 flex-col gap-3">
                                 <label
-                                    className={cn(
-                                        'bg-secondary/10 text-secondary cursor-pointer rounded-full px-3 py-2 text-sm font-semibold',
-                                        uploadingPhoto && 'pointer-events-none opacity-50',
-                                    )}
+                                    htmlFor="ev-nome"
+                                    className="text-secondary flex flex-col gap-1 text-sm font-semibold"
                                 >
-                                    {uploadingPhoto
-                                        ? 'Enviando...'
-                                        : photo
-                                          ? 'Trocar imagem'
-                                          : 'Escolher imagem'}
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={handlePhoto}
-                                        disabled={uploadingPhoto}
-                                        className="hidden"
+                                    Nome do evento *
+                                    <Input
+                                        id="ev-nome"
+                                        value={form.name}
+                                        onChange={(event) => setField('name', event.target.value)}
+                                        placeholder="Ex: Meetup de Inteligência Artificial"
+                                        className="rounded-2xl"
                                     />
                                 </label>
+
+                                <label
+                                    htmlFor="ev-endereco"
+                                    className="text-secondary flex flex-col gap-1 text-sm font-semibold"
+                                >
+                                    Endereço *
+                                    <Input
+                                        id="ev-endereco"
+                                        value={form.address}
+                                        onChange={(event) =>
+                                            setField('address', event.target.value)
+                                        }
+                                        placeholder="Rua, número, bairro, cidade"
+                                        className="rounded-2xl"
+                                    />
+                                </label>
+
+                                <label className="text-secondary flex flex-col gap-1 text-sm font-semibold">
+                                    Data *
+                                    <input
+                                        type="date"
+                                        value={form.date}
+                                        onChange={(event) => setField('date', event.target.value)}
+                                        className={selectClass}
+                                    />
+                                </label>
+
+                                <div className="flex gap-2">
+                                    <label className="text-secondary flex flex-1 flex-col gap-1 text-sm font-semibold">
+                                        Início *
+                                        <input
+                                            type="time"
+                                            value={form.start}
+                                            onChange={(event) =>
+                                                setField('start', event.target.value)
+                                            }
+                                            className={selectClass}
+                                        />
+                                    </label>
+                                    <label className="text-secondary flex flex-1 flex-col gap-1 text-sm font-semibold">
+                                        Término *
+                                        <input
+                                            type="time"
+                                            value={form.end}
+                                            onChange={(event) =>
+                                                setField('end', event.target.value)
+                                            }
+                                            className={selectClass}
+                                        />
+                                    </label>
+                                </div>
+
+                                <div className="flex flex-col gap-1">
+                                    <span className="text-secondary text-sm font-semibold">
+                                        Tipo de evento *
+                                    </span>
+                                    <Select
+                                        value={form.category}
+                                        onValueChange={(value) => setField('category', value)}
+                                    >
+                                        <SelectTrigger
+                                            aria-label="Tipo de evento"
+                                            className="border-secondary text-secondary flex w-full items-center justify-between rounded-2xl border-2 bg-transparent px-4 py-3 text-left"
+                                        >
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent className="z-[2100] max-h-72">
+                                            {mockEventCategories.map((option) => (
+                                                <SelectItem key={option.value} value={option.value}>
+                                                    {option.label}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                <label
+                                    htmlFor="ev-descricao"
+                                    className="text-secondary flex flex-col gap-1 text-sm font-semibold"
+                                >
+                                    Descrição (opcional)
+                                    <Textarea
+                                        id="ev-descricao"
+                                        value={form.description}
+                                        onChange={(event) =>
+                                            setField('description', event.target.value)
+                                        }
+                                        placeholder="Conte do que se trata o evento, programação..."
+                                        rows={3}
+                                    />
+                                </label>
+                            </div>
+
+                            <div className="flex flex-1 flex-col gap-3">
+                                <div className="flex flex-col gap-1">
+                                    <span className="text-secondary text-sm font-semibold">
+                                        Localização no mapa
+                                    </span>
+                                    <LocationPicker position={position} onChange={setPosition} />
+                                    <span className="text-secondary/50 text-xs">
+                                        {position
+                                            ? `Marcado em ${position[0].toFixed(4)}, ${position[1].toFixed(4)} (arraste o pino para ajustar).`
+                                            : 'Toque no mapa para marcar o local do evento.'}
+                                    </span>
+                                </div>
+
+                                <Section
+                                    title="Link do ingresso (opcional)"
+                                    open={showTicket}
+                                    onToggle={() => setShowTicket((value) => !value)}
+                                >
+                                    <Input
+                                        value={form.ticketUrl}
+                                        onChange={(event) =>
+                                            setField('ticketUrl', event.target.value)
+                                        }
+                                        placeholder="Ex: https://www.sympla.com.br/evento/..."
+                                        className="rounded-2xl"
+                                    />
+                                </Section>
+
+                                <div className="flex flex-col gap-2">
+                                    <span className="text-secondary text-sm font-semibold">
+                                        Foto ou banner (opcional)
+                                    </span>
+                                    <div className="flex items-center gap-3">
+                                        {photo && (
+                                            <img
+                                                src={photo.url}
+                                                alt=""
+                                                className="size-14 rounded-xl object-cover"
+                                            />
+                                        )}
+                                        <label
+                                            className={cn(
+                                                'bg-secondary/10 text-secondary cursor-pointer rounded-full px-3 py-2 text-sm font-semibold',
+                                                uploadingPhoto && 'pointer-events-none opacity-50',
+                                            )}
+                                        >
+                                            {uploadingPhoto
+                                                ? 'Enviando...'
+                                                : photo
+                                                  ? 'Trocar imagem'
+                                                  : 'Escolher imagem'}
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={handlePhoto}
+                                                disabled={uploadingPhoto}
+                                                className="hidden"
+                                            />
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

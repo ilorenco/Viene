@@ -103,7 +103,7 @@ export function Settings() {
     return (
         <>
             {/* Banner escuro no estilo dos catálogos, sem barra de busca. */}
-            <div className="bg-secondary -mx-4 flex flex-col gap-3 rounded-none p-6 lg:-mx-[5vw] lg:rounded-xl lg:p-8">
+            <div className="bg-secondary -mx-6 flex flex-col gap-3 rounded-none p-6 lg:-mx-[5vw] lg:rounded-xl lg:p-8">
                 <PageHeader title="Configurações" className="text-white lg:hidden" />
                 <div className="hidden flex-col gap-3 lg:flex">
                     <h1 className="font-montserrat text-3xl leading-tight font-extrabold whitespace-nowrap text-white lg:text-4xl">
@@ -223,9 +223,9 @@ export function Settings() {
                 title="Acessibilidade"
                 description="Os mesmos ajustes do botão de acessibilidade da tela."
             >
-                {/* Fundo cinza-escuro arredondado: de lado a lado só no mobile (-mx-4);
+                {/* Fundo cinza-escuro arredondado: de lado a lado só no mobile (-mx-6);
                     no desktop fica recolhido (mx-0) e arredondado. */}
-                <div className="bg-secondary -mx-4 rounded-none p-5 lg:mx-0 lg:rounded-2xl lg:p-6">
+                <div className="bg-secondary -mx-6 rounded-none p-5 lg:mx-0 lg:rounded-2xl lg:p-6">
                     <AccessibilityControls compact />
                 </div>
             </Section>

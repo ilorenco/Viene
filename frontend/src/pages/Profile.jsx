@@ -2,7 +2,7 @@
 // e perguntas. O LAYOUT segue o mesmo padrão da tela de Configurações — banner de
 // título + seções com cartões brancos — mantendo o conteúdo próprio do perfil.
 
-import { CalendarDays, LogOut, Settings, SquarePlus } from 'lucide-react'
+import { LogOut, Settings, SquarePlus, UserPlus } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 import { PageHeader } from '@/components/layout/PageHeader'
@@ -22,25 +22,29 @@ import {
 import { ProfileStats } from '@/features/profile/components/ProfileStats'
 import { useLogout } from '@/hooks/useLogout'
 
+// Os dois levam ao catálogo já com o modal de cadastro aberto (state.openRegister
+// — ver Actors.jsx/Events.jsx), em vez de só navegar.
 const eventActions = [
     {
-        icon: CalendarDays,
-        title: 'Próximos eventos',
-        description: 'Veja seus próximos eventos',
-        to: '/events',
+        icon: UserPlus,
+        title: 'Cadastrar ator',
+        description: 'Cadastre um novo ator',
+        to: '/actors',
+        state: { openRegister: true },
     },
     {
         icon: SquarePlus,
         title: 'Criar evento',
         description: 'Cadastre um novo evento',
         to: '/events',
+        state: { openRegister: true },
     },
 ]
 
 export function Profile() {
     const handleLogout = useLogout()
     // Rota protegida (ProtectedRoute) → sempre há um usuário logado aqui.
-    const { user } = useAuth()
+    const { user, isAdmin } = useAuth()
     const displayName = user?.name ?? 'Usuário'
     const email = user?.email
     // Usuários do tipo "ator" ganham o bloco de gestão das próprias publicações.
@@ -50,7 +54,7 @@ export function Profile() {
     return (
         <>
             {/* Banner no estilo da tela de Configurações: só título + subtítulo. */}
-            <div className="bg-secondary -mx-4 flex flex-col gap-3 rounded-none p-6 lg:-mx-[5vw] lg:rounded-xl lg:p-8">
+            <div className="bg-secondary -mx-6 flex flex-col gap-3 rounded-none p-6 lg:-mx-[5vw] lg:rounded-xl lg:p-8">
                 <PageHeader title="Meu perfil" className="text-white lg:hidden" />
                 <div className="hidden flex-col gap-3 lg:flex">
                     <h1 className="font-montserrat text-3xl leading-tight font-extrabold whitespace-nowrap text-white lg:text-4xl">
@@ -93,14 +97,18 @@ export function Profile() {
                         </div>
                     </div>
 
-                    <ProfileStats />
+                    {/* Estatísticas de consumo do catálogo — não fazem sentido pra
+                        uma conta admin (gestão, não consumo). */}
+                    {!isAdmin && <ProfileStats />}
                 </div>
             </Section>
 
             {/* Bloco exclusivo de atores: gestão das próprias publicações. */}
             {isActor && <MyPublications />}
 
-            <Section title="Meus eventos" action={<SeeAll to="/events" />}>
+            {/* Sem "Ver todos": os dois itens são atalhos fixos de cadastro, não
+                uma prévia de uma lista maior. */}
+            <Section title="Cadastrar no catálogo">
                 <ul className={`${listClass} grid grid-cols-2 divide-x`}>
                     {eventActions.map((item) => (
                         <CollectionItem key={item.title} {...item} />
@@ -108,11 +116,15 @@ export function Profile() {
                 </ul>
             </Section>
 
-            <Section title="Meus favoritos" action={<SeeAll to="/favorites" />}>
-                <FavoritesSummary />
-            </Section>
+            {/* Favoritos/histórico de ingressos: mesma lógica da estatística acima,
+                escondidos pra admin. */}
+            {!isAdmin && (
+                <Section title="Meus favoritos" action={<SeeAll to="/favorites" />}>
+                    <FavoritesSummary />
+                </Section>
+            )}
 
-            <EventHistorySummary />
+            {!isAdmin && <EventHistorySummary />}
 
             <MyQuestions />
 

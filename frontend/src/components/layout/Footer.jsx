@@ -41,7 +41,14 @@ export function Footer() {
     const year = new Date().getFullYear()
 
     return (
-        <footer className="bg-secondary text-background">
+        // mt-24 (6rem) dá o mesmo respiro (cor de fundo da página, ANTES do fundo
+        // escuro do rodapé começar) entre o fim do conteúdo e o rodapé em TODA
+        // página, independente do que cada uma termina renderizando (substitui um
+        // pb no <main>, que variava o respiro real conforme o conteúdo da
+        // página). Testamos padding-top aqui antes — ficava como espaço vazio
+        // DENTRO do fundo escuro, sem separação visual real; margin é o que dá a
+        // folga entre os dois.
+        <footer className="bg-secondary text-background mt-24">
             <div className="px-6 py-8 lg:px-[10%]">
                 <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
                     {/* Marca */}

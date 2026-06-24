@@ -53,7 +53,7 @@ function TicketsContent() {
         <>
             {/* Banner escuro no estilo da página de Eventos: título + descrição à
                 esquerda, busca à direita. */}
-            <div className="bg-secondary -mx-4 flex flex-col gap-6 rounded-none p-6 lg:-mx-[5vw] lg:flex-row lg:items-start lg:justify-between lg:rounded-xl lg:p-8">
+            <div className="bg-secondary -mx-6 flex flex-col gap-6 rounded-none p-6 lg:-mx-[5vw] lg:flex-row lg:items-start lg:justify-between lg:rounded-xl lg:p-8">
                 <div className="flex flex-col gap-3 lg:max-w-sm">
                     {/* Mobile: título + Alertas no canto superior direito. */}
                     <div className="flex items-center justify-between gap-3 lg:hidden">

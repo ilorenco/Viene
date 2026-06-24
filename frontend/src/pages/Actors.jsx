@@ -1,5 +1,6 @@
 import { LayoutGrid, Search, Tag, UserPlus } from 'lucide-react'
-import { Suspense, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import { PageHeader } from '@/components/layout/PageHeader'
 import { DraggableTrack } from '@/components/ui/DraggableTrack'
@@ -21,10 +22,21 @@ import { ATOR_AREA_LABELS, ATOR_AREA_OPTIONS } from '@/lib/atorTypes'
 import { cn } from '@/lib/utils'
 
 function ActorsContent() {
+    const location = useLocation()
+    const navigate = useNavigate()
     const [area, setArea] = useState('todos')
     const [tag, setTag] = useState('todas')
     const [search, setSearch] = useState('')
-    const [registerOpen, setRegisterOpen] = useState(false)
+    // Abre o modal de cadastro já aberto quando se chega aqui pelo atalho do
+    // Perfil (state.openRegister — ver Profile.jsx). Limpa o state na hora pra
+    // um back/forward do navegador não reabrir o modal sozinho.
+    const [registerOpen, setRegisterOpen] = useState(() => Boolean(location.state?.openRegister))
+    useEffect(() => {
+        if (location.state?.openRegister) {
+            navigate(location.pathname, { replace: true })
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps -- só na primeira renderização (consome o state uma vez)
+    }, [])
 
     // Busca + regra de filtro/tags ficam no hook (useSuspenseQuery por dentro): a
     // página recebe só a lista já filtrada e as tags disponíveis.
@@ -70,7 +82,7 @@ function ActorsContent() {
         <>
             {/* Banner escuro (vai de canto a canto no mobile; ~5% das bordas no
                 desktop). Título + busca + botões de ÁREA. */}
-            <div className="bg-secondary -mx-4 flex flex-col gap-6 rounded-none p-6 lg:-mx-[5vw] lg:flex-row lg:items-start lg:justify-between lg:rounded-xl lg:p-8">
+            <div className="bg-secondary -mx-6 flex flex-col gap-6 rounded-none p-6 lg:-mx-[5vw] lg:flex-row lg:items-start lg:justify-between lg:rounded-xl lg:p-8">
                 <div className="flex flex-col gap-3 lg:max-w-sm">
                     {/* Mobile: título curto + linha. Desktop: título completo + subtítulo. */}
                     <PageHeader title="Encontre Atores" className="text-white lg:hidden" />

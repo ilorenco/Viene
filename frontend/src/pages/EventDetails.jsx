@@ -84,8 +84,8 @@ function EventDetailsContent() {
     return (
         <>
             {/* Banner full-bleed: botão Voltar + o TIPO do evento (não a área).
-                -mt-4 cancela o pt do <main> (convenção do colega). */}
-            <FullBleed className="bg-secondary -mt-4">
+                -mt-24 cancela o pt do <main> (convenção do colega). */}
+            <FullBleed className="bg-secondary -mt-24">
                 <div className="flex flex-col gap-3 px-4 py-7 lg:px-[10%]">
                     <button
                         type="button"

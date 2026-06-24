@@ -13,10 +13,13 @@ export function MainLayout() {
             {/* Tratamento de erro CENTRAL: qualquer página que falhe ao carregar
                 (React Query + Suspense) cai no <ErrorBoundary> e mostra o
                 <RouteError> — cada página só precisa do seu <Suspense>, sem repetir
-                o boundary. pt-4 dá respiro abaixo do header sticky; heros full-bleed
-                de topo (PageBanner, Map, EventDetails) cancelam esse respiro com
-                -mt-4. */}
-            <main className="flex flex-1 flex-col gap-5 overflow-x-hidden px-4 pt-4 pb-4 lg:px-[10%]">
+                o boundary. pt-24 (6rem) dá respiro abaixo do header sticky; heros
+                full-bleed de topo (PageBanner, Map, EventDetails) cancelam esse
+                respiro com -mt-24, ficando colados no header. O respiro ANTES do
+                rodapé não é daqui — é o padding-top do próprio <Footer> (mesma
+                distância em toda página, independente do que a página termina
+                renderizando). */}
+            <main className="flex flex-1 flex-col gap-5 overflow-x-hidden px-6 pt-24 lg:px-[10%]">
                 <QueryErrorResetBoundary>
                     {({ reset }) => (
                         <ErrorBoundary onReset={reset} FallbackComponent={RouteError}>

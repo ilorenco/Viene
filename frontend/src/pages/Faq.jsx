@@ -65,7 +65,7 @@ function FaqContent() {
         <>
             {/* Banner escuro (de canto a canto no mobile; recuado ~5% no desktop),
                 igual ao catálogo de atores: título + descrição + busca. */}
-            <div className="bg-secondary -mx-4 flex flex-col gap-6 rounded-none p-6 lg:-mx-[5vw] lg:flex-row lg:items-start lg:justify-between lg:rounded-xl lg:p-8">
+            <div className="bg-secondary -mx-6 flex flex-col gap-6 rounded-none p-6 lg:-mx-[5vw] lg:flex-row lg:items-start lg:justify-between lg:rounded-xl lg:p-8">
                 <div className="flex flex-col gap-3">
                     <PageHeader title="Perguntas Frequentes" className="text-white lg:hidden" />
                     <div className="hidden flex-col gap-3 lg:flex">
@@ -165,7 +165,7 @@ function FaqContent() {
 function FaqSkeleton({ count = 6 }) {
     return (
         <div className="flex animate-pulse flex-col gap-5">
-            <div className="bg-secondary/80 -mx-4 h-40 rounded-none lg:-mx-[5vw] lg:h-32 lg:rounded-xl" />
+            <div className="bg-secondary/80 -mx-6 h-40 rounded-none lg:-mx-[5vw] lg:h-32 lg:rounded-xl" />
             <div className="bg-secondary/10 h-9 w-44 rounded-full" />
             <ul className="grid grid-cols-1 gap-3 lg:grid-cols-2">
                 {Array.from({ length: count }).map((_, index) => (

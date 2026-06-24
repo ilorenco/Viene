@@ -2,7 +2,7 @@
 // detalhe do colega (ver EventDetails na main): useSuspenseQuery por id
 // (useActor) + apenas <Suspense> (o erro é tratado de forma central no
 // MainLayout, não por página); ator inexistente cai no <NotFound/>. Banner
-// full-bleed com -mt-4 (cancela o pt do <main>, convenção do colega).
+// full-bleed com -mt-24 (cancela o pt do <main>, convenção do colega).
 //
 // Desacoplada: as REGRAS de "relacionados" ficam em hooks (useRelatedActors /
 // useRelatedEvents) e a montagem dos CONTATOS em um componente de apresentação
@@ -79,8 +79,8 @@ function ActorProfileContent() {
         <>
             {/* Banner full-bleed (lado a lado): botão Voltar (canto superior
                 esquerdo, com respiro do menu e da borda) + a área do ator.
-                -mt-4 cancela o pt do <main> (mesma convenção do colega). */}
-            <FullBleed className="bg-secondary -mt-4">
+                -mt-24 cancela o pt do <main> (mesma convenção do colega). */}
+            <FullBleed className="bg-secondary -mt-24">
                 <div className="flex flex-col gap-3 px-4 py-7 lg:px-[10%]">
                     <button
                         type="button"

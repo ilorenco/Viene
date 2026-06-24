@@ -31,14 +31,14 @@ const exploreSection = {
 
 // "MINHA CONTA" só entra no menu para usuários logados (as rotas são protegidas;
 // mostrá-las ao visitante daria "falsa expectativa" — clicaria e cairia no login).
-const accountSection = {
-    title: 'MINHA CONTA',
-    items: [
-        { to: '/tickets', label: 'Meus ingressos', icon: Ticket },
-        { to: '/favorites', label: 'Meus favoritos', icon: Heart },
-        { to: '/configuracoes', label: 'Configurações', icon: Settings },
-    ],
-}
+// Ingressos/Favoritos são atividade de consumo do catálogo — não fazem sentido
+// pra uma conta admin, então saem do menu (a rota em si continua acessível,
+// igual a outras restrições de UI deste app: o back-end é que garante a regra).
+const ACCOUNT_ITEMS = [
+    { to: '/tickets', label: 'Meus ingressos', icon: Ticket },
+    { to: '/favorites', label: 'Meus favoritos', icon: Heart },
+    { to: '/configuracoes', label: 'Configurações', icon: Settings },
+]
 
 const institutionalSection = {
     title: 'INSTITUCIONAL',
@@ -61,6 +61,12 @@ export function MainMenu() {
     // Monta as seções conforme o estado de login: "MINHA CONTA" só para logados e
     // "ADMINISTRAÇÃO" só para admin. (Segurança real do RBAC virá do backend — o
     // `role` salvo no navegador NÃO é fonte de verdade; ver AuthContext/auth.js.)
+    const accountSection = {
+        title: 'MINHA CONTA',
+        items: isAdmin
+            ? ACCOUNT_ITEMS.filter((item) => item.to !== '/tickets' && item.to !== '/favorites')
+            : ACCOUNT_ITEMS,
+    }
     const sections = [
         exploreSection,
         ...(isAuthenticated ? [accountSection] : []),

@@ -41,10 +41,10 @@ export function SeeAll({ to }) {
     )
 }
 
-export function CollectionItem({ icon: Icon, title, description, to, meta }) {
+export function CollectionItem({ icon: Icon, title, description, to, meta, state }) {
     return (
         <li>
-            <Link to={to} className="flex items-center gap-3 p-4">
+            <Link to={to} state={state} className="flex items-center gap-3 p-4">
                 <div className="bg-primary/10 text-primary shrink-0 rounded-full p-3">
                     <Icon className="size-6" />
                 </div>

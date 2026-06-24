@@ -9,7 +9,7 @@ import { FullBleed } from '@/components/layout/FullBleed'
 export function ActorProfileSkeleton() {
     return (
         <>
-            <FullBleed className="bg-secondary -mt-4 animate-pulse">
+            <FullBleed className="bg-secondary -mt-24 animate-pulse">
                 <div className="flex flex-col gap-4 px-4 py-7 lg:px-[10%]">
                     <div className="h-8 w-24 rounded-full bg-white/15" />
                     <div className="h-4 w-48 rounded bg-white/10" />

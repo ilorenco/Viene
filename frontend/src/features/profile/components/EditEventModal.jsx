@@ -131,210 +131,221 @@ export function EditEventModal({ open, onClose, event, actorOptions = [] }) {
                 if (!value && !save.isPending) onClose()
             }}
         >
-            <ModalContent aria-describedby={undefined}>
+            <ModalContent aria-describedby={undefined} className="lg:max-w-2xl">
                 <ModalTitle>Editar evento</ModalTitle>
                 <ModalDescription>
                     Alterações em uma publicação sua entram direto, sem nova aprovação.
                 </ModalDescription>
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-                    <label
-                        htmlFor="ee-nome"
-                        className="text-secondary flex flex-col gap-1 text-sm font-semibold"
-                    >
-                        Nome *
-                        <Input
-                            id="ee-nome"
-                            value={form.title}
-                            onChange={(submitEvent) => setField('title', submitEvent.target.value)}
-                            className="rounded-2xl"
-                        />
-                    </label>
-
-                    <label
-                        htmlFor="ee-endereco"
-                        className="text-secondary flex flex-col gap-1 text-sm font-semibold"
-                    >
-                        Endereço *
-                        <Input
-                            id="ee-endereco"
-                            value={form.address}
-                            onChange={(submitEvent) =>
-                                setField('address', submitEvent.target.value)
-                            }
-                            className="rounded-2xl"
-                        />
-                    </label>
-
-                    <div className="flex flex-col gap-1">
-                        <span className="text-secondary text-sm font-semibold">
-                            Tipo de evento *
-                        </span>
-                        <Select
-                            value={form.category}
-                            onValueChange={(value) => setField('category', value)}
-                        >
-                            <SelectTrigger
-                                aria-label="Tipo de evento"
-                                className="border-secondary text-secondary flex w-full items-center justify-between rounded-2xl border-2 bg-transparent px-4 py-3 text-left"
-                            >
-                                <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent className="z-[2100] max-h-72">
-                                {mockEventCategories.map((option) => (
-                                    <SelectItem key={option.value} value={option.value}>
-                                        {option.label}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-
-                    <div className="flex flex-col gap-3 sm:flex-row">
-                        <label
-                            htmlFor="ee-data"
-                            className="text-secondary flex flex-1 flex-col gap-1 text-sm font-semibold"
-                        >
-                            Data *
-                            <Input
-                                id="ee-data"
-                                type="date"
-                                value={form.date}
-                                onChange={(submitEvent) =>
-                                    setField('date', submitEvent.target.value)
-                                }
-                                className="rounded-2xl"
-                            />
-                        </label>
-                        <label
-                            htmlFor="ee-inicio"
-                            className="text-secondary flex flex-col gap-1 text-sm font-semibold"
-                        >
-                            Início
-                            <Input
-                                id="ee-inicio"
-                                type="time"
-                                value={form.start}
-                                onChange={(submitEvent) =>
-                                    setField('start', submitEvent.target.value)
-                                }
-                                className="rounded-2xl"
-                            />
-                        </label>
-                        <label
-                            htmlFor="ee-fim"
-                            className="text-secondary flex flex-col gap-1 text-sm font-semibold"
-                        >
-                            Término
-                            <Input
-                                id="ee-fim"
-                                type="time"
-                                value={form.end}
-                                onChange={(submitEvent) =>
-                                    setField('end', submitEvent.target.value)
-                                }
-                                className="rounded-2xl"
-                            />
-                        </label>
-                    </div>
-
-                    <label
-                        htmlFor="ee-descricao"
-                        className="text-secondary flex flex-col gap-1 text-sm font-semibold"
-                    >
-                        Descrição
-                        <Textarea
-                            id="ee-descricao"
-                            value={form.description}
-                            onChange={(submitEvent) =>
-                                setField('description', submitEvent.target.value)
-                            }
-                            rows={3}
-                        />
-                    </label>
-
-                    <label
-                        htmlFor="ee-ingresso"
-                        className="text-secondary flex flex-col gap-1 text-sm font-semibold"
-                    >
-                        Link do ingresso
-                        <Input
-                            id="ee-ingresso"
-                            value={form.ticketUrl}
-                            onChange={(submitEvent) =>
-                                setField('ticketUrl', submitEvent.target.value)
-                            }
-                            placeholder="https://www.sympla.com.br/evento/..."
-                            className="rounded-2xl"
-                        />
-                    </label>
-
-                    <div className="flex flex-col gap-2">
-                        <span className="text-secondary text-sm font-semibold">
-                            Foto ou logo (opcional)
-                        </span>
-                        <div className="flex items-center gap-3">
-                            {photo && (
-                                <img
-                                    src={photo.url}
-                                    alt=""
-                                    className="size-14 rounded-xl object-cover"
-                                />
-                            )}
+                    {/* Desktop (lg): texto numa coluna, ingresso+foto+vínculos na
+                        outra — usa o espaço horizontal extra do modal mais largo.
+                        Mobile: as duas colunas empilham na ordem natural. */}
+                    <div className="flex flex-col gap-3 lg:flex-row lg:gap-5">
+                        <div className="flex flex-1 flex-col gap-3">
                             <label
-                                className={cn(
-                                    'bg-secondary/10 text-secondary cursor-pointer rounded-full px-3 py-2 text-sm font-semibold',
-                                    uploadingPhoto && 'pointer-events-none opacity-50',
-                                )}
+                                htmlFor="ee-nome"
+                                className="text-secondary flex flex-col gap-1 text-sm font-semibold"
                             >
-                                {uploadingPhoto
-                                    ? 'Enviando...'
-                                    : photo
-                                      ? 'Trocar imagem'
-                                      : 'Escolher imagem'}
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handlePhoto}
-                                    disabled={uploadingPhoto}
-                                    className="hidden"
+                                Nome *
+                                <Input
+                                    id="ee-nome"
+                                    value={form.title}
+                                    onChange={(submitEvent) =>
+                                        setField('title', submitEvent.target.value)
+                                    }
+                                    className="rounded-2xl"
+                                />
+                            </label>
+
+                            <label
+                                htmlFor="ee-endereco"
+                                className="text-secondary flex flex-col gap-1 text-sm font-semibold"
+                            >
+                                Endereço *
+                                <Input
+                                    id="ee-endereco"
+                                    value={form.address}
+                                    onChange={(submitEvent) =>
+                                        setField('address', submitEvent.target.value)
+                                    }
+                                    className="rounded-2xl"
+                                />
+                            </label>
+
+                            <div className="flex flex-col gap-1">
+                                <span className="text-secondary text-sm font-semibold">
+                                    Tipo de evento *
+                                </span>
+                                <Select
+                                    value={form.category}
+                                    onValueChange={(value) => setField('category', value)}
+                                >
+                                    <SelectTrigger
+                                        aria-label="Tipo de evento"
+                                        className="border-secondary text-secondary flex w-full items-center justify-between rounded-2xl border-2 bg-transparent px-4 py-3 text-left"
+                                    >
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent className="z-[2100] max-h-72">
+                                        {mockEventCategories.map((option) => (
+                                            <SelectItem key={option.value} value={option.value}>
+                                                {option.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <div className="flex flex-col gap-3 sm:flex-row">
+                                <label
+                                    htmlFor="ee-data"
+                                    className="text-secondary flex flex-1 flex-col gap-1 text-sm font-semibold"
+                                >
+                                    Data *
+                                    <Input
+                                        id="ee-data"
+                                        type="date"
+                                        value={form.date}
+                                        onChange={(submitEvent) =>
+                                            setField('date', submitEvent.target.value)
+                                        }
+                                        className="rounded-2xl"
+                                    />
+                                </label>
+                                <label
+                                    htmlFor="ee-inicio"
+                                    className="text-secondary flex flex-col gap-1 text-sm font-semibold"
+                                >
+                                    Início
+                                    <Input
+                                        id="ee-inicio"
+                                        type="time"
+                                        value={form.start}
+                                        onChange={(submitEvent) =>
+                                            setField('start', submitEvent.target.value)
+                                        }
+                                        className="rounded-2xl"
+                                    />
+                                </label>
+                                <label
+                                    htmlFor="ee-fim"
+                                    className="text-secondary flex flex-col gap-1 text-sm font-semibold"
+                                >
+                                    Término
+                                    <Input
+                                        id="ee-fim"
+                                        type="time"
+                                        value={form.end}
+                                        onChange={(submitEvent) =>
+                                            setField('end', submitEvent.target.value)
+                                        }
+                                        className="rounded-2xl"
+                                    />
+                                </label>
+                            </div>
+
+                            <label
+                                htmlFor="ee-descricao"
+                                className="text-secondary flex flex-col gap-1 text-sm font-semibold"
+                            >
+                                Descrição
+                                <Textarea
+                                    id="ee-descricao"
+                                    value={form.description}
+                                    onChange={(submitEvent) =>
+                                        setField('description', submitEvent.target.value)
+                                    }
+                                    rows={3}
                                 />
                             </label>
                         </div>
-                    </div>
 
-                    {/* Campo novo: vincular este evento aos SEUS atores. */}
-                    <div className="flex flex-col gap-2">
-                        <span className="text-secondary text-sm font-semibold">
-                            Vincular atores
-                        </span>
-                        {actorOptions.length === 0 ? (
-                            <p className="text-secondary/50 text-xs">
-                                Você ainda não tem atores para vincular.
-                            </p>
-                        ) : (
-                            <div className="flex flex-wrap gap-2">
-                                {actorOptions.map((option) => {
-                                    const active = linked.has(option.id)
-                                    return (
-                                        <button
-                                            key={option.id}
-                                            type="button"
-                                            onClick={() => toggleLink(option.id)}
-                                            aria-pressed={active}
-                                            className={cn(
-                                                'rounded-full border px-3 py-1.5 text-xs font-semibold transition',
-                                                active
-                                                    ? 'bg-secondary border-secondary text-background'
-                                                    : 'border-secondary/30 text-secondary hover:border-secondary',
-                                            )}
-                                        >
-                                            {option.label}
-                                        </button>
-                                    )
-                                })}
+                        <div className="flex flex-1 flex-col gap-3">
+                            <label
+                                htmlFor="ee-ingresso"
+                                className="text-secondary flex flex-col gap-1 text-sm font-semibold"
+                            >
+                                Link do ingresso
+                                <Input
+                                    id="ee-ingresso"
+                                    value={form.ticketUrl}
+                                    onChange={(submitEvent) =>
+                                        setField('ticketUrl', submitEvent.target.value)
+                                    }
+                                    placeholder="https://www.sympla.com.br/evento/..."
+                                    className="rounded-2xl"
+                                />
+                            </label>
+
+                            <div className="flex flex-col gap-2">
+                                <span className="text-secondary text-sm font-semibold">
+                                    Foto ou logo (opcional)
+                                </span>
+                                <div className="flex items-center gap-3">
+                                    {photo && (
+                                        <img
+                                            src={photo.url}
+                                            alt=""
+                                            className="size-14 rounded-xl object-cover"
+                                        />
+                                    )}
+                                    <label
+                                        className={cn(
+                                            'bg-secondary/10 text-secondary cursor-pointer rounded-full px-3 py-2 text-sm font-semibold',
+                                            uploadingPhoto && 'pointer-events-none opacity-50',
+                                        )}
+                                    >
+                                        {uploadingPhoto
+                                            ? 'Enviando...'
+                                            : photo
+                                              ? 'Trocar imagem'
+                                              : 'Escolher imagem'}
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handlePhoto}
+                                            disabled={uploadingPhoto}
+                                            className="hidden"
+                                        />
+                                    </label>
+                                </div>
                             </div>
-                        )}
+
+                            {/* Campo novo: vincular este evento aos SEUS atores. */}
+                            <div className="flex flex-col gap-2">
+                                <span className="text-secondary text-sm font-semibold">
+                                    Vincular atores
+                                </span>
+                                {actorOptions.length === 0 ? (
+                                    <p className="text-secondary/50 text-xs">
+                                        Você ainda não tem atores para vincular.
+                                    </p>
+                                ) : (
+                                    <div className="flex flex-wrap gap-2">
+                                        {actorOptions.map((option) => {
+                                            const active = linked.has(option.id)
+                                            return (
+                                                <button
+                                                    key={option.id}
+                                                    type="button"
+                                                    onClick={() => toggleLink(option.id)}
+                                                    aria-pressed={active}
+                                                    className={cn(
+                                                        'rounded-full border px-3 py-1.5 text-xs font-semibold transition',
+                                                        active
+                                                            ? 'bg-secondary border-secondary text-background'
+                                                            : 'border-secondary/30 text-secondary hover:border-secondary',
+                                                    )}
+                                                >
+                                                    {option.label}
+                                                </button>
+                                            )
+                                        })}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
                     </div>
 
                     {error && <p className="text-danger text-sm">{error}</p>}

@@ -8,7 +8,7 @@ export function EventsSkeleton() {
     return (
         <>
             {/* Banner (placeholder) — mesmas bordas/medidas do banner real. */}
-            <div className="bg-secondary -mx-4 flex animate-pulse flex-col gap-6 rounded-none p-6 lg:-mx-[5vw] lg:flex-row lg:items-start lg:justify-between lg:rounded-xl lg:p-8">
+            <div className="bg-secondary -mx-6 flex animate-pulse flex-col gap-6 rounded-none p-6 lg:-mx-[5vw] lg:flex-row lg:items-start lg:justify-between lg:rounded-xl lg:p-8">
                 <div className="flex flex-col gap-3 lg:max-w-sm">
                     <div className="h-7 w-48 rounded bg-white/15" />
                     <div className="hidden h-4 w-64 rounded bg-white/10 lg:block" />

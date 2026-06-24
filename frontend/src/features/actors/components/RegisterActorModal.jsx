@@ -141,7 +141,7 @@ export function RegisterActorModal({ open, onClose }) {
                 if (!value) handleClose()
             }}
         >
-            <ModalContent aria-describedby={undefined}>
+            <ModalContent aria-describedby={undefined} className="lg:max-w-2xl">
                 <ModalTitle>Cadastrar ator</ModalTitle>
 
                 {!isAuthenticated ? (
@@ -163,83 +163,130 @@ export function RegisterActorModal({ open, onClose }) {
                     </div>
                 ) : (
                     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-                        <label
-                            htmlFor="ra-nome"
-                            className="text-secondary flex flex-col gap-1 text-sm font-semibold"
-                        >
-                            Nome *
-                            <Input
-                                id="ra-nome"
-                                value={form.name}
-                                onChange={(event) => setField('name', event.target.value)}
-                                placeholder="Ex: Hub de Inovação Joinville"
-                                className="rounded-2xl"
-                            />
-                        </label>
-
-                        <label
-                            htmlFor="ra-endereco"
-                            className="text-secondary flex flex-col gap-1 text-sm font-semibold"
-                        >
-                            Endereço *
-                            <Input
-                                id="ra-endereco"
-                                value={form.address}
-                                onChange={(event) => setField('address', event.target.value)}
-                                placeholder="Rua, número, bairro, cidade"
-                                className="rounded-2xl"
-                            />
-                        </label>
-
-                        <div className="flex flex-col gap-1">
-                            <span className="text-secondary text-sm font-semibold">
-                                Tipo de ator *
-                            </span>
-                            <Select
-                                value={form.type}
-                                onValueChange={(value) => setField('type', value)}
-                            >
-                                <SelectTrigger
-                                    aria-label="Tipo de ator"
-                                    className="border-secondary text-secondary flex w-full items-center justify-between rounded-2xl border-2 bg-transparent px-4 py-3 text-left"
+                        {/* Desktop (lg): texto numa coluna, mapa+foto na outra —
+                            usa o espaço horizontal extra do modal mais largo.
+                            Mobile: as duas colunas empilham na ordem natural. */}
+                        <div className="flex flex-col gap-3 lg:flex-row lg:gap-5">
+                            <div className="flex flex-1 flex-col gap-3">
+                                <label
+                                    htmlFor="ra-nome"
+                                    className="text-secondary flex flex-col gap-1 text-sm font-semibold"
                                 >
-                                    <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent className="z-[2100] max-h-72">
-                                    {ATOR_TYPES.map((option) => (
-                                        <SelectItem key={option.id} value={option.id}>
-                                            {option.label}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
+                                    Nome *
+                                    <Input
+                                        id="ra-nome"
+                                        value={form.name}
+                                        onChange={(event) => setField('name', event.target.value)}
+                                        placeholder="Ex: Hub de Inovação Joinville"
+                                        className="rounded-2xl"
+                                    />
+                                </label>
 
-                        <div className="flex flex-col gap-1">
-                            <span className="text-secondary text-sm font-semibold">
-                                Localização no mapa
-                            </span>
-                            <LocationPicker position={position} onChange={setPosition} />
-                            <span className="text-secondary/50 text-xs">
-                                {position
-                                    ? `Marcado em ${position[0].toFixed(4)}, ${position[1].toFixed(4)} (arraste o pino para ajustar).`
-                                    : 'Toque no mapa para marcar o local do ator.'}
-                            </span>
-                        </div>
+                                <label
+                                    htmlFor="ra-endereco"
+                                    className="text-secondary flex flex-col gap-1 text-sm font-semibold"
+                                >
+                                    Endereço *
+                                    <Input
+                                        id="ra-endereco"
+                                        value={form.address}
+                                        onChange={(event) =>
+                                            setField('address', event.target.value)
+                                        }
+                                        placeholder="Rua, número, bairro, cidade"
+                                        className="rounded-2xl"
+                                    />
+                                </label>
 
-                        <label
-                            htmlFor="ra-descricao"
-                            className="text-secondary flex flex-col gap-1 text-sm font-semibold"
-                        >
-                            Descrição (opcional)
-                            <Textarea
-                                id="ra-descricao"
-                                value={form.description}
-                                onChange={(event) => setField('description', event.target.value)}
-                                placeholder="Conte o que esse ator faz no ecossistema..."
-                                rows={3}
-                            />
-                        </label>
+                                <div className="flex flex-col gap-1">
+                                    <span className="text-secondary text-sm font-semibold">
+                                        Tipo de ator *
+                                    </span>
+                                    <Select
+                                        value={form.type}
+                                        onValueChange={(value) => setField('type', value)}
+                                    >
+                                        <SelectTrigger
+                                            aria-label="Tipo de ator"
+                                            className="border-secondary text-secondary flex w-full items-center justify-between rounded-2xl border-2 bg-transparent px-4 py-3 text-left"
+                                        >
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent className="z-[2100] max-h-72">
+                                            {ATOR_TYPES.map((option) => (
+                                                <SelectItem key={option.id} value={option.id}>
+                                                    {option.label}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                <label
+                                    htmlFor="ra-descricao"
+                                    className="text-secondary flex flex-col gap-1 text-sm font-semibold"
+                                >
+                                    Descrição (opcional)
+                                    <Textarea
+                                        id="ra-descricao"
+                                        value={form.description}
+                                        onChange={(event) =>
+                                            setField('description', event.target.value)
+                                        }
+                                        placeholder="Conte o que esse ator faz no ecossistema..."
+                                        rows={3}
+                                    />
+                                </label>
+                            </div>
+
+                            <div className="flex flex-1 flex-col gap-3">
+                                <div className="flex flex-col gap-1">
+                                    <span className="text-secondary text-sm font-semibold">
+                                        Localização no mapa
+                                    </span>
+                                    <LocationPicker position={position} onChange={setPosition} />
+                                    <span className="text-secondary/50 text-xs">
+                                        {position
+                                            ? `Marcado em ${position[0].toFixed(4)}, ${position[1].toFixed(4)} (arraste o pino para ajustar).`
+                                            : 'Toque no mapa para marcar o local do ator.'}
+                                    </span>
+                                </div>
+
+                                <div className="flex flex-col gap-2">
+                                    <span className="text-secondary text-sm font-semibold">
+                                        Foto ou logo (opcional)
+                                    </span>
+                                    <div className="flex items-center gap-3">
+                                        {photo && (
+                                            <img
+                                                src={photo.url}
+                                                alt=""
+                                                className="size-14 rounded-xl object-cover"
+                                            />
+                                        )}
+                                        <label
+                                            className={cn(
+                                                'bg-secondary/10 text-secondary cursor-pointer rounded-full px-3 py-2 text-sm font-semibold',
+                                                uploadingPhoto && 'pointer-events-none opacity-50',
+                                            )}
+                                        >
+                                            {uploadingPhoto
+                                                ? 'Enviando...'
+                                                : photo
+                                                  ? 'Trocar imagem'
+                                                  : 'Escolher imagem'}
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={handlePhoto}
+                                                disabled={uploadingPhoto}
+                                                className="hidden"
+                                            />
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <Section
                             title="Contato (opcional)"
@@ -266,40 +313,6 @@ export function RegisterActorModal({ open, onClose }) {
                                 className="rounded-2xl"
                             />
                         </Section>
-
-                        <div className="flex flex-col gap-2">
-                            <span className="text-secondary text-sm font-semibold">
-                                Foto ou logo (opcional)
-                            </span>
-                            <div className="flex items-center gap-3">
-                                {photo && (
-                                    <img
-                                        src={photo.url}
-                                        alt=""
-                                        className="size-14 rounded-xl object-cover"
-                                    />
-                                )}
-                                <label
-                                    className={cn(
-                                        'bg-secondary/10 text-secondary cursor-pointer rounded-full px-3 py-2 text-sm font-semibold',
-                                        uploadingPhoto && 'pointer-events-none opacity-50',
-                                    )}
-                                >
-                                    {uploadingPhoto
-                                        ? 'Enviando...'
-                                        : photo
-                                          ? 'Trocar imagem'
-                                          : 'Escolher imagem'}
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={handlePhoto}
-                                        disabled={uploadingPhoto}
-                                        className="hidden"
-                                    />
-                                </label>
-                            </div>
-                        </div>
 
                         {error && <p className="text-danger text-sm">{error}</p>}
 

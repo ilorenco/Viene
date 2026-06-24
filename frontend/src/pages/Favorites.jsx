@@ -52,7 +52,7 @@ export function Favorites() {
         <>
             {/* Banner escuro no estilo dos catálogos: título + descrição à esquerda,
                 busca à direita (placeholder muda conforme a aba ativa). */}
-            <div className="bg-secondary -mx-4 flex flex-col gap-6 rounded-none p-6 lg:-mx-[5vw] lg:flex-row lg:items-start lg:justify-between lg:rounded-xl lg:p-8">
+            <div className="bg-secondary -mx-6 flex flex-col gap-6 rounded-none p-6 lg:-mx-[5vw] lg:flex-row lg:items-start lg:justify-between lg:rounded-xl lg:p-8">
                 <div className="flex flex-col gap-3">
                     <PageHeader title="Meus Favoritos" className="text-white lg:hidden" />
                     <div className="hidden flex-col gap-3 lg:flex">
