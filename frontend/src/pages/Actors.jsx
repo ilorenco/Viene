@@ -81,8 +81,11 @@ function ActorsContent() {
     return (
         <>
             {/* Banner escuro (vai de canto a canto no mobile; ~5% das bordas no
-                desktop). Título + busca + botões de ÁREA. */}
-            <div className="bg-secondary -mx-6 flex flex-col gap-6 rounded-none p-6 lg:-mx-[5vw] lg:flex-row lg:items-start lg:justify-between lg:rounded-xl lg:p-8">
+                desktop). Título + busca + botões de ÁREA. No mobile, -mt-24
+                cancela o pt do <main> por completo (banner colado no header,
+                igual às telas de detalhe); no desktop, lg:-mt-12 deixa metade do
+                respiro da Home. */}
+            <div className="bg-secondary -mx-6 -mt-24 flex flex-col gap-6 rounded-none p-6 lg:-mx-[5vw] lg:-mt-12 lg:flex-row lg:items-start lg:justify-between lg:rounded-xl lg:p-8">
                 <div className="flex flex-col gap-3 lg:max-w-sm">
                     {/* Mobile: título curto + linha. Desktop: título completo + subtítulo. */}
                     <PageHeader title="Encontre Atores" className="text-white lg:hidden" />
