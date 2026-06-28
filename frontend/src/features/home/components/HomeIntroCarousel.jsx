@@ -4,37 +4,33 @@
 // botão no canto inferior-direito (ao lado da imagem). À direita, imagem quadrada
 // com a barra de progresso (dots) em cima. Imagens são placeholders da marca.
 
-import {
-    ArrowRight,
-    ChevronLeft,
-    ChevronRight,
-    HelpCircle,
-    MapPinned,
-    Sparkles,
-} from 'lucide-react'
+import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
+import comoFuncionaCarousel from '@/assets/home/como-funciona-carousel.png'
+import faqCarousel from '@/assets/home/faq-carousel.png'
+import sobreCarousel from '@/assets/home/sobre-carousel.png'
 import { cn } from '@/lib/utils'
 
 const SLIDES = [
     {
         key: 'sobre',
-        icon: Sparkles,
+        image: sobreCarousel,
         title: 'Sobre o Viene',
         text: 'O Viene mapeia o ecossistema de inovação da região de Joinville: parques tecnológicos, startups, universidades, investidores e instituições — tudo num só lugar. Descubra quem move a inovação por aqui e como tudo se conecta.',
         cta: { label: 'Conhecer o Viene', to: '/sobre' },
     },
     {
         key: 'como',
-        icon: MapPinned,
+        image: comoFuncionaCarousel,
         title: 'Como funciona?',
         text: 'Tudo gira em torno de um mapa interativo. Cada marcador é um ator ou evento do ecossistema, com a cor da sua área. Clique para ver os detalhes, filtre por tipo e encontre conexões.',
         cta: { label: 'Ver como usar o mapa', scrollTo: 'como-funciona' },
     },
     {
         key: 'duvidas',
-        icon: HelpCircle,
+        image: faqCarousel,
         title: 'Ainda ficou com dúvidas?',
         text: 'Na Central de Ajuda você encontra as perguntas mais frequentes sobre a plataforma — e, se precisar, pode enviar a sua dúvida direto para a equipe.',
         cta: { label: 'Ir para a Ajuda', to: '/ajuda' },
@@ -53,7 +49,6 @@ function scrollToId(id) {
 export function HomeIntroCarousel() {
     const [index, setIndex] = useState(0)
     const slide = SLIDES[index]
-    const Icon = slide.icon
     const go = (delta) => setIndex((i) => (i + delta + SLIDES.length) % SLIDES.length)
 
     return (
@@ -118,6 +113,13 @@ export function HomeIntroCarousel() {
             {/* Direita: imagem quadrada com a barra de progresso (dots) EM CIMA */}
             <div className="lg:w-[42%] lg:shrink-0">
                 <div className="bg-secondary relative flex aspect-[2/1] w-full items-center justify-center overflow-hidden rounded-2xl lg:aspect-[5/3]">
+                    {/* Imagem de fundo */}
+                    <img
+                        src={slide.image}
+                        alt={slide.title}
+                        className="absolute inset-0 size-full object-cover"
+                    />
+
                     {/* Barra de progresso (dots) sobre o topo da imagem */}
                     <div className="absolute inset-x-0 top-0 z-10 flex justify-center gap-1.5 p-3">
                         {SLIDES.map((item, i) => (
@@ -134,9 +136,6 @@ export function HomeIntroCarousel() {
                             />
                         ))}
                     </div>
-
-                    <div className="bg-primary/25 absolute -top-10 -right-10 size-44 rounded-full blur-3xl" />
-                    <Icon className="text-primary relative size-24" />
                 </div>
             </div>
         </section>
