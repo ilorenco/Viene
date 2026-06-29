@@ -18,6 +18,8 @@ public record EventResponse(
         String description,
         String policies,
         String ticketUrl,
+        String price,
+        String capacity,
         String image,
         double[] position) {
 
@@ -39,6 +41,8 @@ public record EventResponse(
                 event.getDescription(),
                 event.getPolicies(),
                 event.getTicketUrl(),
+                event.getPrice(),
+                event.getCapacity(),
                 event.getImage(),
                 hasPosition ? new double[] { event.getLatitude(), event.getLongitude() } : null);
     }
