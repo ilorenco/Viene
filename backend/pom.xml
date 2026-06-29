@@ -80,6 +80,13 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
+			<!-- Driver JDBC do Azure SQL / SQL Server (usado no perfil "prod").
+			     Versão gerenciada pelo Spring Boot. -->
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
