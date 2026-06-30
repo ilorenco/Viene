@@ -12,7 +12,10 @@ import { cn } from '@/lib/utils'
 const ALERT_WINDOW_DAYS = 7
 
 // Dias inteiros entre hoje (00:00) e a data ISO do evento (negativo = já passou).
+// Evento sem data (date: null) devolve NaN — o filtro de "próximos" (days >= 0) o
+// exclui naturalmente, em vez de quebrar a página inteira.
 function daysUntil(iso) {
+    if (!iso) return Number.NaN
     const today = new Date()
     today.setHours(0, 0, 0, 0)
     const [year, month, day] = iso.split('-').map(Number)
