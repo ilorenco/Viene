@@ -13,6 +13,9 @@ public final class PortugueseDates {
     }
 
     public static String displayDate(LocalDate date) {
+        if (date == null) {
+            return "—";
+        }
         return "%02d %s. %d".formatted(date.getDayOfMonth(), MONTHS[date.getMonthValue() - 1], date.getYear());
     }
 

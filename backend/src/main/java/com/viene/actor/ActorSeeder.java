@@ -3,11 +3,15 @@ package com.viene.actor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+// Dados mock de atores: roda SO no perfil "dev" (H2 local). Em producao (Azure SQL)
+// os atores vem do dataset real, carregado pelo seeder do JSON.
 @Component
+@Profile("dev")
 @RequiredArgsConstructor
 public class ActorSeeder implements ApplicationRunner {
 

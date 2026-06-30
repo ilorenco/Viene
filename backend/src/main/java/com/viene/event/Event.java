@@ -60,6 +60,12 @@ public class Event {
 
     private String ticketUrl;
 
+    // Texto livre vindo do dataset: preco pode ser "Gratuito"/"R$ 50"; capacidade
+    // pode ser "200" ou "200 pessoas". Por isso String, nao numero.
+    private String price;
+
+    private String capacity;
+
     private String image;
 
     private Double latitude;

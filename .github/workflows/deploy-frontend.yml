@@ -1,0 +1,55 @@
+name: Deploy Frontend (Azure Static Web Apps)
+
+# Publica o front-end (Vite/React) no Azure Static Web Apps "viene-frontend".
+# Dispara quando algo em frontend/ vai parar na main (apos o merge do PR),
+# ou manualmente pela aba "Actions" (workflow_dispatch).
+#
+# O build e' feito aqui (Node 22, mesmo do CI) e so o resultado (dist/) e'
+# enviado, com skip_app_build=true -- mais previsivel do que deixar o Oryx
+# do Azure adivinhar a versao do Node.
+#
+# PRE-REQUISITO: o segredo AZURE_STATIC_WEB_APPS_API_TOKEN precisa estar
+# configurado em Settings > Secrets and variables > Actions. Como obter:
+# ver .github/DEPLOY-AZURE.md.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/deploy-frontend.yml'
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    name: Build e Deploy
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Instalar dependencias
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build (Vite)
+        working-directory: frontend
+        run: npm run build
+        env:
+          # URL do back-end no Azure. Nao e' segredo (e' publica), por isso fica aqui.
+          VITE_API_URL: https://viene-api-atd2dngpcbeehgfx.brazilsouth-01.azurewebsites.net
+
+      - name: Deploy para o Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: upload
+          # Enviamos a pasta ja buildada; nao deixamos o Azure rebuildar.
+          app_location: frontend/dist
+          skip_app_build: true
+          skip_api_build: true

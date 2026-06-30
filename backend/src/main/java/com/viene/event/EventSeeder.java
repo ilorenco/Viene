@@ -3,13 +3,17 @@ package com.viene.event;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+// Dados mock de eventos: roda SO no perfil "dev" (H2 local). Em producao (Azure SQL)
+// os eventos vem do dataset real, carregado pelo seeder do JSON.
 @Component
+@Profile("dev")
 @RequiredArgsConstructor
 public class EventSeeder implements ApplicationRunner {
 

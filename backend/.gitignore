@@ -8,6 +8,11 @@ target/
 # Upload de imagens (gerado em runtime, limpo a cada boot — ver UploadStartupCleaner)
 uploads/
 
+# Segredos locais (perfil "prod" testado na máquina) — NUNCA versionar.
+# O template versionado é application-secrets.properties.example.
+application-secrets.properties
+.env
+
 ### STS ###
 .apt_generated
 .classpath
