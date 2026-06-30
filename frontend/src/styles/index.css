@@ -161,32 +161,30 @@ html[data-viene-colorblind='tritanopia'] #root {
     filter: url('#viene-tritanopia');
 }
 
-/* Realce de palavras: fundo claro levemente amarelado atrás do texto, com letras
-   maiores e em negrito, para facilitar a leitura.
-   - Aplica-se só a elementos de TEXTO de conteúdo (parágrafos, listas, títulos).
-     Links isolados (logo, avatar, menus) ficam de fora — como são inline, antes
-     ganhavam uma "caixa" colorida que subia sobre a linha de cima e cobria o
-     texto. Links dentro de um parágrafo continuam realçados, pois herdam o fundo.
-   - line-height generoso garante que o realce de uma linha não invada a de cima. */
-/* Texto de conteúdo e BOTÕES: fundo amarelo claro, negrito e letras um pouco
-   maiores (1.06em). */
+/* Realce de palavras: sublinhado grosso âmbar que ACOMPANHA o texto (quebra por
+   linha, fica só sob as letras), com negrito e letras um pouco maiores para
+   facilitar a leitura.
+   - Antes usava background-color em elementos de BLOCO (p, li, h1…): como o fundo
+     de um bloco preenche a largura inteira da coluna, ele pintava uma faixa "da
+     tela toda" em vez de realçar só as palavras. text-decoration acompanha o texto.
+   - Sem forçar a cor do texto: o sublinhado é o marcador, então mantém o contraste
+     original (inclusive de títulos claros sobre fundos escuros, como o hero). */
+/* Texto de conteúdo e BOTÕES: sublinhado, negrito e letras um pouco maiores. */
 html[data-viene-highlight='true'] :is(p, li, dt, dd, button) {
-    background-color: #fdf6dc;
-    color: #1a1a1a;
     font-weight: 800;
     font-size: 1.06em;
     line-height: 1.65;
-    border-radius: 0.25rem;
-    box-decoration-break: clone;
-    -webkit-box-decoration-break: clone;
+    text-decoration-line: underline;
+    text-decoration-color: #e6a700;
+    text-decoration-thickness: 0.18em;
+    text-underline-offset: 0.16em;
 }
-/* Títulos: o MESMO marcador, mas mantendo a tipografia — sem aumentar a fonte
+/* Títulos: o MESMO sublinhado, mas mantendo a tipografia — sem aumentar a fonte
    nem forçar o peso (já são grandes e em negrito). */
 html[data-viene-highlight='true'] :is(h1, h2, h3, h4) {
-    background-color: #fdf6dc;
-    color: #1a1a1a;
     line-height: 1.65;
-    border-radius: 0.25rem;
-    box-decoration-break: clone;
-    -webkit-box-decoration-break: clone;
+    text-decoration-line: underline;
+    text-decoration-color: #e6a700;
+    text-decoration-thickness: 0.12em;
+    text-underline-offset: 0.18em;
 }
