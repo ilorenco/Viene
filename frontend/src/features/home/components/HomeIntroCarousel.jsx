@@ -5,7 +5,7 @@
 // com a barra de progresso (dots) em cima. Imagens são placeholders da marca.
 
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import comoFuncionaCarousel from '@/assets/home/como-funciona-carousel.png'
@@ -51,8 +51,30 @@ export function HomeIntroCarousel() {
     const slide = SLIDES[index]
     const go = (delta) => setIndex((i) => (i + delta + SLIDES.length) % SLIDES.length)
 
+    // Swipe horizontal ("puxar para o lado") para trocar de tema no mobile/touch.
+    // Só conta um arrasto nitidamente horizontal acima do limiar — assim não atrapalha
+    // o scroll vertical da página nem os toques nos botões. Mouse fica de fora (no
+    // desktop há as setas/dots, e arrastar com o mouse selecionaria o texto).
+    const swipeStart = useRef(null)
+    const onSwipeStart = (e) => {
+        swipeStart.current = e.pointerType === 'mouse' ? null : { x: e.clientX, y: e.clientY }
+    }
+    const onSwipeEnd = (e) => {
+        const start = swipeStart.current
+        swipeStart.current = null
+        if (!start) return
+        const dx = e.clientX - start.x
+        if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(e.clientY - start.y)) {
+            go(dx < 0 ? 1 : -1) // arrastar para a esquerda = próximo tema
+        }
+    }
+
     return (
-        <section className="flex flex-col gap-5 lg:flex-row lg:items-stretch lg:gap-8">
+        <section
+            className="flex touch-pan-y flex-col gap-5 lg:flex-row lg:items-stretch lg:gap-8"
+            onPointerDown={onSwipeStart}
+            onPointerUp={onSwipeEnd}
+        >
             {/* Esquerda: título (topo-esq.), setas (topo-dir.), texto e botão (inferior-dir.).
                 A coluna estica até a altura da imagem (lg:items-stretch) e o texto ocupa o
                 meio (flex-1), então título/setas/botão ficam FIXOS — não dependem do tamanho
