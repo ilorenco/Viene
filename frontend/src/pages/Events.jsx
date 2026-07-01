@@ -13,6 +13,7 @@ import { EventsSkeleton } from '@/features/events/components/EventsFallbacks'
 import { RegisterEventModal } from '@/features/events/components/RegisterEventModal'
 import { useFilteredEvents } from '@/features/events/hooks/useFilteredEvents'
 import { mockEventCategories } from '@/features/events/mocks/eventCategories'
+import { useGridColumns } from '@/hooks/useGridColumns'
 import { usePagination } from '@/hooks/usePagination'
 import { cn } from '@/lib/utils'
 
@@ -64,9 +65,12 @@ function EventsContent() {
         event.preventDefault()
     }
 
-    // Pagina o resultado; volta à página 1 quando a busca, a categoria ou o período mudam.
+    // Paginação: 3 linhas cheias, acompanhando o nº de colunas responsivo do grid
+    // (1/2/3/4 conforme a largura, como em Atores). Cada página/subguia enche o
+    // máximo possível; a última tem o que sobrar.
+    const columns = useGridColumns()
     const { page, setPage, totalPages, pageItems } = usePagination(filtered, {
-        pageSize: 6,
+        pageSize: columns * 3,
         resetKey: `${query}|${[...selected].sort().join(',')}|${period.from}|${period.to}`,
     })
 

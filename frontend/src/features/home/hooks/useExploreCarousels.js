@@ -16,9 +16,13 @@ export function useExploreCarousels(sort, city) {
 
     const filteredEvents = [...events]
         .filter((event) => matchesCity(event.address, city))
-        .sort((a, b) =>
-            sort === 'recentes' ? b.date.localeCompare(a.date) : a.date.localeCompare(b.date),
-        )
+        .sort((a, b) => {
+            // Evento sem data (date: null) vira '' — evita quebrar o localeCompare
+            // (que estourava e derrubava a Home ao ordenar por "mais antigos").
+            const da = a.date || ''
+            const db = b.date || ''
+            return sort === 'recentes' ? db.localeCompare(da) : da.localeCompare(db)
+        })
 
     const filteredActors = [...actors]
         .filter((actor) => matchesCity(actor.city, city))
