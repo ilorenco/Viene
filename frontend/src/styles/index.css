@@ -91,9 +91,11 @@ html[data-viene-night='true'] body {
     color: var(--color-foreground);
 }
 /* Texto escuro (text-secondary) clareia. Exceções: sobre botões azuis (.bg-primary,
-   tratado abaixo) e DENTRO de campos (input/textarea), que ficam brancos. */
-html[data-viene-night='true']:not([data-viene-highlight='true'])
-    [class*='text-secondary']:not(.bg-primary):not(input):not(textarea) {
+   tratado abaixo) e DENTRO de campos (input/textarea), que ficam brancos.
+   Vale MESMO com o "Realce de palavras" ligado: o realce hoje é só um sublinhado
+   (não pinta mais fundo claro), então o texto deve clarear normalmente no escuro —
+   sem isso, com realce+noturno a maioria dos textos ficava escura sobre o escuro. */
+html[data-viene-night='true'] [class*='text-secondary']:not(.bg-primary):not(input):not(textarea) {
     color: #d8d8d8 !important;
 }
 /* Sobre os botões/realces AZUIS (bg-primary, agora um azul mais escuro): texto

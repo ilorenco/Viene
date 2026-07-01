@@ -22,8 +22,8 @@ export function ActorCard({ id, name, description, image, neighborhood, city }) 
             </Link>
 
             <div className="flex min-w-0 flex-1 flex-col gap-1">
-                <h3 className="text-secondary line-clamp-2 font-extrabold">{name}</h3>
-                <p className="text-foreground line-clamp-3 text-xs">{description}</p>
+                <h3 className="text-secondary line-clamp-1 font-extrabold">{name}</h3>
+                <p className="text-foreground line-clamp-2 text-xs">{description}</p>
 
                 <div className="mt-auto flex items-center gap-2 pt-1">
                     {location && (
